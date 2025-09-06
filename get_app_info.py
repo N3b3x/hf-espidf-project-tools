@@ -141,7 +141,7 @@ def load_config(project_path=None):
         print(f"Error loading configuration: {e}", file=sys.stderr)
         sys.exit(1)
 
-def get_app_source_file(app_type):
+def get_app_source_file(app_type, project_path=None):
     """Get source file for an app type."""
     config = load_config(project_path)
     
@@ -151,13 +151,13 @@ def get_app_source_file(app_type):
     
     return config['apps'][app_type]['source_file']
 
-def list_apps():
+def list_apps(project_path=None):
     """List all available apps."""
     config = load_config(project_path)
     apps = list(config['apps'].keys())
     return apps
 
-def validate_app(app_type):
+def validate_app(app_type, project_path=None):
     """Validate if app type exists."""
     config = load_config(project_path)
     return app_type in config['apps']
@@ -176,18 +176,18 @@ def main():
         if not app_type:
             print("Usage: get_app_info.py source_file <app_type>", file=sys.stderr)
             sys.exit(1)
-        source_file = get_app_source_file(app_type)
+        source_file = get_app_source_file(app_type, project_path)
         print(source_file)
     
     elif command == "list":
-        apps = list_apps()
+        apps = list_apps(project_path)
         print(" ".join(apps))
     
     elif command == "validate":
         if not app_type:
             print("Usage: get_app_info.py validate <app_type>", file=sys.stderr)
             sys.exit(1)
-        is_valid = validate_app(app_type)
+        is_valid = validate_app(app_type, project_path)
         print("true" if is_valid else "false")
         if not is_valid:
             sys.exit(1)
