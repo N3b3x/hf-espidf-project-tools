@@ -385,6 +385,9 @@ fi
 # Configure and build with proper error handling
 echo "Configuring project for $IDF_TARGET..."
 
+# Change to project directory before running idf.py commands
+cd "$PROJECT_DIR"
+
 if ! idf.py -B "$BUILD_DIR" -D CMAKE_BUILD_TYPE="$BUILD_TYPE" -D BUILD_TYPE="$BUILD_TYPE" -D APP_TYPE="$APP_TYPE" -D IDF_CCACHE_ENABLE="$USE_CCACHE" reconfigure; then
     echo "ERROR: Configuration failed"
     exit 1
