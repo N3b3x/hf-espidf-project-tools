@@ -27,8 +27,8 @@ while [[ $i -le $# ]]; do
 			;;
 		--project-path)
 			# Check if next argument exists and is not another flag
-			if [[ $((i+1)) -le $# ]] && [[ "${!((i+1))}" != -* ]]; then
-				PROJECT_PATH="${!((i+1))}"
+			if [[ $((i+1)) -le $# ]] && [[ "${@:$((i+1)):1}" != -* ]]; then
+				PROJECT_PATH="${@:$((i+1)):1}"
 				((i++))  # Skip the next argument since we consumed it
 			else
 				echo "ERROR: --project-path requires a path argument" >&2
