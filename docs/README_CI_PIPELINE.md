@@ -5,8 +5,8 @@ architecture, performance improvements, and configuration details.
 
 ---
 
-**Navigation**: [← Previous: Build System](README*BUILD*SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Flash System →](README*FLASH*SYSTEM.md)
+**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
+| [Next: Flash System →](README_FLASH_SYSTEM.md)
 
 ---
 
@@ -78,7 +78,7 @@ and minimal resource usage while maintaining comprehensive build coverage.
 ```python
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           SETUP COMMON FUNCTIONS                            │
-│                    (setup*common.sh - shared utilities)                     │
+│                    (setup_common.sh - shared utilities)                     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  • System dependency installation                                           │
 │  • Clang toolchain setup                                                    │
@@ -92,7 +92,7 @@ and minimal resource usage while maintaining comprehensive build coverage.
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                    ENVIRONMENT-SPECIFIC SETUP                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  🏠 LOCAL DEVELOPMENT (setup*repo.sh)        🏭 CI/CD (Direct ESP-IDF)      │
+│  🏠 LOCAL DEVELOPMENT (setup_repo.sh)        🏭 CI/CD (Direct ESP-IDF)      │
 │  • Full development environment              • ESP-IDF CI action handles    │
 │  • ESP-IDF auto-installation                 • Direct project building      │
 │  • Complete toolchain                        • No file copying needed       │
@@ -107,7 +107,7 @@ and minimal resource usage while maintaining comprehensive build coverage.
 The workflow uses single matrix generation with result reuse:
 ```bash
 ## Generate once, reuse result
-MATRIX=$(python3 generate*matrix.py)
+MATRIX=$(python3 generate_matrix.py)
 echo "$MATRIX" | python3 -m json.tool  # Reuse stored result
 ```text
 
@@ -130,8 +130,8 @@ static-analysis:
   uses: espressif/esp-idf-ci-action@v1
   with:
     command: |
-      cd "${ESP32*PROJECT*PATH}"
-      ./scripts/build*app.sh --project-path "${ESP32*PROJECT*PATH}" ...
+      cd "${ESP32_PROJECT_PATH}"
+      ./scripts/build_app.sh --project-path "${ESP32_PROJECT_PATH}" ...
 ```text
 
 ### **4. Clean Caching Strategy**
@@ -164,9 +164,9 @@ The workflow uses single cppcheck execution with both XML and text outputs:
 ```bash
 ## Single run generates both XML and shows output
 docker run --rm cppcheck \
-  --xml --output-file=cppcheck*report.xml \
+  --xml --output-file=cppcheck_report.xml \
   --quiet \
-  /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck*output.txt
+  /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck_output.txt
 ```text
 
 **Benefits**: **~50% faster** static analysis
@@ -177,7 +177,7 @@ docker run --rm cppcheck \
 
 ```bash
 ## Required for CI setup
-export ESP32*PROJECT*PATH="examples/esp32"  # Path to ESP32 project directory
+export ESP32_PROJECT_PATH="examples/esp32"  # Path to ESP32 project directory
 ```text
 
 ### **Environment Variable Validation**
@@ -186,14 +186,14 @@ The CI workflow validates required environment variables:
 
 ```bash
 ## Validate required environment variables
-if [[ -z "${ESP32*PROJECT*PATH:-}" ]]; then
-    print*error "ESP32*PROJECT*PATH environment variable is required but not set"
-    print*error "This should point to the ESP32 project directory (e.g., 'examples/esp32')"
+if [[ -z "${ESP32_PROJECT_PATH:-}" ]]; then
+    print_error "ESP32_PROJECT_PATH environment variable is required but not set"
+    print_error "This should point to the ESP32 project directory (e.g., 'examples/esp32')"
     exit 1
 fi
 
-if [[ ! -d "$ESP32*PROJECT*PATH" ]]; then
-    print*error "ESP32*PROJECT*PATH directory does not exist: $ESP32*PROJECT*PATH"
+if [[ ! -d "$ESP32_PROJECT_PATH" ]]; then
+    print_error "ESP32_PROJECT_PATH directory does not exist: $ESP32_PROJECT_PATH"
     exit 1
 fi
 ```text
@@ -208,8 +208,8 @@ The CI workflow now uses direct project building without file copying:
   uses: espressif/esp-idf-ci-action@v1
   with:
     command: |
-      cd "${ESP32*PROJECT*PATH}"
-      ./scripts/build*app.sh --project-path "${ESP32*PROJECT*PATH}" ...
+      cd "${ESP32_PROJECT_PATH}"
+      ./scripts/build_app.sh --project-path "${ESP32_PROJECT_PATH}" ...
 ```text
 
 ### **Portable CI Usage**
@@ -218,14 +218,14 @@ The build system supports portable usage through the `--project-path` flag:
 
 ```bash
 ## Portable build with --project-path
-./build*app.sh --project-path /path/to/project gpio*test Release
+./build_app.sh --project-path /path/to/project gpio_test Release
 
 ## Using environment variable
-export PROJECT*PATH=/path/to/project
-./build*app.sh gpio*test Release
+export PROJECT_PATH=/path/to/project
+./build_app.sh gpio_test Release
 
 ## CI environment with portable scripts
-./ci-scripts/build*app.sh --project-path $GITHUB*WORKSPACE/examples/esp32 gpio*test Release
+./ci-scripts/build_app.sh --project-path $GITHUB_WORKSPACE/examples/esp32 gpio_test Release
 ```text
 
 #### **Portable CI Benefits**
@@ -238,12 +238,12 @@ export PROJECT*PATH=/path/to/project
 #### **CI Matrix Generation with Portable Scripts**
 ```bash
 ## Generate matrix for any project
-python3 generate*matrix.py --project-path /path/to/project --output matrix.json
+python3 generate_matrix.py --project-path /path/to/project --output matrix.json
 
 ## CI workflow example
 - name: Generate Build Matrix
   run: |
-    python3 scripts/generate*matrix.py --project-path ${{ github.workspace }}/examples/esp32 --output matrix.json
+    python3 scripts/generate_matrix.py --project-path ${{ github.workspace }}/examples/esp32 --output matrix.json
 ```text
 
 ## 🚀 **Job Execution and Workflow**
@@ -265,8 +265,8 @@ generate-matrix:
     - name: Generate matrix
       run: |
         # Generate matrix once and store result
-        MATRIX=$(python3 ${{ env.ESP32*PROJECT*PATH }}/scripts/generate*matrix.py)
-        echo "matrix=${MATRIX}" >> "$GITHUB*OUTPUT"
+        MATRIX=$(python3 ${{ env.ESP32_PROJECT_PATH }}/scripts/generate_matrix.py)
+        echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
         
         # Pretty-print the stored result instead of regenerating
         echo "Generated matrix:"
@@ -277,7 +277,7 @@ generate-matrix:
 
 ```yaml
 build:
-  name: Build ➜ ${{ matrix.idf*version }} · ${{ matrix.build*type }} · ${{ matrix.app*name }}
+  name: Build ➜ ${{ matrix.idf_version }} · ${{ matrix.build_type }} · ${{ matrix.app_name }}
   needs: [generate-matrix]
   strategy:
     matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
@@ -285,11 +285,11 @@ build:
     - name: ESP-IDF Build with caching
       uses: espressif/esp-idf-ci-action@v1
       with:
-        esp*idf*version: ${{ matrix.idf*version*docker }}
+        esp_idf_version: ${{ matrix.idf_version_docker }}
         target: ${{ matrix.target }}
         command: |
-          cd ${{ env.ESP32*PROJECT*PATH }}
-          ./scripts/build*app.sh --project-path "${{ env.ESP32*PROJECT*PATH }}" "${{ matrix.app*name }}" "${{ matrix.build*type }}" "${{ matrix.idf*version }}"
+          cd ${{ env.ESP32_PROJECT_PATH }}
+          ./scripts/build_app.sh --project-path "${{ env.ESP32_PROJECT_PATH }}" "${{ matrix.app_name }}" "${{ matrix.build_type }}" "${{ matrix.idf_version }}"
 ```text
 
 ### **Static Analysis Job (Independent)**
@@ -297,7 +297,7 @@ build:
 ```yaml
 static-analysis:
   name: Static Analysis (cppcheck)
-  if: github.event*name == 'pull*request'
+  if: github.event_name == 'pull_request'
   runs-on: ubuntu-latest
   # No dependencies needed - cppcheck analyzes source code, not build artifacts
   steps:
@@ -321,9 +321,9 @@ static-analysis:
             --inline-suppr \
             --std=c++17 \
             --xml \
-            --output-file=/src/cppcheck*report.xml \
+            --output-file=/src/cppcheck_report.xml \
             --quiet \
-            /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck*output.txt
+            /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck_output.txt
 ```text
 
 ### **Workflow Lint Job (Independent)**
@@ -353,16 +353,16 @@ workflow-lint:
           echo "Downloading actionlint release..."
           
           # Get latest version and download URL
-          LATEST*VERSION=$(curl -s "https://api.github.com/repos/rhysd/actionlint/releases/latest" | \
-            grep '"tag*name"' | cut -d'"' -f4)
-          VERSION*NUM=${LATEST*VERSION#v}
-          DOWNLOAD*URL="https://github.com/rhysd/actionlint/releases/download/${LATEST*VERSION}/actionlint*${VERSION*NUM}*linux*amd64.tar.gz"
+          LATEST_VERSION=$(curl -s "https://api.github.com/repos/rhysd/actionlint/releases/latest" | \
+            grep '"tag_name"' | cut -d'"' -f4)
+          VERSION_NUM=${LATEST_VERSION#v}
+          DOWNLOAD_URL="https://github.com/rhysd/actionlint/releases/download/${LATEST_VERSION}/actionlint*${VERSION_NUM}*linux_amd64.tar.gz"
           
-          echo "Latest version: ${LATEST*VERSION}"
-          echo "Downloading from: ${DOWNLOAD*URL}"
+          echo "Latest version: ${LATEST_VERSION}"
+          echo "Downloading from: ${DOWNLOAD_URL}"
           
           # Download and extract
-          curl -sSfL -o actionlint.tar.gz "${DOWNLOAD*URL}"
+          curl -sSfL -o actionlint.tar.gz "${DOWNLOAD_URL}"
           tar -xzf actionlint.tar.gz actionlint
           chmod +x actionlint
           sudo mv actionlint /usr/local/bin/
@@ -370,7 +370,7 @@ workflow-lint:
           # Cleanup
           rm -f actionlint.tar.gz
           
-          echo "actionlint ${LATEST*VERSION} installed successfully"
+          echo "actionlint ${LATEST_VERSION} installed successfully"
         else
           echo "actionlint already installed: $(actionlint --version)"
         fi
@@ -389,8 +389,8 @@ workflow-lint:
 
 ```yaml
 ## Essential tools cache (build jobs)
-key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32*PROJECT*PATH
-}}/scripts/setup*common.sh') }}
+key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32_PROJECT_PATH
+}}/scripts/setup_common.sh') }}
 
 ## Static analysis cache (analysis jobs)
 key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**', 'examples/**') }}
@@ -398,12 +398,12 @@ key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**',
 ## Workflow lint - no caching (tools installed fresh each run)
 
 ## Python dependencies cache (build jobs)
-key: esp32-ci-python-deps-${{ matrix.idf*version*docker }}-${{ runner.os }}-${{ hashFiles('${{
-env.ESP32*PROJECT*PATH }}/scripts/setup*common.sh', '${{ env.ESP32*PROJECT*PATH
+key: esp32-ci-python-deps-${{ matrix.idf_version_docker }}-${{ runner.os }}-${{ hashFiles('${{
+env.ESP32_PROJECT_PATH }}/scripts/setup_common.sh', '${{ env.ESP32_PROJECT_PATH
 }}/scripts/requirements.txt') }}
 
 ## ccache (build jobs)
-key: esp32-ci-ccache-${{ matrix.idf*version*docker }}-${{ matrix.build*type }}-${{
+key: esp32-ci-ccache-${{ matrix.idf_version_docker }}-${{ matrix.build_type }}-${{
 hashFiles('src/**', 'inc/**', 'examples/**') }}
 ```text
 
@@ -436,10 +436,10 @@ path: ~/.ccache
 
 #### **1. Environment Variable Errors**
 
-**Problem**: `ESP32*PROJECT*PATH` not set or invalid
+**Problem**: `ESP32_PROJECT_PATH` not set or invalid
 **Symptoms**: 
 ```text
-ERROR: ESP32*PROJECT*PATH environment variable is required but not set
+ERROR: ESP32_PROJECT_PATH environment variable is required but not set
 ERROR: This should point to the ESP32 project directory (e.g., 'examples/esp32')
 ```text
 
@@ -447,7 +447,7 @@ ERROR: This should point to the ESP32 project directory (e.g., 'examples/esp32')
 ```yaml
 ## In GitHub workflow
 env:
-  ESP32*PROJECT*PATH: examples/esp32
+  ESP32_PROJECT_PATH: examples/esp32
 ```text
 
 #### **2. Matrix Generation Failures**
@@ -459,10 +459,10 @@ env:
 ```bash
 ## Test matrix generation locally
 cd examples/esp32/scripts
-python3 generate*matrix.py
+python3 generate_matrix.py
 
 ## Check script permissions
-chmod +x generate*matrix.py
+chmod +x generate_matrix.py
 
 ## Verify Python dependencies
 pip install pyyaml
@@ -476,8 +476,8 @@ pip install pyyaml
 **Solutions**:
 ```yaml
 ## Check cache key specificity
-key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32*PROJECT*PATH
-}}/scripts/setup*common.sh') }}
+key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32_PROJECT_PATH
+}}/scripts/setup_common.sh') }}
 
 ## Verify cache paths are correct
 path: |
@@ -495,18 +495,18 @@ path: |
 ## Verify source files exist
 ls -la src/ inc/ examples/
 
-## Check ESP32*PROJECT*PATH is correct
-echo $ESP32*PROJECT*PATH
+## Check ESP32_PROJECT_PATH is correct
+echo $ESP32_PROJECT_PATH
 ```text
 
 ### **Debugging Commands**
 
 ```bash
 ## Test CI setup locally
-export ESP32*PROJECT*PATH="examples/esp32"
+export ESP32_PROJECT_PATH="examples/esp32"
 
 ## Verify matrix generation
-python3 examples/esp32/scripts/generate*matrix.py
+python3 examples/esp32/scripts/generate_matrix.py
 
 ## Check cache status
 ls -la ~/.cache/apt
@@ -561,7 +561,7 @@ ls -la ~/.ccache
 
 |-------------|--------------|--------------|----------|-------------|
 
-| **Local Development** | `setup*repo.sh` | Full toolchain | Developer setup | Standard |
+| **Local Development** | `setup_repo.sh` | Full toolchain | Developer setup | Standard |
 
 | **CI/CD Pipeline** | ESP-IDF CI action | Direct | Automated builds | **Optimized** |
 
@@ -571,9 +571,9 @@ ls -la ~/.ccache
 
 ### **Backward Compatibility**
 
-- **Configuration Format**: Compatible with existing app*config.yml
-- **Environment Variables**: Maintains existing ESP32*PROJECT*PATH usage
-- **Build Commands**: No changes to build*app.sh usage
+- **Configuration Format**: Compatible with existing app_config.yml
+- **Environment Variables**: Maintains existing ESP32_PROJECT_PATH usage
+- **Build Commands**: No changes to build_app.sh usage
 - **Cache Keys**: New optimized keys, old keys gracefully deprecated
 
 ## 🚀 **Future Development and Roadmap**
@@ -595,5 +595,5 @@ ls -la ~/.ccache
 
 ---
 
-**Navigation**: [← Previous: Build System](README*BUILD*SYSTEM.md) | [Back to Scripts](../README.md)
+**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
 | [Next: Flash System →](README_FLASH_SYSTEM.md)

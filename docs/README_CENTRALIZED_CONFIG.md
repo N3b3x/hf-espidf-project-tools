@@ -1,13 +1,13 @@
 # ESP32 HardFOC Interface Wrapper - Centralized Configuration Guide
 
 This document provides comprehensive documentation for the centralized configuration system,
-including the `app*config.yml` file structure, configuration loading mechanisms, and integration
+including the `app_config.yml` file structure, configuration loading mechanisms, and integration
 with the ESP32 development workflow.
 
 ---
 
-**Navigation**: [← Previous: Port Detection](README*PORT*DETECTION.md) | [Back to
-Scripts](../README.md) | [Next: Scripts Overview →](README*SCRIPTS*OVERVIEW.md)
+**Navigation**: [← Previous: Port Detection](README_PORT_DETECTION.md) | [Back to
+Scripts](../README.md) | [Next: Scripts Overview →](README_SCRIPTS_OVERVIEW.md)
 
 ---
 
@@ -26,7 +26,7 @@ Scripts](../README.md) | [Next: Scripts Overview →](README*SCRIPTS*OVERVIEW.md
 
 The centralized configuration system provides a unified approach to managing ESP32 project settings,
 application configurations, and build parameters.
-The system uses a single `app*config.yml` file to define all project aspects,
+The system uses a single `app_config.yml` file to define all project aspects,
 enabling consistent configuration management across different scripts and development environments.
 
 ### **Core Features**
@@ -49,7 +49,7 @@ enabling consistent configuration management across different scripts and develo
 ```yaml
 Configuration System → YAML Parser → Validation Engine → Script Integration → Environment Overrides
         ↓                ↓              ↓                ↓                ↓
-   app*config.yml    yq/grep/sed    Schema Check    Script Loading    Env Var Priority
+   app_config.yml    yq/grep/sed    Schema Check    Script Loading    Env Var Priority
 ```text
 
 ### **Component Interaction**
@@ -71,13 +71,13 @@ Configuration System → YAML Parser → Validation Engine → Script Integratio
 ### **File Location and Naming**
 ```bash
 ## Configuration file location
-examples/esp32/app*config.yml
+examples/esp32/app_config.yml
 
 ## Alternative locations (in order of precedence)
-./app*config.yml                    # Current directory
-../app*config.yml                   # Parent directory
-$HOME/.esp32*config.yml            # User home directory
-$ESP32*CONFIG*PATH/app*config.yml  # Custom path via environment variable
+./app_config.yml                    # Current directory
+../app_config.yml                   # Parent directory
+$HOME/.esp32_config.yml            # User home directory
+$ESP32_CONFIG_PATH/app_config.yml  # Custom path via environment variable
 ```text
 
 ### **Configuration Schema**
@@ -85,181 +85,181 @@ $ESP32*CONFIG*PATH/app*config.yml  # Custom path via environment variable
 #### **Metadata Section**
 ```yaml
 metadata:
-  project*name: "ESP32 HardFOC Interface Wrapper"
+  project_name: "ESP32 HardFOC Interface Wrapper"
   version: "2.0.0"
   description: "Comprehensive ESP32 development framework"
   author: "HardFOC Development Team"
-  last*updated: "2025-01-27"
-  supported*platforms:
+  last_updated: "2025-01-27"
+  supported_platforms:
     - "Linux (Ubuntu 20.04+)"
     - "macOS (10.15+)"
     - "Windows (WSL2)"
   requirements:
-    esp*idf*min: "v5.0.0"
-    esp*idf*recommended: "v5.5"
-    python*min: "3.8"
-    bash*min: "4.0"
+    esp_idf_min: "v5.0.0"
+    esp_idf_recommended: "v5.5"
+    python_min: "3.8"
+    bash_min: "4.0"
 ```text
 
 #### **Applications Section**
 ```yaml
 apps:
-  gpio*test:
+  gpio_test:
     description: "GPIO peripheral comprehensive testing"
-    source*file: "GpioComprehensiveTest.cpp"
+    source_file: "GpioComprehensiveTest.cpp"
     featured: true
-    build*types:
+    build_types:
       - "Debug"
       - "Release"
     target: "esp32c6"
     dependencies:
       - "ESP-IDF v5.5+"
       - "GPIO hardware interface"
-    ci*config:
+    ci_config:
       enabled: true
       timeout: 300
       retries: 3
-    flash*config:
-      port*auto*detect: true
-      baud*rate: 921600
-      flash*mode: "dio"
-      flash*freq: "80m"
-      flash*size: "4MB"
-    monitor*config:
-      baud*rate: 115200
-      log*output: true
-      log*file: "gpio*test*monitor.log"
+    flash_config:
+      port_auto_detect: true
+      baud_rate: 921600
+      flash_mode: "dio"
+      flash_freq: "80m"
+      flash_size: "4MB"
+    monitor_config:
+      baud_rate: 115200
+      log_output: true
+      log_file: "gpio_test_monitor.log"
 
-  adc*test:
+  adc_test:
     description: "ADC peripheral comprehensive testing"
-    source*file: "AdcComprehensiveTest.cpp"
+    source_file: "AdcComprehensiveTest.cpp"
     featured: true
-    build*types:
+    build_types:
       - "Debug"
       - "Release"
     target: "esp32c6"
     dependencies:
       - "ESP-IDF v5.5+"
       - "ADC hardware interface"
-    ci*config:
+    ci_config:
       enabled: true
       timeout: 300
       retries: 3
-    flash*config:
-      port*auto*detect: true
-      baud*rate: 921600
-      flash*mode: "dio"
-      flash*freq: "80m"
-      flash*size: "4MB"
-    monitor*config:
-      baud*rate: 115200
-      log*output: true
-      log*file: "adc*test*monitor.log"
+    flash_config:
+      port_auto_detect: true
+      baud_rate: 921600
+      flash_mode: "dio"
+      flash_freq: "80m"
+      flash_size: "4MB"
+    monitor_config:
+      baud_rate: 115200
+      log_output: true
+      log_file: "adc_test_monitor.log"
 ```text
 
 #### **Build Configuration Section**
 ```yaml
-build*config:
-  default*build*type: "Release"
-  default*target: "esp32c6"
-  supported*build*types:
+build_config:
+  default_build_type: "Release"
+  default_target: "esp32c6"
+  supported_build_types:
     - "Debug"
     - "Release"
-  supported*targets:
+  supported_targets:
     - "esp32"
     - "esp32c3"
     - "esp32c6"
     - "esp32s3"
   
   # ESP-IDF version management
-  idf*versions:
+  idf_versions:
     esp32: "v5.0.0"
     esp32c3: "v5.0.0"
     esp32c6: "v5.5"
     esp32s3: "v5.0.0"
   
   # Build optimization
-  ccache*enabled: true
-  ccache*size: "2G"
-  parallel*builds: 4
-  incremental*builds: true
+  ccache_enabled: true
+  ccache_size: "2G"
+  parallel_builds: 4
+  incremental_builds: true
   
   # Build validation
   assertions: true
-  stack*usage: true
-  size*analysis: true
+  stack_usage: true
+  size_analysis: true
   
   # Debug and development
-  logging*level: "INFO"
+  logging_level: "INFO"
   sanitizers:
     - "address"
     - "undefined"
-  debug*symbols: true
+  debug_symbols: true
   
   # Performance monitoring
-  build*timeout: 1800
-  memory*limit: "4G"
-  cpu*limit: 4
+  build_timeout: 1800
+  memory_limit: "4G"
+  cpu_limit: 4
 ```text
 
 #### **Flash Configuration Section**
 ```yaml
-flash*config:
+flash_config:
   # Port detection and management
-  port*auto*detect: true
-  port*validation: true
-  port*timeout: 30
+  port_auto_detect: true
+  port_validation: true
+  port_timeout: 30
   
   # Flash parameters
-  default*baud*rate: 921600
-  default*flash*mode: "dio"
-  default*flash*freq: "80m"
-  default*flash*size: "4MB"
+  default_baud_rate: 921600
+  default_flash_mode: "dio"
+  default_flash_freq: "80m"
+  default_flash_size: "4MB"
   
   # Flash validation
-  flash*verification: true
-  flash*checksum: true
-  flash*backup: false
+  flash_verification: true
+  flash_checksum: true
+  flash_backup: false
   
   # Error handling
-  retry*attempts: 3
-  retry*delay: 2
-  error*recovery: true
+  retry_attempts: 3
+  retry_delay: 2
+  error_recovery: true
   
   # Logging and monitoring
-  flash*logging: true
-  flash*log*file: "flash*operation.log"
-  flash*verbose: false
+  flash_logging: true
+  flash_log_file: "flash_operation.log"
+  flash_verbose: false
 ```text
 
 #### **System Configuration Section**
 ```yaml
-system*config:
+system_config:
   # Development environment
-  development*mode: true
-  debug*mode: false
-  verbose*output: false
+  development_mode: true
+  debug_mode: false
+  verbose_output: false
   
   # Logging configuration
-  log*directory: "logs"
-  log*retention*days: 30
-  log*rotation*size: "100M"
-  log*compression: true
+  log_directory: "logs"
+  log_retention_days: 30
+  log_rotation_size: "100M"
+  log_compression: true
   
   # Performance settings
-  max*parallel*jobs: 4
-  memory*limit: "4G"
-  cpu*limit: 4
+  max_parallel_jobs: 4
+  memory_limit: "4G"
+  cpu_limit: 4
   
   # Security and permissions
-  strict*permissions: false
-  auto*fix*permissions: true
-  user*group*management: true
+  strict_permissions: false
+  auto_fix_permissions: true
+  user_group_management: true
   
   # Integration settings
-  cmake*integration: true
-  ci*cd*integration: true
-  ide*integration: true
+  cmake_integration: true
+  ci_cd_integration: true
+  ide_integration: true
 ```yaml
 
 ## 🔧 **Configuration Loading and Validation**
@@ -271,12 +271,12 @@ The system primarily uses `yq` for YAML processing:
 
 ```bash
 ## Primary loading function
-load*config*yq() {
-    local config*file="$1"
+load_config_yq() {
+    local config_file="$1"
     local query="$2"
     
     if command -v yq &> /dev/null; then
-        yq eval "$query" "$config*file" 2>/dev/null
+        yq eval "$query" "$config_file" 2>/dev/null
         return $?
     else
         return 1
@@ -284,9 +284,9 @@ load*config*yq() {
 }
 
 ## Usage examples
-load*config*yq "app*config.yml" ".metadata.project*name"
-load*config*yq "app*config.yml" ".apps.gpio*test.description"
-load*config*yq "app*config.yml" ".build*config.default*build*type"
+load_config_yq "app_config.yml" ".metadata.project_name"
+load_config_yq "app_config.yml" ".apps.gpio_test.description"
+load_config_yq "app_config.yml" ".build_config.default_build_type"
 ```text
 
 #### **Fallback Loading Method (grep/sed)**
@@ -294,15 +294,15 @@ When `yq` is unavailable, the system falls back to `grep` and `sed`:
 
 ```bash
 ## Fallback loading function
-load*config*fallback() {
-    local config*file="$1"
+load_config_fallback() {
+    local config_file="$1"
     local key="$2"
     
     # Convert YAML path to grep pattern
     local pattern=$(echo "$key" | sed 's/\./\\n/g')
     
     # Extract value using grep and sed
-    grep -A1 -B1 "$pattern" "$config*file" | \
+    grep -A1 -B1 "$pattern" "$config_file" | \
     sed -n '/^[[:space:]]*[^[:space:]#]/p' | \
     sed 's/^[[:space:]]*//' | \
     sed 's/[[:space:]]*:[[:space:]]*/:/' | \
@@ -310,8 +310,8 @@ load*config*fallback() {
 }
 
 ## Usage examples
-load*config*fallback "app*config.yml" "metadata.project*name"
-load*config*fallback "app*config.yml" "apps.gpio*test.description"
+load_config_fallback "app_config.yml" "metadata.project_name"
+load_config_fallback "app_config.yml" "apps.gpio_test.description"
 ```text
 
 #### **Configuration Loading Priority**
@@ -324,35 +324,35 @@ load*config*fallback "app*config.yml" "apps.gpio*test.description"
 5. Error (if required)
 
 ## Implementation
-load*config() {
+load_config() {
     local key="$1"
-    local default*value="$2"
+    local default_value="$2"
     local required="${3:-false}"
     
     # Check environment variable first
-    local env*var=$(echo "$key" | tr '[:lower:]' '[:upper:]' | tr '.' '*')
-    if [ -n "${!env*var}" ]; then
-        echo "${!env*var}"
+    local env_var=$(echo "$key" | tr '[:lower:]' '[:upper:]' | tr '.' '*')
+    if [ -n "${!env_var}" ]; then
+        echo "${!env_var}"
         return 0
     fi
     
     # Try primary method
-    local value=$(load*config*yq "app*config.yml" ".$key")
+    local value=$(load_config_yq "app_config.yml" ".$key")
     if [ $? -eq 0 ] && [ -n "$value" ]; then
         echo "$value"
         return 0
     fi
     
     # Try fallback method
-    value=$(load*config*fallback "app*config.yml" "$key")
+    value=$(load_config_fallback "app_config.yml" "$key")
     if [ $? -eq 0 ] && [ -n "$value" ]; then
         echo "$value"
         return 0
     fi
     
     # Use default value
-    if [ -n "$default*value" ]; then
-        echo "$default*value"
+    if [ -n "$default_value" ]; then
+        echo "$default_value"
         return 0
     fi
     
@@ -371,33 +371,33 @@ load*config() {
 #### **Schema Validation**
 ```bash
 ## Basic schema validation
-validate*config*schema() {
-    local config*file="$1"
+validate_config_schema() {
+    local config_file="$1"
     local errors=0
     
     # Check required sections
-    local required*sections=("metadata" "apps" "build*config")
-    for section in "${required*sections[@]}"; do
-        if ! load*config "$section" "" true >/dev/null 2>&1; then
+    local required_sections=("metadata" "apps" "build_config")
+    for section in "${required_sections[@]}"; do
+        if ! load_config "$section" "" true >/dev/null 2>&1; then
             echo "ERROR: Missing required section '$section'" >&2
             ((errors++))
         fi
     done
     
     # Check required metadata fields
-    local required*metadata=("project*name" "version")
-    for field in "${required*metadata[@]}"; do
-        if ! load*config "metadata.$field" "" true >/dev/null 2>&1; then
+    local required_metadata=("project_name" "version")
+    for field in "${required_metadata[@]}"; do
+        if ! load_config "metadata.$field" "" true >/dev/null 2>&1; then
             echo "ERROR: Missing required metadata field '$field'" >&2
             ((errors++))
         fi
     done
     
     # Check application configurations
-    local apps=$(load*config "apps" "" false)
+    local apps=$(load_config "apps" "" false)
     if [ -n "$apps" ]; then
         for app in $(echo "$apps" | tr ' ' '\n'); do
-            validate*app*config "$app"
+            validate_app_config "$app"
         done
     fi
     
@@ -408,35 +408,35 @@ validate*config*schema() {
 #### **Application Configuration Validation**
 ```bash
 ## Validate individual application configuration
-validate*app*config() {
-    local app*name="$1"
+validate_app_config() {
+    local app_name="$1"
     local errors=0
     
     # Check required app fields
-    local required*fields=("description" "source*file" "build*types" "target")
-    for field in "${required*fields[@]}"; do
-        if ! load*config "apps.$app*name.$field" "" true >/dev/null 2>&1; then
-            echo "ERROR: App '$app*name' missing required field '$field'" >&2
+    local required_fields=("description" "source_file" "build_types" "target")
+    for field in "${required_fields[@]}"; do
+        if ! load_config "apps.$app_name.$field" "" true >/dev/null 2>&1; then
+            echo "ERROR: App '$app_name' missing required field '$field'" >&2
             ((errors++))
         fi
     done
     
     # Validate source file existence
-    local source*file=$(load*config "apps.$app*name.source*file" "" false)
-    if [ -n "$source*file" ]; then
-        local full*path="examples/esp32/main/$source*file"
-        if [ ! -f "$full*path" ]; then
-            echo "ERROR: App '$app*name' source file not found: $full*path" >&2
+    local source_file=$(load_config "apps.$app_name.source_file" "" false)
+    if [ -n "$source_file" ]; then
+        local full_path="examples/esp32/main/$source_file"
+        if [ ! -f "$full_path" ]; then
+            echo "ERROR: App '$app_name' source file not found: $full_path" >&2
             ((errors++))
         fi
     fi
     
     # Validate build types
-    local build*types=$(load*config "apps.$app*name.build*types" "" false)
-    if [ -n "$build*types" ]; then
-        for build*type in $(echo "$build*types" | tr ' ' '\n'); do
-            if [[ ! "$build*type" =~ ^(Debug|Release)$ ]]; then
-                echo "ERROR: App '$app*name' invalid build type: $build*type" >&2
+    local build_types=$(load_config "apps.$app_name.build_types" "" false)
+    if [ -n "$build_types" ]; then
+        for build_type in $(echo "$build_types" | tr ' ' '\n'); do
+            if [[ ! "$build_type" =~ ^(Debug|Release)$ ]]; then
+                echo "ERROR: App '$app_name' invalid build type: $build_type" >&2
                 ((errors++))
             fi
         done
@@ -449,33 +449,33 @@ validate*app*config() {
 #### **Configuration Integrity Checking**
 ```bash
 ## Comprehensive configuration validation
-validate*config*integrity() {
-    local config*file="$1"
+validate_config_integrity() {
+    local config_file="$1"
     local errors=0
     
-    echo "Validating configuration file: $config*file"
+    echo "Validating configuration file: $config_file"
     
     # Check file existence
-    if [ ! -f "$config*file" ]; then
-        echo "ERROR: Configuration file not found: $config*file" >&2
+    if [ ! -f "$config_file" ]; then
+        echo "ERROR: Configuration file not found: $config_file" >&2
         return 1
     fi
     
     # Check YAML syntax (if yq available)
     if command -v yq &> /dev/null; then
-        if ! yq eval "." "$config*file" >/dev/null 2>&1; then
+        if ! yq eval "." "$config_file" >/dev/null 2>&1; then
             echo "ERROR: Invalid YAML syntax in configuration file" >&2
             ((errors++))
         fi
     fi
     
     # Validate schema
-    if ! validate*config*schema "$config*file"; then
+    if ! validate_config_schema "$config_file"; then
         ((errors++))
     fi
     
     # Check for configuration conflicts
-    if ! check*config*conflicts "$config*file"; then
+    if ! check_config_conflicts "$config_file"; then
         ((errors++))
     fi
     
@@ -503,33 +503,33 @@ validate*config*integrity() {
 5. System defaults
 
 ## Implementation
-get*config*value() {
+get_config_value() {
     local key="$1"
-    local default*value="$2"
+    local default_value="$2"
     
     # Check command line arguments first
-    local cmd*arg=$(get*cmd*line*arg "$key")
-    if [ -n "$cmd*arg" ]; then
-        echo "$cmd*arg"
+    local cmd_arg=$(get_cmd_line_arg "$key")
+    if [ -n "$cmd_arg" ]; then
+        echo "$cmd_arg"
         return 0
     fi
     
     # Check environment variables
-    local env*var=$(get*env*var "$key")
-    if [ -n "$env*var" ]; then
-        echo "$env*var"
+    local env_var=$(get_env_var "$key")
+    if [ -n "$env_var" ]; then
+        echo "$env_var"
         return 0
     fi
     
     # Load from configuration file
-    local config*value=$(load*config "$key" "" false)
-    if [ -n "$config*value" ]; then
-        echo "$config*value"
+    local config_value=$(load_config "$key" "" false)
+    if [ -n "$config_value" ]; then
+        echo "$config_value"
         return 0
     fi
     
     # Use default value
-    echo "$default*value"
+    echo "$default_value"
 }
 ```text
 
@@ -540,24 +540,24 @@ get*config*value() {
 ## Format: ESP32*<SECTION>*<SUBSECTION>*<FIELD>
 
 ## Examples:
-ESP32*METADATA*PROJECT*NAME="My Project"
-ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE="Debug"
-ESP32*APPS*GPIO*TEST*TARGET="esp32s3"
-ESP32*FLASH*CONFIG*PORT*AUTO*DETECT="false"
-ESP32*SYSTEM*CONFIG*DEBUG*MODE="true"
+ESP32_METADATA_PROJECT_NAME="My Project"
+ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE="Debug"
+ESP32_APPS_GPIO_TEST_TARGET="esp32s3"
+ESP32_FLASH_CONFIG_PORT_AUTO_DETECT="false"
+ESP32_SYSTEM_CONFIG_DEBUG_MODE="true"
 
 ## Conversion function
-yaml*path*to*env*var() {
-    local yaml*path="$1"
-    echo "$yaml*path" | \
+yaml_path_to_env_var() {
+    local yaml_path="$1"
+    echo "$yaml_path" | \
     tr '[:lower:]' '[:upper:]' | \
     tr '.' '*' | \
     sed 's/^/ESP32*/'
 }
 
 ## Usage
-env*var=$(yaml*path*to*env*var "build*config.default*build*type")
-## Result: ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE
+env_var=$(yaml_path_to_env_var "build_config.default_build_type")
+## Result: ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE
 ```text
 
 ### **Supported Environment Variables**
@@ -565,67 +565,67 @@ env*var=$(yaml*path*to*env*var "build*config.default*build*type")
 #### **Build Configuration Overrides**
 ```bash
 ## Build type and target
-export ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE="Debug"
-export ESP32*BUILD*CONFIG*DEFAULT*TARGET="esp32s3"
-export ESP32*BUILD*CONFIG*CCACHE*ENABLED="true"
-export ESP32*BUILD*CONFIG*PARALLEL*BUILDS="8"
-export ESP32*BUILD*CONFIG*BUILD*TIMEOUT="3600"
+export ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE="Debug"
+export ESP32_BUILD_CONFIG_DEFAULT_TARGET="esp32s3"
+export ESP32_BUILD_CONFIG_CCACHE_ENABLED="true"
+export ESP32_BUILD_CONFIG_PARALLEL_BUILDS="8"
+export ESP32_BUILD_CONFIG_BUILD_TIMEOUT="3600"
 
 ## ESP-IDF version overrides
-export ESP32*BUILD*CONFIG*IDF*VERSIONS*ESP32="v5.0.0"
-export ESP32*BUILD*CONFIG*IDF*VERSIONS*ESP32C6="v5.5"
-export ESP32*BUILD*CONFIG*IDF*VERSIONS*ESP32S3="v5.0.0"
+export ESP32_BUILD_CONFIG_IDF_VERSIONS_ESP32="v5.0.0"
+export ESP32_BUILD_CONFIG_IDF_VERSIONS_ESP32C6="v5.5"
+export ESP32_BUILD_CONFIG_IDF_VERSIONS_ESP32S3="v5.0.0"
 
 ## Build optimization
-export ESP32*BUILD*CONFIG*CCACHE*SIZE="4G"
-export ESP32*BUILD*CONFIG*INCREMENTAL*BUILDS="true"
-export ESP32*BUILD*CONFIG*DEBUG*SYMBOLS="true"
+export ESP32_BUILD_CONFIG_CCACHE_SIZE="4G"
+export ESP32_BUILD_CONFIG_INCREMENTAL_BUILDS="true"
+export ESP32_BUILD_CONFIG_DEBUG_SYMBOLS="true"
 ```text
 
 #### **Application Configuration Overrides**
 ```bash
 ## Application-specific overrides
-export ESP32*APPS*GPIO*TEST*TARGET="esp32s3"
-export ESP32*APPS*GPIO*TEST*BUILD*TYPES="Debug Release"
-export ESP32*APPS*ADC*TEST*FLASH*CONFIG*BAUD*RATE="460800"
-export ESP32*APPS*UART*TEST*MONITOR*CONFIG*BAUD*RATE="230400"
+export ESP32_APPS_GPIO_TEST_TARGET="esp32s3"
+export ESP32_APPS_GPIO_TEST_BUILD_TYPES="Debug Release"
+export ESP32_APPS_ADC_TEST_FLASH_CONFIG_BAUD_RATE="460800"
+export ESP32_APPS_UART_TEST_MONITOR_CONFIG_BAUD_RATE="230400"
 
 ## Application dependencies
-export ESP32*APPS*GPIO*TEST*DEPENDENCIES="ESP-IDF v5.5+,GPIO hardware"
-export ESP32*APPS*ADC*TEST*DEPENDENCIES="ESP-IDF v5.5+,ADC hardware"
+export ESP32_APPS_GPIO_TEST_DEPENDENCIES="ESP-IDF v5.5+,GPIO hardware"
+export ESP32_APPS_ADC_TEST_DEPENDENCIES="ESP-IDF v5.5+,ADC hardware"
 ```text
 
 #### **Flash Configuration Overrides**
 ```bash
 ## Flash parameters
-export ESP32*FLASH*CONFIG*PORT*AUTO*DETECT="false"
-export ESP32*FLASH*CONFIG*DEFAULT*BAUD*RATE="460800"
-export ESP32*FLASH*CONFIG*DEFAULT*FLASH*MODE="qio"
-export ESP32*FLASH*CONFIG*DEFAULT*FLASH*FREQ="40m"
-export ESP32*FLASH*CONFIG*DEFAULT*FLASH*SIZE="8MB"
+export ESP32_FLASH_CONFIG_PORT_AUTO_DETECT="false"
+export ESP32_FLASH_CONFIG_DEFAULT_BAUD_RATE="460800"
+export ESP32_FLASH_CONFIG_DEFAULT_FLASH_MODE="qio"
+export ESP32_FLASH_CONFIG_DEFAULT_FLASH_FREQ="40m"
+export ESP32_FLASH_CONFIG_DEFAULT_FLASH_SIZE="8MB"
 
 ## Flash validation
-export ESP32*FLASH*CONFIG*FLASH*VERIFICATION="true"
-export ESP32*FLASH*CONFIG*FLASH*CHECKSUM="true"
-export ESP32*FLASH*CONFIG*RETRY*ATTEMPTS="5"
+export ESP32_FLASH_CONFIG_FLASH_VERIFICATION="true"
+export ESP32_FLASH_CONFIG_FLASH_CHECKSUM="true"
+export ESP32_FLASH_CONFIG_RETRY_ATTEMPTS="5"
 ```text
 
 #### **System Configuration Overrides**
 ```bash
 ## System settings
-export ESP32*SYSTEM*CONFIG*DEVELOPMENT*MODE="true"
-export ESP32*SYSTEM*CONFIG*DEBUG*MODE="true"
-export ESP32*SYSTEM*CONFIG*VERBOSE*OUTPUT="true"
+export ESP32_SYSTEM_CONFIG_DEVELOPMENT_MODE="true"
+export ESP32_SYSTEM_CONFIG_DEBUG_MODE="true"
+export ESP32_SYSTEM_CONFIG_VERBOSE_OUTPUT="true"
 
 ## Logging configuration
-export ESP32*SYSTEM*CONFIG*LOG*DIRECTORY="/tmp/esp32*logs"
-export ESP32*SYSTEM*CONFIG*LOG*RETENTION*DAYS="7"
-export ESP32*SYSTEM*CONFIG*LOG*ROTATION*SIZE="50M"
+export ESP32_SYSTEM_CONFIG_LOG_DIRECTORY="/tmp/esp32_logs"
+export ESP32_SYSTEM_CONFIG_LOG_RETENTION_DAYS="7"
+export ESP32_SYSTEM_CONFIG_LOG_ROTATION_SIZE="50M"
 
 ## Performance settings
-export ESP32*SYSTEM*CONFIG*MAX*PARALLEL*JOBS="8"
-export ESP32*SYSTEM*CONFIG*MEMORY*LIMIT="8G"
-export ESP32*SYSTEM*CONFIG*CPU*LIMIT="8"
+export ESP32_SYSTEM_CONFIG_MAX_PARALLEL_JOBS="8"
+export ESP32_SYSTEM_CONFIG_MEMORY_LIMIT="8G"
+export ESP32_SYSTEM_CONFIG_CPU_LIMIT="8"
 ```text
 
 ### **Dynamic Configuration Updates**
@@ -633,42 +633,42 @@ export ESP32*SYSTEM*CONFIG*CPU*LIMIT="8"
 #### **Runtime Configuration Modification**
 ```bash
 ## Update configuration at runtime
-update*config*runtime() {
+update_config_runtime() {
     local key="$1"
     local value="$2"
     
     # Set environment variable for immediate effect
-    local env*var=$(yaml*path*to*env*var "$key")
-    export "$env*var"="$value"
+    local env_var=$(yaml_path_to_env_var "$key")
+    export "$env_var"="$value"
     
     echo "Updated configuration: $key = $value"
 }
 
 ## Usage examples
-update*config*runtime "build*config.default*build*type" "Debug"
-update*config*runtime "flash*config.port*auto*detect" "false"
-update*config*runtime "system*config.debug*mode" "true"
+update_config_runtime "build_config.default_build_type" "Debug"
+update_config_runtime "flash_config.port_auto_detect" "false"
+update_config_runtime "system_config.debug_mode" "true"
 ```text
 
 #### **Configuration Reloading**
 ```bash
 ## Reload configuration from file
-reload*config() {
-    local config*file="$1"
+reload_config() {
+    local config_file="$1"
     
-    echo "Reloading configuration from: $config*file"
+    echo "Reloading configuration from: $config_file"
     
     # Validate configuration file
-    if ! validate*config*integrity "$config*file"; then
+    if ! validate_config_integrity "$config_file"; then
         echo "ERROR: Configuration validation failed" >&2
         return 1
     fi
     
     # Clear cached configuration
-    unset CONFIG*CACHE
+    unset CONFIG_CACHE
     
     # Reload configuration
-    source*config*file "$config*file"
+    source_config_file "$config_file"
     
     echo "Configuration reloaded successfully"
 }
@@ -681,26 +681,26 @@ reload*config() {
 #### **1. Loading Configuration Values**
 ```bash
 ## Load basic configuration values
-project*name=$(load*config "metadata.project*name" "Unknown Project")
-version=$(load*config "metadata.version" "1.0.0")
-default*build*type=$(load*config "build*config.default*build*type" "Release")
+project_name=$(load_config "metadata.project_name" "Unknown Project")
+version=$(load_config "metadata.version" "1.0.0")
+default_build_type=$(load_config "build_config.default_build_type" "Release")
 
 ## Load application configuration
-gpio*description=$(load*config "apps.gpio*test.description" "")
-gpio*target=$(load*config "apps.gpio*test.target" "esp32c6")
-gpio*build*types=$(load*config "apps.gpio*test.build*types" "Debug Release")
+gpio_description=$(load_config "apps.gpio_test.description" "")
+gpio_target=$(load_config "apps.gpio_test.target" "esp32c6")
+gpio_build_types=$(load_config "apps.gpio_test.build_types" "Debug Release")
 ```text
 
 #### **2. Configuration Validation**
 ```bash
 ## Validate configuration file
-if ! validate*config*integrity "app*config.yml"; then
+if ! validate_config_integrity "app_config.yml"; then
     echo "Configuration validation failed"
     exit 1
 fi
 
 ## Validate specific application
-if ! validate*app*config "gpio*test"; then
+if ! validate_app_config "gpio_test"; then
     echo "GPIO test configuration validation failed"
     exit 1
 fi
@@ -709,16 +709,16 @@ fi
 #### **3. Environment Variable Overrides**
 ```bash
 ## Override build configuration
-export ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE="Debug"
-export ESP32*BUILD*CONFIG*DEFAULT*TARGET="esp32s3"
+export ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE="Debug"
+export ESP32_BUILD_CONFIG_DEFAULT_TARGET="esp32s3"
 
 ## Override application configuration
-export ESP32*APPS*GPIO*TEST*TARGET="esp32s3"
-export ESP32*APPS*GPIO*TEST*BUILD*TYPES="Debug"
+export ESP32_APPS_GPIO_TEST_TARGET="esp32s3"
+export ESP32_APPS_GPIO_TEST_BUILD_TYPES="Debug"
 
 ## Override flash configuration
-export ESP32*FLASH*CONFIG*PORT*AUTO*DETECT="false"
-export ESP32*FLASH*CONFIG*DEFAULT*BAUD*RATE="460800"
+export ESP32_FLASH_CONFIG_PORT_AUTO_DETECT="false"
+export ESP32_FLASH_CONFIG_DEFAULT_BAUD_RATE="460800"
 ```text
 
 ### **Advanced Configuration Patterns**
@@ -729,22 +729,22 @@ export ESP32*FLASH*CONFIG*DEFAULT*BAUD*RATE="460800"
 ## Configuration-driven build script
 
 ## Load configuration
-source ./scripts/config*loader.sh
+source ./scripts/config_loader.sh
 
 ## Get build parameters
-build*type=$(load*config "build*config.default*build*type" "Release")
-target=$(load*config "build*config.default*target" "esp32c6")
-parallel*jobs=$(load*config "build*config.parallel*builds" "4")
+build_type=$(load_config "build_config.default_build_type" "Release")
+target=$(load_config "build_config.default_target" "esp32c6")
+parallel_jobs=$(load_config "build_config.parallel_builds" "4")
 
 ## Validate configuration
-if ! validate*config*integrity "app*config.yml"; then
+if ! validate_config_integrity "app_config.yml"; then
     echo "Configuration validation failed"
     exit 1
 fi
 
 ## Execute build with configuration
 idf.py set-target "$target"
-idf.py build -b "$build*type" -j "$parallel*jobs"
+idf.py build -b "$build_type" -j "$parallel_jobs"
 ```text
 
 #### **2. Dynamic Configuration Updates**
@@ -754,15 +754,15 @@ idf.py build -b "$build*type" -j "$parallel*jobs"
 
 ## Update configuration based on environment
 if [ "$CI" = "true" ]; then
-    update*config*runtime "system*config.debug*mode" "false"
-    update*config*runtime "build*config.parallel*builds" "8"
-    update*config*runtime "flash*config.port*auto*detect" "false"
+    update_config_runtime "system_config.debug_mode" "false"
+    update_config_runtime "build_config.parallel_builds" "8"
+    update_config_runtime "flash_config.port_auto_detect" "false"
 fi
 
 ## Update configuration based on user preferences
-if [ "$USER*PREFERS*DEBUG" = "true" ]; then
-    update*config*runtime "build*config.default*build*type" "Debug"
-    update*config*runtime "system*config.verbose*output" "true"
+if [ "$USER_PREFERS_DEBUG" = "true" ]; then
+    update_config_runtime "build_config.default_build_type" "Debug"
+    update_config_runtime "system_config.verbose_output" "true"
 fi
 ```text
 
@@ -775,15 +775,15 @@ fi
 echo "Testing configuration loading..."
 
 ## Test metadata loading
-project*name=$(load*config "metadata.project*name" "")
-if [ -n "$project*name" ]; then
-    echo "✓ Project name loaded: $project*name"
+project_name=$(load_config "metadata.project_name" "")
+if [ -n "$project_name" ]; then
+    echo "✓ Project name loaded: $project_name"
 else
     echo "✗ Failed to load project name"
 fi
 
 ## Test application loading
-apps=$(load*config "apps" "")
+apps=$(load_config "apps" "")
 if [ -n "$apps" ]; then
     echo "✓ Applications loaded: $apps"
 else
@@ -791,9 +791,9 @@ else
 fi
 
 ## Test build configuration
-build*type=$(load*config "build*config.default*build*type" "")
-if [ -n "$build*type" ]; then
-    echo "✓ Build type loaded: $build*type"
+build_type=$(load_config "build_config.default_build_type" "")
+if [ -n "$build_type" ]; then
+    echo "✓ Build type loaded: $build_type"
 else
     echo "✗ Failed to load build type"
 fi
@@ -804,28 +804,28 @@ fi
 #### **1. CMake Integration**
 ```cmake
 ## CMakeLists.txt configuration integration
-cmake*minimum*required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 ## Load configuration values
-execute*process(
-    COMMAND bash -c "source ${CMAKE*SOURCE*DIR}/scripts/config*loader.sh && load*config 'build*config.default*target' 'esp32c6'"
-    OUTPUT*VARIABLE ESP32*TARGET
-    OUTPUT*STRIP*TRAILING*WHITESPACE
+execute_process(
+    COMMAND bash -c "source ${CMAKE_SOURCE_DIR}/scripts/config_loader.sh && load_config 'build_config.default_target' 'esp32c6'"
+    OUTPUT_VARIABLE ESP32_TARGET
+    OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-execute*process(
-    COMMAND bash -c "source ${CMAKE*SOURCE*DIR}/scripts/config*loader.sh && load*config 'build*config.default*build*type' 'Release'"
-    OUTPUT*VARIABLE ESP32*BUILD*TYPE
-    OUTPUT*STRIP*TRAILING*WHITESPACE
+execute_process(
+    COMMAND bash -c "source ${CMAKE_SOURCE_DIR}/scripts/config_loader.sh && load_config 'build_config.default_build_type' 'Release'"
+    OUTPUT_VARIABLE ESP32_BUILD_TYPE
+    OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 ## Use configuration values
-set(IDF*TARGET ${ESP32*TARGET})
-set(CONFIG*DEFAULT*BUILD*TYPE ${ESP32*BUILD*TYPE})
+set(IDF_TARGET ${ESP32_TARGET})
+set(CONFIG_DEFAULT_BUILD_TYPE ${ESP32_BUILD_TYPE})
 
 ## Configuration validation
-add*custom*target(validate*config
-    COMMAND bash -c "cd ${CMAKE*SOURCE*DIR} && source scripts/config*loader.sh && validate*config*integrity app*config.yml"
+add_custom_target(validate_config
+    COMMAND bash -c "cd ${CMAKE_SOURCE_DIR} && source scripts/config_loader.sh && validate_config_integrity app_config.yml"
     COMMENT "Validating configuration"
 )
 ```text
@@ -836,21 +836,21 @@ add*custom*target(validate*config
 - name: Validate Configuration
   run: |
     cd examples/esp32
-    source scripts/config*loader.sh
-    validate*config*integrity app*config.yml
+    source scripts/config_loader.sh
+    validate_config_integrity app_config.yml
 
 - name: Load Build Configuration
   run: |
     cd examples/esp32
-    source scripts/config*loader.sh
-    echo "BUILD*TYPE=$(load*config 'build*config.default*build*type' 'Release')" >> $GITHUB*ENV
-    echo "TARGET=$(load*config 'build*config.default*target' 'esp32c6')" >> $GITHUB*ENV
+    source scripts/config_loader.sh
+    echo "BUILD_TYPE=$(load_config 'build_config.default_build_type' 'Release')" >> $GITHUB_ENV
+    echo "TARGET=$(load_config 'build_config.default_target' 'esp32c6')" >> $GITHUB_ENV
 
 - name: Build Application
   run: |
     cd examples/esp32
     idf.py set-target ${{ env.TARGET }}
-    idf.py build -b ${{ env.BUILD*TYPE }}
+    idf.py build -b ${{ env.BUILD_TYPE }}
 ```text
 
 #### **3. Development Environment Setup**
@@ -859,35 +859,35 @@ add*custom*target(validate*config
 ## Development environment configuration
 
 ## Load configuration
-source ./scripts/config*loader.sh
+source ./scripts/config_loader.sh
 
 ## Validate configuration
-if ! validate*config*integrity "app*config.yml"; then
+if ! validate_config_integrity "app_config.yml"; then
     echo "Configuration validation failed"
     exit 1
 fi
 
 ## Setup environment based on configuration
-target=$(load*config "build*config.default*target" "esp32c6")
-build*type=$(load*config "build*config.default*build*type" "Release")
-debug*mode=$(load*config "system*config.debug*mode" "false")
+target=$(load_config "build_config.default_target" "esp32c6")
+build_type=$(load_config "build_config.default_build_type" "Release")
+debug_mode=$(load_config "system_config.debug_mode" "false")
 
 ## Configure ESP-IDF
 idf.py set-target "$target"
 
 ## Set environment variables
-export IDF*TARGET="$target"
-export CONFIG*DEFAULT*BUILD*TYPE="$build*type"
+export IDF_TARGET="$target"
+export CONFIG_DEFAULT_BUILD_TYPE="$build_type"
 
-if [ "$debug*mode" = "true" ]; then
-    export ESP32*DEBUG*MODE="true"
-    export ESP32*VERBOSE*OUTPUT="true"
+if [ "$debug_mode" = "true" ]; then
+    export ESP32_DEBUG_MODE="true"
+    export ESP32_VERBOSE_OUTPUT="true"
 fi
 
 echo "Development environment configured:"
 echo "  Target: $target"
-echo "  Build Type: $build*type"
-echo "  Debug Mode: $debug*mode"
+echo "  Build Type: $build_type"
+echo "  Debug Mode: $debug_mode"
 ```text
 
 ## 🔍 **Troubleshooting and Debugging**
@@ -900,16 +900,16 @@ echo "  Debug Mode: $debug*mode"
 **Solutions**:
 ```bash
 ## Check file existence
-ls -la app*config.yml
-ls -la examples/esp32/app*config.yml
+ls -la app_config.yml
+ls -la examples/esp32/app_config.yml
 
 ## Check file permissions
-ls -la app*config.yml
-chmod 644 app*config.yml
+ls -la app_config.yml
+chmod 644 app_config.yml
 
 ## Check file path
 pwd
-find . -name "app*config.yml" -type f
+find . -name "app_config.yml" -type f
 
 ## Verify file location
 ## Configuration file should be in examples/esp32/ directory
@@ -921,7 +921,7 @@ find . -name "app*config.yml" -type f
 **Solutions**:
 ```bash
 ## Validate YAML syntax with yq
-yq eval "." app*config.yml
+yq eval "." app_config.yml
 
 ## Check for common YAML issues
 ## - Proper indentation (spaces, not tabs)
@@ -930,10 +930,10 @@ yq eval "." app*config.yml
 ## - Valid string escaping
 
 ## Use YAML linter
-yamllint app*config.yml
+yamllint app_config.yml
 
 ## Check for hidden characters
-cat -A app*config.yml
+cat -A app_config.yml
 ```text
 
 #### **3. Configuration Validation Failures**
@@ -942,17 +942,17 @@ cat -A app*config.yml
 **Solutions**:
 ```bash
 ## Run validation manually
-source ./scripts/config*loader.sh
-validate*config*integrity app*config.yml
+source ./scripts/config_loader.sh
+validate_config_integrity app_config.yml
 
 ## Check specific validation errors
-validate*config*schema app*config.yml
-validate*app*config "gpio*test"
+validate_config_schema app_config.yml
+validate_app_config "gpio_test"
 
 ## Verify required fields
-load*config "metadata.project*name" "" true
-load*config "apps.gpio*test.description" "" true
-load*config "build*config.default*build*type" "" true
+load_config "metadata.project_name" "" true
+load_config "apps.gpio_test.description" "" true
+load_config "build_config.default_build_type" "" true
 ```text
 
 #### **4. Environment Variable Conflicts**
@@ -964,13 +964,13 @@ load*config "build*config.default*build*type" "" true
 env | grep ESP32
 
 ## Clear conflicting environment variables
-unset ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE
-unset ESP32*APPS*GPIO*TEST*TARGET
+unset ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE
+unset ESP32_APPS_GPIO_TEST_TARGET
 
 ## Verify configuration loading priority
-load*config "build*config.default*build*type" "Release"
-update*config*runtime "build*config.default*build*type" "Debug"
-load*config "build*config.default*build*type" "Release"
+load_config "build_config.default_build_type" "Release"
+update_config_runtime "build_config.default_build_type" "Debug"
+load_config "build_config.default_build_type" "Release"
 ```text
 
 ### **Debug and Verbose Mode**
@@ -980,11 +980,11 @@ load*config "build*config.default*build*type" "Release"
 ## Enable debug mode
 export DEBUG=1
 export VERBOSE=1
-export CONFIG*DEBUG=1
+export CONFIG_DEBUG=1
 
 ## Run with debug output
-source ./scripts/config*loader.sh
-load*config "metadata.project*name" "" true
+source ./scripts/config_loader.sh
+load_config "metadata.project_name" "" true
 
 ## Debug information available
 - Configuration file loading process
@@ -996,29 +996,29 @@ load*config "metadata.project*name" "" true
 #### **Configuration Testing**
 ```bash
 ## Test configuration loading
-test*config*loading() {
+test_config_loading() {
     echo "Testing configuration loading..."
     
     # Test metadata
-    local project*name=$(load*config "metadata.project*name" "" false)
-    echo "Project name: $project*name"
+    local project_name=$(load_config "metadata.project_name" "" false)
+    echo "Project name: $project_name"
     
     # Test applications
-    local apps=$(load*config "apps" "" false)
+    local apps=$(load_config "apps" "" false)
     echo "Applications: $apps"
     
     # Test build configuration
-    local build*type=$(load*config "build*config.default*build*type" "" false)
-    echo "Build type: $build*type"
+    local build_type=$(load_config "build_config.default_build_type" "" false)
+    echo "Build type: $build_type"
     
     # Test environment variable overrides
-    export ESP32*BUILD*CONFIG*DEFAULT*BUILD*TYPE="Debug"
-    local override*value=$(load*config "build*config.default*build*type" "" false)
-    echo "Override value: $override*value"
+    export ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE="Debug"
+    local override_value=$(load_config "build_config.default_build_type" "" false)
+    echo "Override value: $override_value"
 }
 
 ## Run configuration test
-test*config*loading
+test_config_loading
 ```text
 
 ## 📚 **Reference and Examples**
@@ -1028,38 +1028,38 @@ test*config*loading
 #### **Core Loading Functions**
 ```bash
 ## Primary configuration loading
-load*config <key> [default*value] [required]
+load_config <key> [default_value] [required]
 
 ## YAML-based loading
-load*config*yq <config*file> <query>
+load_config_yq <config_file> <query>
 
 ## Fallback loading
-load*config*fallback <config*file> <key>
+load_config_fallback <config_file> <key>
 
 ## Configuration validation
-validate*config*integrity <config*file>
-validate*config*schema <config*file>
-validate*app*config <app*name>
+validate_config_integrity <config_file>
+validate_config_schema <config_file>
+validate_app_config <app_name>
 ```text
 
 #### **Environment Variable Functions**
 ```bash
 ## Environment variable management
-yaml*path*to*env*var <yaml*path>
-get*env*var <key>
-update*config*runtime <key> <value>
+yaml_path_to_env_var <yaml_path>
+get_env_var <key>
+update_config_runtime <key> <value>
 
 ## Configuration reloading
-reload*config <config*file>
-source*config*file <config*file>
+reload_config <config_file>
+source_config_file <config_file>
 ```text
 
 #### **Utility Functions**
 ```bash
 ## Configuration utilities
-get*config*value <key> [default*value]
-check*config*conflicts <config*file>
-get*cmd*line*arg <key>
+get_config_value <key> [default_value]
+check_config_conflicts <config_file>
+get_cmd_line_arg <key>
 ```text
 
 ### **Configuration Examples**
@@ -1067,274 +1067,274 @@ get*cmd*line*arg <key>
 #### **Minimal Configuration**
 ```yaml
 metadata:
-  project*name: "ESP32 Example"
+  project_name: "ESP32 Example"
   version: "1.0.0"
 
 apps:
-  basic*test:
+  basic_test:
     description: "Basic ESP32 test"
-    source*file: "BasicTest.cpp"
-    build*types: ["Debug", "Release"]
+    source_file: "BasicTest.cpp"
+    build_types: ["Debug", "Release"]
     target: "esp32c6"
 
-build*config:
-  default*build*type: "Release"
-  default*target: "esp32c6"
-  supported*build*types: ["Debug", "Release"]
-  supported*targets: ["esp32", "esp32c6"]
+build_config:
+  default_build_type: "Release"
+  default_target: "esp32c6"
+  supported_build_types: ["Debug", "Release"]
+  supported_targets: ["esp32", "esp32c6"]
 ```text
 
 #### **Standard Configuration**
 ```yaml
 metadata:
-  project*name: "ESP32 HardFOC Interface Wrapper"
+  project_name: "ESP32 HardFOC Interface Wrapper"
   version: "2.0.0"
   description: "Comprehensive ESP32 development framework"
   author: "HardFOC Development Team"
-  last*updated: "2025-01-27"
-  supported*platforms: ["Linux (Ubuntu 20.04+)", "macOS (10.15+)", "Windows (WSL2)"]
+  last_updated: "2025-01-27"
+  supported_platforms: ["Linux (Ubuntu 20.04+)", "macOS (10.15+)", "Windows (WSL2)"]
   requirements:
-    esp*idf*min: "v5.0.0"
-    esp*idf*recommended: "v5.5.0"
-    python*min: "3.8"
-    bash*min: "4.0"
+    esp_idf_min: "v5.0.0"
+    esp_idf_recommended: "v5.5.0"
+    python_min: "3.8"
+    bash_min: "4.0"
 
 apps:
-  gpio*test:
+  gpio_test:
     description: "GPIO peripheral comprehensive testing"
-    source*file: "GpioComprehensiveTest.cpp"
+    source_file: "GpioComprehensiveTest.cpp"
     featured: true
-    build*types: ["Debug", "Release"]
+    build_types: ["Debug", "Release"]
     target: "esp32c6"
     dependencies: ["ESP-IDF v5.5+", "GPIO hardware interface"]
-    ci*config:
+    ci_config:
       enabled: true
       timeout: 300
       retries: 3
-    flash*config:
-      port*auto*detect: true
-      baud*rate: 921600
-      flash*mode: "dio"
-      flash*freq: "80m"
-      flash*size: "4MB"
-    monitor*config:
-      baud*rate: 115200
-      log*output: true
-      log*file: "gpio*test*monitor.log"
+    flash_config:
+      port_auto_detect: true
+      baud_rate: 921600
+      flash_mode: "dio"
+      flash_freq: "80m"
+      flash_size: "4MB"
+    monitor_config:
+      baud_rate: 115200
+      log_output: true
+      log_file: "gpio_test_monitor.log"
 
-build*config:
-  default*build*type: "Release"
-  default*target: "esp32c6"
-  supported*build*types: ["Debug", "Release"]
-  supported*targets: ["esp32", "esp32c3", "esp32c6", "esp32s3"]
-  idf*versions:
+build_config:
+  default_build_type: "Release"
+  default_target: "esp32c6"
+  supported_build_types: ["Debug", "Release"]
+  supported_targets: ["esp32", "esp32c3", "esp32c6", "esp32s3"]
+  idf_versions:
     esp32: "v5.0.0"
     esp32c3: "v5.0.0"
     esp32c6: "v5.5"
     esp32s3: "v5.0.0"
-  ccache*enabled: true
-  ccache*size: "2G"
-  parallel*builds: 4
-  incremental*builds: true
+  ccache_enabled: true
+  ccache_size: "2G"
+  parallel_builds: 4
+  incremental_builds: true
   assertions: true
-  stack*usage: true
-  size*analysis: true
-  logging*level: "INFO"
+  stack_usage: true
+  size_analysis: true
+  logging_level: "INFO"
   sanitizers: ["address", "undefined"]
-  debug*symbols: true
-  build*timeout: 1800
-  memory*limit: "4G"
-  cpu*limit: 4
+  debug_symbols: true
+  build_timeout: 1800
+  memory_limit: "4G"
+  cpu_limit: 4
 
-flash*config:
-  port*auto*detect: true
-  port*validation: true
-  port*timeout: 30
-  default*baud*rate: 921600
-  default*flash*mode: "dio"
-  default*flash*freq: "80m"
-  default*flash*size: "4MB"
-  flash*verification: true
-  flash*checksum: true
-  flash*backup: false
-  retry*attempts: 3
-  retry*delay: 2
-  error*recovery: true
-  flash*logging: true
-  flash*log*file: "flash*operation.log"
-  flash*verbose: false
+flash_config:
+  port_auto_detect: true
+  port_validation: true
+  port_timeout: 30
+  default_baud_rate: 921600
+  default_flash_mode: "dio"
+  default_flash_freq: "80m"
+  default_flash_size: "4MB"
+  flash_verification: true
+  flash_checksum: true
+  flash_backup: false
+  retry_attempts: 3
+  retry_delay: 2
+  error_recovery: true
+  flash_logging: true
+  flash_log_file: "flash_operation.log"
+  flash_verbose: false
 
-system*config:
-  development*mode: true
-  debug*mode: false
-  verbose*output: false
-  log*directory: "logs"
-  log*retention*days: 30
-  log*rotation*size: "100M"
-  log*compression: true
-  max*parallel*jobs: 4
-  memory*limit: "4G"
-  cpu*limit: 4
-  strict*permissions: false
-  auto*fix*permissions: true
-  user*group*management: true
-  cmake*integration: true
-  ci*cd*integration: true
-  ide*integration: true
+system_config:
+  development_mode: true
+  debug_mode: false
+  verbose_output: false
+  log_directory: "logs"
+  log_retention_days: 30
+  log_rotation_size: "100M"
+  log_compression: true
+  max_parallel_jobs: 4
+  memory_limit: "4G"
+  cpu_limit: 4
+  strict_permissions: false
+  auto_fix_permissions: true
+  user_group_management: true
+  cmake_integration: true
+  ci_cd_integration: true
+  ide_integration: true
 ```text
 
 #### **Advanced Configuration**
 ```yaml
 metadata:
-  project*name: "ESP32 Advanced Development Framework"
+  project_name: "ESP32 Advanced Development Framework"
   version: "3.0.0"
   description: "Advanced ESP32 development framework with CI/CD integration"
   author: "Advanced Development Team"
-  last*updated: "2025-01-27"
-  supported*platforms: ["Linux (Ubuntu 20.04+)", "macOS (10.15+)", "Docker"]
+  last_updated: "2025-01-27"
+  supported_platforms: ["Linux (Ubuntu 20.04+)", "macOS (10.15+)", "Docker"]
   requirements:
-    esp*idf*min: "v5.0.0"
-    esp*idf*recommended: "v5.5"
-    python*min: "3.8"
-    bash*min: "4.0"
-    docker*min: "20.10.0"
-  ci*cd:
-    github*actions: true
-    gitlab*ci: true
+    esp_idf_min: "v5.0.0"
+    esp_idf_recommended: "v5.5"
+    python_min: "3.8"
+    bash_min: "4.0"
+    docker_min: "20.10.0"
+  ci_cd:
+    github_actions: true
+    gitlab_ci: true
     jenkins: true
     docker: true
 
 apps:
-  comprehensive*test:
+  comprehensive_test:
     description: "Comprehensive ESP32 testing suite"
-    source*file: "ComprehensiveTest.cpp"
+    source_file: "ComprehensiveTest.cpp"
     featured: true
-    build*types: ["Debug", "Release", "Profiling"]
+    build_types: ["Debug", "Release", "Profiling"]
     target: "esp32c6"
     dependencies: ["ESP-IDF v5.5+", "All hardware interfaces", "Testing framework"]
-    ci*config:
+    ci_config:
       enabled: true
       timeout: 600
       retries: 5
-      parallel*execution: true
-      resource*requirements:
+      parallel_execution: true
+      resource_requirements:
         memory: "8G"
         cpu: "8"
         storage: "20G"
-    flash*config:
-      port*auto*detect: true
-      baud*rate: 921600
-      flash*mode: "dio"
-      flash*freq: "80m"
-      flash*size: "8MB"
-      flash*verification: true
-      flash*checksum: true
-      flash*backup: true
-      backup*directory: "flash*backups"
-    monitor*config:
-      baud*rate: 115200
-      log*output: true
-      log*file: "comprehensive*test*monitor.log"
-      log*rotation: true
-      log*compression: true
-    testing*config:
-      unit*tests: true
-      integration*tests: true
-      performance*tests: true
-      stress*tests: true
-      test*timeout: 300
-      test*retries: 3
+    flash_config:
+      port_auto_detect: true
+      baud_rate: 921600
+      flash_mode: "dio"
+      flash_freq: "80m"
+      flash_size: "8MB"
+      flash_verification: true
+      flash_checksum: true
+      flash_backup: true
+      backup_directory: "flash_backups"
+    monitor_config:
+      baud_rate: 115200
+      log_output: true
+      log_file: "comprehensive_test_monitor.log"
+      log_rotation: true
+      log_compression: true
+    testing_config:
+      unit_tests: true
+      integration_tests: true
+      performance_tests: true
+      stress_tests: true
+      test_timeout: 300
+      test_retries: 3
 
-build*config:
-  default*build*type: "Release"
-  default*target: "esp32c6"
-  supported*build*types: ["Debug", "Release", "Profiling", "Production"]
-  supported*targets: ["esp32", "esp32c3", "esp32c6", "esp32s3", "esp32h2"]
-  idf*versions:
+build_config:
+  default_build_type: "Release"
+  default_target: "esp32c6"
+  supported_build_types: ["Debug", "Release", "Profiling", "Production"]
+  supported_targets: ["esp32", "esp32c3", "esp32c6", "esp32s3", "esp32h2"]
+  idf_versions:
     esp32: "v5.0.0"
     esp32c3: "v5.0.0"
     esp32c6: "v5.5"
     esp32s3: "v5.0.0"
     esp32h2: "v5.5"
-  ccache*enabled: true
-  ccache*size: "4G"
-  ccache*compression: true
-  parallel*builds: 8
-  incremental*builds: true
-  distributed*builds: true
-  build*farm:
+  ccache_enabled: true
+  ccache_size: "4G"
+  ccache_compression: true
+  parallel_builds: 8
+  incremental_builds: true
+  distributed_builds: true
+  build_farm:
     enabled: true
     nodes: 4
-    load*balancing: true
+    load_balancing: true
   assertions: true
-  stack*usage: true
-  size*analysis: true
-  memory*analysis: true
-  performance*analysis: true
-  logging*level: "DEBUG"
+  stack_usage: true
+  size_analysis: true
+  memory_analysis: true
+  performance_analysis: true
+  logging_level: "DEBUG"
   sanitizers: ["address", "undefined", "thread", "memory"]
-  debug*symbols: true
-  optimization*level: "O2"
-  build*timeout: 3600
-  memory*limit: "8G"
-  cpu*limit: 8
-  storage*limit: "50G"
-  network*access: true
-  build*caching: true
-  artifact*storage: true
+  debug_symbols: true
+  optimization_level: "O2"
+  build_timeout: 3600
+  memory_limit: "8G"
+  cpu_limit: 8
+  storage_limit: "50G"
+  network_access: true
+  build_caching: true
+  artifact_storage: true
 
-flash*config:
-  port*auto*detect: true
-  port*validation: true
-  port*timeout: 60
-  port*retry*attempts: 5
-  default*baud*rate: 921600
-  default*flash*mode: "dio"
-  default*flash*freq: "80m"
-  default*flash*size: "8MB"
-  flash*verification: true
-  flash*checksum: true
-  flash*backup: true
-  flash*encryption: false
-  flash*secure*boot: false
-  retry*attempts: 5
-  retry*delay: 3
-  error*recovery: true
-  flash*logging: true
-  flash*log*file: "flash*operation.log"
-  flash*verbose: true
-  flash*progress: true
-  flash*validation: true
-  flash*optimization: true
+flash_config:
+  port_auto_detect: true
+  port_validation: true
+  port_timeout: 60
+  port_retry_attempts: 5
+  default_baud_rate: 921600
+  default_flash_mode: "dio"
+  default_flash_freq: "80m"
+  default_flash_size: "8MB"
+  flash_verification: true
+  flash_checksum: true
+  flash_backup: true
+  flash_encryption: false
+  flash_secure_boot: false
+  retry_attempts: 5
+  retry_delay: 3
+  error_recovery: true
+  flash_logging: true
+  flash_log_file: "flash_operation.log"
+  flash_verbose: true
+  flash_progress: true
+  flash_validation: true
+  flash_optimization: true
 
-system*config:
-  development*mode: true
-  debug*mode: true
-  verbose*output: true
-  profiling*mode: false
-  production*mode: false
-  log*directory: "logs"
-  log*retention*days: 90
-  log*rotation*size: "500M"
-  log*compression: true
-  log*encryption: false
-  log*archiving: true
-  log*analysis: true
-  max*parallel*jobs: 8
-  memory*limit: "8G"
-  cpu*limit: 8
-  storage*limit: "100G"
-  network*limit: "1Gbps"
-  strict*permissions: false
-  auto*fix*permissions: true
-  user*group*management: true
-  security*scanning: true
-  vulnerability*checking: true
-  cmake*integration: true
-  ci*cd*integration: true
-  ide*integration: true
-  docker*integration: true
-  cloud*integration: true
+system_config:
+  development_mode: true
+  debug_mode: true
+  verbose_output: true
+  profiling_mode: false
+  production_mode: false
+  log_directory: "logs"
+  log_retention_days: 90
+  log_rotation_size: "500M"
+  log_compression: true
+  log_encryption: false
+  log_archiving: true
+  log_analysis: true
+  max_parallel_jobs: 8
+  memory_limit: "8G"
+  cpu_limit: 8
+  storage_limit: "100G"
+  network_limit: "1Gbps"
+  strict_permissions: false
+  auto_fix_permissions: true
+  user_group_management: true
+  security_scanning: true
+  vulnerability_checking: true
+  cmake_integration: true
+  ci_cd_integration: true
+  ide_integration: true
+  docker_integration: true
+  cloud_integration: true
   monitoring: true
   alerting: true
   reporting: true
@@ -1373,6 +1373,6 @@ system*config:
 
 ---
 
-**Navigation**: [← Previous: Port Detection](README*PORT*DETECTION.md) | [Back to
+**Navigation**: [← Previous: Port Detection](README_PORT_DETECTION.md) | [Back to
 Scripts](../README.md) | [Next: Scripts Overview →](README_SCRIPTS_OVERVIEW.md)
 

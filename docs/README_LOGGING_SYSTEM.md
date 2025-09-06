@@ -5,8 +5,8 @@ generation, management, analysis, and integration with all scripts.
 
 ---
 
-**Navigation**: [← Previous: Configuration System](README*CONFIG*SYSTEM.md) | [Back to
-Scripts](../README.md) | [Next: Utility Scripts →](README*UTILITY*SCRIPTS.md)
+**Navigation**: [← Previous: Configuration System](README_CONFIG_SYSTEM.md) | [Back to
+Scripts](../README.md) | [Next: Utility Scripts →](README_UTILITY_SCRIPTS.md)
 
 ---
 
@@ -77,13 +77,13 @@ The logging system automatically generates logs for all major operations:
 
 ```bash
 ## Build operations automatically log
-./build*app.sh gpio*test Release --log
+./build_app.sh gpio_test Release --log
 
 ## Flash operations automatically log
-./flash*app.sh flash*monitor gpio*test Release --log
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Monitor operations automatically log
-./flash*app.sh monitor --log
+./flash_app.sh monitor --log
 ```text
 
 #### **Log File Naming Convention**
@@ -91,16 +91,16 @@ Logs follow a consistent naming pattern:
 
 ```bash
 ## Standard log naming format
-{app*type}*{build*type}*{timestamp}.log
+{app_type}*{build_type}*{timestamp}.log
 
 ## Examples:
-gpio*test*Release*20250115*143022.log
-adc*test*Debug*20250115*150045.log
-monitor*session*20250115*151230.log
+gpio_test_Release_20250115_143022.log
+adc_test_Debug_20250115_150045.log
+monitor_session_20250115_151230.log
 
 ## Custom log naming
-./flash*app.sh flash gpio*test Release --log production*deploy
-## Result: production*deploy*20250115*143022.log
+./flash_app.sh flash gpio_test Release --log production_deploy
+## Result: production_deploy_20250115_143022.log
 ```text
 
 #### **Log Content Structure**
@@ -111,8 +111,8 @@ Each log file contains comprehensive information:
 ## ESP32 HardFOC Interface Wrapper - Operation Log
 Date: 2025-01-15
 Time: 14:30:22
-Operation: flash*monitor
-Application: gpio*test
+Operation: flash_monitor
+Application: gpio_test
 Build Type: Release
 ESP-IDF Version: release/v5.5
 Target: esp32c6
@@ -175,13 +175,13 @@ Logging integrates with all major systems:
 ```text
 examples/esp32/logs/
 ├── 2025-01-15/                    # Date-based organization
-│   ├── gpio*test*Release*143022.log
-│   ├── adc*test*Debug*150045.log
-│   └── monitor*session*151230.log
+│   ├── gpio_test_Release_143022.log
+│   ├── adc_test_Debug_150045.log
+│   └── monitor_session_151230.log
 ├── latest/                         # Symlinks to most recent logs
-│   ├── build*latest.log
-│   ├── flash*latest.log
-│   └── monitor*latest.log
+│   ├── build_latest.log
+│   ├── flash_latest.log
+│   └── monitor_latest.log
 └── archive/                        # Archived logs
     ├── 2025-01-14/
     └── 2025-01-13/
@@ -212,9 +212,9 @@ The system automatically organizes logs:
 #### **Cleanup Operations**
 ```bash
 ## Manual cleanup
-./manage*logs.sh clean 7          # Keep logs for 7 days
-./manage*logs.sh clean 30         # Keep logs for 30 days
-./manage*logs.sh clean            # Use default retention
+./manage_logs.sh clean 7          # Keep logs for 7 days
+./manage_logs.sh clean 30         # Keep logs for 30 days
+./manage_logs.sh clean            # Use default retention
 
 ## Automatic cleanup
 - Daily cleanup of expired logs
@@ -227,16 +227,16 @@ The system automatically organizes logs:
 #### **File Operations**
 ```bash
 ## List all logs
-./manage*logs.sh list
+./manage_logs.sh list
 
 ## View specific log
-./manage*logs.sh view gpio*test*Release*20250115*143022.log
+./manage_logs.sh view gpio_test_Release_20250115_143022.log
 
 ## Show latest log
-./manage*logs.sh latest
+./manage_logs.sh latest
 
 ## Get log statistics
-./manage*logs.sh stats
+./manage_logs.sh stats
 ```text
 
 #### **Storage Optimization**
@@ -255,15 +255,15 @@ The system automatically organizes logs:
 #### **Pattern Search**
 ```bash
 ## Search for specific patterns
-./manage*logs.sh search "ERROR"           # Find all errors
-./manage*logs.sh search "WARNING"         # Find all warnings
-./manage*logs.sh search "FAILED"          # Find all failures
-./manage*logs.sh search "SUCCESS"         # Find all successes
+./manage_logs.sh search "ERROR"           # Find all errors
+./manage_logs.sh search "WARNING"         # Find all warnings
+./manage_logs.sh search "FAILED"          # Find all failures
+./manage_logs.sh search "SUCCESS"         # Find all successes
 
 ## Advanced search patterns
-./manage*logs.sh search "gpio.*error"     # GPIO-related errors
-./manage*logs.sh search "flash.*failed"   # Flash failures
-./manage*logs.sh search "build.*success"  # Build successes
+./manage_logs.sh search "gpio.*error"     # GPIO-related errors
+./manage_logs.sh search "flash.*failed"   # Flash failures
+./manage_logs.sh search "build.*success"  # Build successes
 ```text
 
 #### **Search Capabilities**
@@ -284,7 +284,7 @@ The search system provides powerful capabilities:
 #### **Statistical Analysis**
 ```bash
 ## Get log statistics
-./manage*logs.sh stats
+./manage_logs.sh stats
 
 ## Statistics include
 - Total log files
@@ -310,7 +310,7 @@ The search system provides powerful capabilities:
 #### **Cross-Log Comparison**
 ```bash
 ## Compare different logs
-./manage*logs.sh compare log1.log log2.log
+./manage_logs.sh compare log1.log log2.log
 
 ## Comparison features
 - Side-by-side comparison
@@ -326,39 +326,39 @@ The search system provides powerful capabilities:
 #### **1. View Logs**
 ```bash
 ## List all available logs
-./manage*logs.sh list
+./manage_logs.sh list
 
 ## View the most recent log
-./manage*logs.sh latest
+./manage_logs.sh latest
 
 ## View a specific log file
-./manage*logs.sh view gpio*test*Release*20250115*143022.log
+./manage_logs.sh view gpio_test_Release_20250115_143022.log
 ```text
 
 #### **2. Search Logs**
 ```bash
 ## Search for errors
-./manage*logs.sh search "ERROR"
+./manage_logs.sh search "ERROR"
 
 ## Search for specific patterns
-./manage*logs.sh search "build.*failed"
-./manage*logs.sh search "flash.*success"
+./manage_logs.sh search "build.*failed"
+./manage_logs.sh search "flash.*success"
 
 ## Search with context
-./manage*logs.sh search "gpio.*error" --context 5
+./manage_logs.sh search "gpio.*error" --context 5
 ```text
 
 #### **3. Log Maintenance**
 ```bash
 ## Clean old logs
-./manage*logs.sh clean 7          # Keep 7 days
-./manage*logs.sh clean 30         # Keep 30 days
+./manage_logs.sh clean 7          # Keep 7 days
+./manage_logs.sh clean 30         # Keep 30 days
 
 ## Get log statistics
-./manage*logs.sh stats
+./manage_logs.sh stats
 
 ## Archive old logs
-./manage*logs.sh archive
+./manage_logs.sh archive
 ```text
 
 ### **Advanced Log Patterns**
@@ -366,9 +366,9 @@ The search system provides powerful capabilities:
 #### **1. Development Workflow Logging**
 ```bash
 ## Complete development workflow with logging
-./build*app.sh gpio*test Debug --log
-./flash*app.sh flash*monitor gpio*test Debug --log
-./manage*logs.sh latest
+./build_app.sh gpio_test Debug --log
+./flash_app.sh flash_monitor gpio_test Debug --log
+./manage_logs.sh latest
 
 ## Expected result
 - Build log with debug information
@@ -380,9 +380,9 @@ The search system provides powerful capabilities:
 #### **2. Production Deployment Logging**
 ```bash
 ## Production deployment with logging
-./build*app.sh gpio*test Release --log production*build
-./flash*app.sh flash gpio*test Release --log production*deploy
-./manage*logs.sh search "production.*success"
+./build_app.sh gpio_test Release --log production_build
+./flash_app.sh flash gpio_test Release --log production_deploy
+./manage_logs.sh search "production.*success"
 
 ## Expected result
 - Production build log
@@ -394,10 +394,10 @@ The search system provides powerful capabilities:
 #### **3. Debugging and Troubleshooting**
 ```bash
 ## Debugging workflow with logging
-./flash*app.sh monitor --log debug*session
+./flash_app.sh monitor --log debug_session
 ## ... perform debugging operations ...
-./manage*logs.sh search "ERROR" --context 10
-./manage*logs.sh search "WARNING" --context 5
+./manage_logs.sh search "ERROR" --context 10
+./manage_logs.sh search "WARNING" --context 5
 
 ## Expected result
 - Complete debugging session log
@@ -411,9 +411,9 @@ The search system provides powerful capabilities:
 #### **1. Error Analysis**
 ```bash
 ## Comprehensive error analysis
-./manage*logs.sh search "ERROR" > errors.txt
-./manage*logs.sh search "FAILED" >> errors.txt
-./manage*logs.sh search "WARNING" >> warnings.txt
+./manage_logs.sh search "ERROR" > errors.txt
+./manage_logs.sh search "FAILED" >> errors.txt
+./manage_logs.sh search "WARNING" >> warnings.txt
 
 ## Analyze error patterns
 cat errors.txt | grep -o "ERROR:.*" | sort | uniq -c
@@ -423,26 +423,26 @@ cat warnings.txt | grep -o "WARNING:.*" | sort | uniq -c
 #### **2. Performance Analysis**
 ```bash
 ## Performance analysis
-./manage*logs.sh search "build.*completed" | grep -o "in [0-9.]*s"
-./manage*logs.sh search "flash.*completed" | grep -o "in [0-9.]*s"
+./manage_logs.sh search "build.*completed" | grep -o "in [0-9.]*s"
+./manage_logs.sh search "flash.*completed" | grep -o "in [0-9.]*s"
 
 ## Performance trends
-for log in $(./manage*logs.sh list | grep "build.*Release"); do
-    echo "$log: $(./manage*logs.sh search "build.*completed" "$log" | grep -o "in [0-9.]*s")"
+for log in $(./manage_logs.sh list | grep "build.*Release"); do
+    echo "$log: $(./manage_logs.sh search "build.*completed" "$log" | grep -o "in [0-9.]*s")"
 done
 ```text
 
 #### **3. Success Rate Analysis**
 ```bash
 ## Success rate analysis
-total*ops=$(./manage*logs.sh list | wc -l)
-success*ops=$(./manage*logs.sh search "SUCCESS" | wc -l)
-error*ops=$(./manage*logs.sh search "ERROR" | wc -l)
+total_ops=$(./manage_logs.sh list | wc -l)
+success_ops=$(./manage_logs.sh search "SUCCESS" | wc -l)
+error_ops=$(./manage_logs.sh search "ERROR" | wc -l)
 
-echo "Total operations: $total*ops"
-echo "Successful operations: $success*ops"
-echo "Failed operations: $error*ops"
-echo "Success rate: $((success*ops * 100 / total*ops))%"
+echo "Total operations: $total_ops"
+echo "Successful operations: $success_ops"
+echo "Failed operations: $error_ops"
+echo "Success rate: $((success_ops * 100 / total_ops))%"
 ```text
 
 ## 🔧 **Integration and Automation**
@@ -454,17 +454,17 @@ All scripts automatically support logging:
 
 ```bash
 ## Build script logging
-./build*app.sh gpio*test Release --log
+./build_app.sh gpio_test Release --log
 
 ## Flash script logging
-./flash*app.sh flash*monitor gpio*test Release --log
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Monitor script logging
-./flash*app.sh monitor --log
+./flash_app.sh monitor --log
 
 ## Log management integration
-./manage*logs.sh latest
-./manage*logs.sh search "ERROR"
+./manage_logs.sh latest
+./manage_logs.sh search "ERROR"
 ```text
 
 #### **Log Configuration**
@@ -472,11 +472,11 @@ Logging can be configured through environment variables:
 
 ```bash
 ## Logging configuration
-export LOG*ENABLED=1              # Enable logging
-export LOG*LEVEL=INFO             # Set log level
-export LOG*RETENTION*DAYS=30      # Set retention period
-export LOG*MAX*FILES=50           # Set maximum log files
-export LOG*COMPRESSION=1          # Enable compression
+export LOG_ENABLED=1              # Enable logging
+export LOG_LEVEL=INFO             # Set log level
+export LOG_RETENTION_DAYS=30      # Set retention period
+export LOG_MAX_FILES=50           # Set maximum log files
+export LOG_COMPRESSION=1          # Enable compression
 ```text
 
 ### **CI/CD Integration**
@@ -487,15 +487,15 @@ export LOG*COMPRESSION=1          # Enable compression
 - name: Build and Flash with Logging
   run: |
     cd examples/esp32
-    ./scripts/build*app.sh gpio*test Release --log ci*build
-    ./scripts/flash*app.sh flash gpio*test Release --log ci*deploy
+    ./scripts/build_app.sh gpio_test Release --log ci_build
+    ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Analyze Logs
   run: |
     cd examples/esp32
-    ./scripts/manage*logs.sh search "ERROR"
-    ./scripts/manage*logs.sh stats
-    ./scripts/manage*logs.sh latest
+    ./scripts/manage_logs.sh search "ERROR"
+    ./scripts/manage_logs.sh stats
+    ./scripts/manage_logs.sh latest
 ```text
 
 #### **Log Artifacts**
@@ -519,22 +519,22 @@ export LOG*COMPRESSION=1          # Enable compression
 cd examples/esp32
 
 ## Generate daily log report
-echo "=== Daily Log Report $(date +%Y-%m-%d) ===" > daily*report.txt
+echo "=== Daily Log Report $(date +%Y-%m-%d) ===" > daily_report.txt
 
 ## Get log statistics
-echo "Log Statistics:" >> daily*report.txt
-./scripts/manage*logs.sh stats >> daily*report.txt
+echo "Log Statistics:" >> daily_report.txt
+./scripts/manage_logs.sh stats >> daily_report.txt
 
 ## Check for errors
-echo -e "\nError Summary:" >> daily*report.txt
-./scripts/manage*logs.sh search "ERROR" | head -20 >> daily*report.txt
+echo -e "\nError Summary:" >> daily_report.txt
+./scripts/manage_logs.sh search "ERROR" | head -20 >> daily_report.txt
 
 ## Check for warnings
-echo -e "\nWarning Summary:" >> daily*report.txt
-./scripts/manage*logs.sh search "WARNING" | head -20 >> daily*report.txt
+echo -e "\nWarning Summary:" >> daily_report.txt
+./scripts/manage_logs.sh search "WARNING" | head -20 >> daily_report.txt
 
 ## Send report
-mail -s "ESP32 Daily Log Report" admin@example.com < daily*report.txt
+mail -s "ESP32 Daily Log Report" admin@example.com < daily_report.txt
 ```text
 
 #### **Log Cleanup Automation**
@@ -545,18 +545,18 @@ mail -s "ESP32 Daily Log Report" admin@example.com < daily*report.txt
 cd examples/esp32
 
 ## Clean old logs
-./scripts/manage*logs.sh clean 30
+./scripts/manage_logs.sh clean 30
 
 ## Archive old logs
-./scripts/manage*logs.sh archive
+./scripts/manage_logs.sh archive
 
 ## Generate cleanup report
-echo "Log cleanup completed at $(date)" > cleanup*report.txt
-echo "Logs older than 30 days have been cleaned up" >> cleanup*report.txt
-echo "Old logs have been archived" >> cleanup*report.txt
+echo "Log cleanup completed at $(date)" > cleanup_report.txt
+echo "Logs older than 30 days have been cleaned up" >> cleanup_report.txt
+echo "Old logs have been archived" >> cleanup_report.txt
 
 ## Send cleanup report
-mail -s "ESP32 Log Cleanup Report" admin@example.com < cleanup*report.txt
+mail -s "ESP32 Log Cleanup Report" admin@example.com < cleanup_report.txt
 ```text
 
 ## 🔍 **Troubleshooting and Debugging**
@@ -569,18 +569,18 @@ mail -s "ESP32 Log Cleanup Report" admin@example.com < cleanup*report.txt
 **Solutions**:
 ```bash
 ## Check if logging is enabled
-echo $LOG*ENABLED
+echo $LOG_ENABLED
 
 ## Check log directory permissions
 ls -la logs/
 chmod 755 logs/
 
 ## Check script logging support
-./flash*app.sh --help | grep -i log
+./flash_app.sh --help | grep -i log
 
 ## Enable logging explicitly
-export LOG*ENABLED=1
-./flash*app.sh flash gpio*test Release --log
+export LOG_ENABLED=1
+./flash_app.sh flash gpio_test Release --log
 ```text
 
 #### **2. Log Directory Issues**
@@ -607,7 +607,7 @@ chmod 755 examples/esp32/logs/
 **Solutions**:
 ```bash
 ## Check log file integrity
-./manage*logs.sh view latest.log
+./manage_logs.sh view latest.log
 
 ## Check file size
 ls -la logs/*.log
@@ -616,7 +616,7 @@ ls -la logs/*.log
 rm logs/corrupted.log
 
 ## Regenerate logs
-./flash*app.sh flash gpio*test Release --log
+./flash_app.sh flash gpio_test Release --log
 ```text
 
 ### **Debug and Verbose Mode**
@@ -624,12 +624,12 @@ rm logs/corrupted.log
 #### **Enabling Log Debug Output**
 ```bash
 ## Enable log debug mode
-export LOG*DEBUG=1
-export LOG*VERBOSE=1
+export LOG_DEBUG=1
+export LOG_VERBOSE=1
 
 ## Check log system status
-./manage*logs.sh --help
-./manage*logs.sh list --verbose
+./manage_logs.sh --help
+./manage_logs.sh list --verbose
 
 ## Debug information available
 - Log file creation details
@@ -641,13 +641,13 @@ export LOG*VERBOSE=1
 #### **Log System Debugging**
 ```bash
 ## Debug log system
-debug*log*system() {
+debug_log_system() {
     echo "=== Log System Debug ==="
-    echo "Log directory: $LOG*DIR"
-    echo "Log directory exists: $([ -d "$LOG*DIR" ] && echo "Yes" || echo "No")"
-    echo "Log directory writable: $([ -w "$LOG*DIR" ] && echo "Yes" || echo "No")"
-    echo "Log files count: $(find "$LOG*DIR" -name "*.log" | wc -l)"
-    echo "Latest log: $(./manage*logs.sh latest 2>/dev/null || echo "None")"
+    echo "Log directory: $LOG_DIR"
+    echo "Log directory exists: $([ -d "$LOG_DIR" ] && echo "Yes" || echo "No")"
+    echo "Log directory writable: $([ -w "$LOG_DIR" ] && echo "Yes" || echo "No")"
+    echo "Log files count: $(find "$LOG_DIR" -name "*.log" | wc -l)"
+    echo "Latest log: $(./manage_logs.sh latest 2>/dev/null || echo "None")"
 }
 ```text
 
@@ -659,16 +659,16 @@ debug*log*system() {
 **Solutions**:
 ```bash
 ## Check log file sizes
-./manage*logs.sh list | xargs ls -lh
+./manage_logs.sh list | xargs ls -lh
 
 ## Compress old logs
-./manage*logs.sh compress
+./manage_logs.sh compress
 
 ## Clean old logs
-./manage*logs.sh clean 7
+./manage_logs.sh clean 7
 
 ## Split large logs
-./manage*logs.sh split large*log.log
+./manage_logs.sh split large_log.log
 ```text
 
 #### **Search Performance**
@@ -677,16 +677,16 @@ debug*log*system() {
 **Solutions**:
 ```bash
 ## Use more specific search patterns
-./manage*logs.sh search "ERROR.*gpio"  # More specific than just "ERROR"
+./manage_logs.sh search "ERROR.*gpio"  # More specific than just "ERROR"
 
 ## Limit search scope
-./manage*logs.sh search "ERROR" --max-results 100
+./manage_logs.sh search "ERROR" --max-results 100
 
 ## Use indexed search (if available)
-./manage*logs.sh search "ERROR" --indexed
+./manage_logs.sh search "ERROR" --indexed
 
 ## Search in specific time range
-./manage*logs.sh search "ERROR" --since "2025-01-15"
+./manage_logs.sh search "ERROR" --since "2025-01-15"
 ```text
 
 ## 📚 **Reference and Examples**
@@ -695,11 +695,11 @@ debug*log*system() {
 
 #### **Log Management Commands**
 ```bash
-./manage*logs.sh [command] [options]
+./manage_logs.sh [command] [options]
 
 ## Commands:
 ##   list                    - List all log files with details
-##   view <log*name>        - View a specific log file
+##   view <log_name>        - View a specific log file
 ##   search <pattern>       - Search across all log files
 ##   clean [days]           - Clean logs older than N days
 ##   stats                  - Show log statistics and summary
@@ -720,69 +720,69 @@ debug*log*system() {
 #### **Environment Variables**
 ```bash
 ## Logging configuration
-export LOG*ENABLED=1              # Enable/disable logging
-export LOG*LEVEL=INFO             # Set log level (DEBUG, INFO, WARN, ERROR)
-export LOG*DIR="logs/"            # Set log directory
-export LOG*RETENTION*DAYS=30      # Set log retention period
-export LOG*MAX*FILES=50           # Set maximum log files
-export LOG*COMPRESSION=1          # Enable/disable compression
-export LOG*ROTATION=1             # Enable/disable rotation
-export LOG*ARCHIVE=1              # Enable/disable archiving
+export LOG_ENABLED=1              # Enable/disable logging
+export LOG_LEVEL=INFO             # Set log level (DEBUG, INFO, WARN, ERROR)
+export LOG_DIR="logs/"            # Set log directory
+export LOG_RETENTION_DAYS=30      # Set log retention period
+export LOG_MAX_FILES=50           # Set maximum log files
+export LOG_COMPRESSION=1          # Enable/disable compression
+export LOG_ROTATION=1             # Enable/disable rotation
+export LOG_ARCHIVE=1              # Enable/disable archiving
 ```text
 
 ### **Configuration Examples**
 
 #### **Minimal Log Configuration**
 ```yaml
-## app*config.yml minimal logging configuration
-flash*config:
-  auto*logging: true
-  log*rotation: true
-  max*log*files: 30
-  log*retention*days: 7
+## app_config.yml minimal logging configuration
+flash_config:
+  auto_logging: true
+  log_rotation: true
+  max_log_files: 30
+  log_retention_days: 7
 ```text
 
 #### **Standard Log Configuration**
 ```yaml
-## app*config.yml standard logging configuration
-flash*config:
-  auto*logging: true
-  log*rotation: true
-  max*log*files: 50
-  log*retention*days: 30
-  log*compression: true
-  log*archive: true
-  log*format: "detailed"
-  log*level: "INFO"
+## app_config.yml standard logging configuration
+flash_config:
+  auto_logging: true
+  log_rotation: true
+  max_log_files: 50
+  log_retention_days: 30
+  log_compression: true
+  log_archive: true
+  log_format: "detailed"
+  log_level: "INFO"
 ```text
 
 #### **Advanced Log Configuration**
 ```yaml
-## app*config.yml advanced logging configuration
-flash*config:
-  auto*logging: true
-  log*rotation: true
-  max*log*files: 100
-  log*retention*days: 90
-  log*compression: true
-  log*archive: true
-  log*format: "detailed"
-  log*level: "DEBUG"
+## app_config.yml advanced logging configuration
+flash_config:
+  auto_logging: true
+  log_rotation: true
+  max_log_files: 100
+  log_retention_days: 90
+  log_compression: true
+  log_archive: true
+  log_format: "detailed"
+  log_level: "DEBUG"
   
   # Log organization
-  log*directory: "logs/"
-  log*subdirectories: true
-  date*based*organization: true
+  log_directory: "logs/"
+  log_subdirectories: true
+  date_based_organization: true
   
   # Log analysis
-  log*indexing: true
-  log*search*cache: true
-  log*analytics: true
+  log_indexing: true
+  log_search_cache: true
+  log_analytics: true
   
   # Performance
-  log*buffer*size: "1MB"
-  log*flush*interval: 5
-  log*async*writing: true
+  log_buffer_size: "1MB"
+  log_flush_interval: 5
+  log_async_writing: true
 ```text
 
 ### **Integration Examples**
@@ -790,17 +790,17 @@ flash*config:
 #### **CMake Integration**
 ```cmake
 ## CMakeLists.txt logging integration
-cmake*minimum*required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 ## Log target integration
-add*custom*target(logs
-    COMMAND ${CMAKE*SOURCE*DIR}/scripts/manage*logs.sh list
+add_custom_target(logs
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/manage_logs.sh list
     COMMENT "Listing ESP32 development logs"
 )
 
 ## Log cleanup target
-add*custom*target(clean*logs
-    COMMAND ${CMAKE*SOURCE*DIR}/scripts/manage*logs.sh clean 7
+add_custom_target(clean_logs
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/manage_logs.sh clean 7
     COMMENT "Cleaning logs older than 7 days"
 )
 ```text
@@ -812,25 +812,25 @@ add*custom*target(clean*logs
   run: |
     cd examples/esp32
     mkdir -p logs
-    export LOG*ENABLED=1
-    export LOG*LEVEL=DEBUG
+    export LOG_ENABLED=1
+    export LOG_LEVEL=DEBUG
 
 - name: Build with Logging
   run: |
     cd examples/esp32
-    ./scripts/build*app.sh gpio*test Release --log ci*build
+    ./scripts/build_app.sh gpio_test Release --log ci_build
 
 - name: Flash with Logging
   run: |
     cd examples/esp32
-    ./scripts/flash*app.sh flash gpio*test Release --log ci*deploy
+    ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Analyze Logs
   run: |
     cd examples/esp32
-    ./scripts/manage*logs.sh stats
-    ./scripts/manage*logs.sh search "ERROR"
-    ./scripts/manage*logs.sh search "SUCCESS"
+    ./scripts/manage_logs.sh stats
+    ./scripts/manage_logs.sh search "ERROR"
+    ./scripts/manage_logs.sh search "SUCCESS"
 
 - name: Upload Logs
   uses: actions/upload-artifact@v3
@@ -868,5 +868,5 @@ add*custom*target(clean*logs
 
 ---
 
-**Navigation**: [← Previous: Configuration System](README*CONFIG*SYSTEM.md) | [Back to
+**Navigation**: [← Previous: Configuration System](README_CONFIG_SYSTEM.md) | [Back to
 Scripts](../README.md) | [Next: Utility Scripts →](README_UTILITY_SCRIPTS.md)

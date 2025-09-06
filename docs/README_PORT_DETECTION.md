@@ -6,8 +6,8 @@ workflow.
 
 ---
 
-**Navigation**: [← Previous: Utility Scripts](README*UTILITY*SCRIPTS.md) | [Back to
-Scripts](../README.md) | [Next: Centralized Config →](README*CENTRALIZED*CONFIG.md)
+**Navigation**: [← Previous: Utility Scripts](README_UTILITY_SCRIPTS.md) | [Back to
+Scripts](../README.md) | [Next: Centralized Config →](README_CENTRALIZED_CONFIG.md)
 
 ---
 
@@ -86,7 +86,7 @@ FTDI: FTDI FT232R USB UART (0403:6001)
 CDC ACM: USB CDC ACM devices (various vendors)
 
 ## Automatic detection command
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 ```text
 
 #### **Linux-Specific Features**
@@ -130,14 +130,14 @@ The system adapts to macOS-specific device patterns and system information:
 
 ```bash
 ## macOS device patterns
-/dev/cu.usbserial-*, /dev/cu.SLAB*USBtoUART*
+/dev/cu.usbserial-*, /dev/cu.SLAB_USBtoUART*
 /dev/cu.usbmodem*, /dev/cu.usbserial*
 /dev/cu.wchusbserial*, /dev/cu.FTDI*
 
 ## System information commands
-system*profiler SPUSBDataType | grep -i esp
-system*profiler SPUSBDataType | grep -A10 -B5 "CP210x"
-system*profiler SPUSBDataType | grep -A10 -B5 "CH340"
+system_profiler SPUSBDataType | grep -i esp
+system_profiler SPUSBDataType | grep -A10 -B5 "CP210x"
+system_profiler SPUSBDataType | grep -A10 -B5 "CH340"
 
 ## Device enumeration
 ls /dev/cu.* | grep -E "(usbserial|SLAB|usbmodem|wchusb|FTDI)"
@@ -161,13 +161,13 @@ ioreg -p IOUSB -l -w 0 | grep -A5 -B5 "CP210x"
 #### **macOS Troubleshooting**
 ```bash
 ## Check USB device status
-system*profiler SPUSBDataType
+system_profiler SPUSBDataType
 
 ## Verify device enumeration
 ls -la /dev/cu.*
 
 ## Test port accessibility
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Check for driver issues
 kextstat | grep -i usb
@@ -189,7 +189,7 @@ lsusb for device identification
 ## Note: lsusb may not work in all WSL2 configurations
 
 ## Port accessibility testing
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Windows COM port mapping
 ## COM1 → /dev/ttyS0
@@ -208,7 +208,7 @@ lsusb for device identification
 ## Check Windows USB device sharing settings
 
 ## Port validation
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 ```text
 
 #### **WSL2 Troubleshooting**
@@ -221,7 +221,7 @@ ls /dev/ttyS*
 ls /dev/ttyUSB*
 
 ## Test basic connectivity
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Check Windows device sharing
 ## Ensure USB devices are shared with WSL2
@@ -234,7 +234,7 @@ ls /dev/ttyUSB*
 #### **Basic Port Testing**
 ```bash
 ## Test port connectivity
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## What it tests
 - Port file existence and accessibility
@@ -247,7 +247,7 @@ ls /dev/ttyUSB*
 #### **Advanced Port Testing**
 ```bash
 ## Comprehensive port analysis
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 ## Advanced tests include
 - USB device enumeration verification
@@ -273,7 +273,7 @@ Port: /dev/ttyUSB0
   Read permissions: ✗ Permission denied
   Write permissions: ✗ Permission denied
   Serial communication: ✗ Not testable
-  Status: PERMISSION*ERROR
+  Status: PERMISSION_ERROR
   Solution: Add user to dialout group
 ```text
 
@@ -298,7 +298,7 @@ id $USER
 #### **Permission Resolution**
 ```bash
 ## Automatic permission fixing
-./detect*ports.sh --fix-permissions
+./detect_ports.sh --fix-permissions
 
 ## Manual permission resolution
 sudo chmod 666 /dev/ttyUSB0
@@ -314,7 +314,7 @@ newgrp dialout
 #### **USB Device Information**
 ```bash
 ## Detailed USB device information
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Information provided
 - USB bus and device numbers
@@ -346,38 +346,38 @@ newgrp dialout
 #### **Detection Configuration**
 ```bash
 ## Port detection configuration
-export PORT*DETECTION*VERBOSE=1        # Enable verbose output
-export PORT*TEST*TIMEOUT=5             # Set connection test timeout (seconds)
-export PORT*SCAN*TIMEOUT=3             # Set port scan timeout (seconds)
-export PORT*MAX*RETRIES=3              # Set maximum retry attempts
-export PORT*DEBUG=1                    # Enable debug mode
+export PORT_DETECTION_VERBOSE=1        # Enable verbose output
+export PORT_TEST_TIMEOUT=5             # Set connection test timeout (seconds)
+export PORT_SCAN_TIMEOUT=3             # Set port scan timeout (seconds)
+export PORT_MAX_RETRIES=3              # Set maximum retry attempts
+export PORT_DEBUG=1                    # Enable debug mode
 ```text
 
 #### **Platform-Specific Configuration**
 ```bash
 ## Linux configuration
-export LINUX*DEVICE*PATTERNS="/dev/ttyUSB*,/dev/ttyACM*"
-export LINUX*GROUPS="dialout,tty"
-export LINUX*UDEV*RULES="/etc/udev/rules.d/99-esp32.rules"
+export LINUX_DEVICE_PATTERNS="/dev/ttyUSB*,/dev/ttyACM*"
+export LINUX_GROUPS="dialout,tty"
+export LINUX_UDEV_RULES="/etc/udev/rules.d/99-esp32.rules"
 
 ## macOS configuration
-export MACOS*DEVICE*PATTERNS="/dev/cu.usbserial*,/dev/cu.SLAB*"
-export MACOS*SYSTEM*PROFILER=1
-export MACOS*IOREG=1
+export MACOS_DEVICE_PATTERNS="/dev/cu.usbserial*,/dev/cu.SLAB*"
+export MACOS_SYSTEM_PROFILER=1
+export MACOS_IOREG=1
 
 ## WSL2 configuration
-export WSL2*PORT*MAPPING="/dev/ttyS*,/dev/ttyUSB*"
-export WSL2*USB*ACCESS=1
-export WSL2*COM*MAPPING=1
+export WSL2_PORT_MAPPING="/dev/ttyS*,/dev/ttyUSB*"
+export WSL2_USB_ACCESS=1
+export WSL2_COM_MAPPING=1
 ```text
 
 #### **Troubleshooting Configuration**
 ```bash
 ## Troubleshooting options
-export PORT*AUTO*FIX=1                 # Enable automatic problem resolution
-export PORT*VERBOSE*ERRORS=1           # Show detailed error information
-export PORT*SUGGEST*SOLUTIONS=1        # Provide solution suggestions
-export PORT*LOG*LEVEL="INFO"           # Set logging level (DEBUG, INFO, WARN, ERROR)
+export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
+export PORT_VERBOSE_ERRORS=1           # Show detailed error information
+export PORT_SUGGEST_SOLUTIONS=1        # Provide solution suggestions
+export PORT_LOG_LEVEL="INFO"           # Set logging level (DEBUG, INFO, WARN, ERROR)
 ```text
 
 ### **Custom Detection Patterns**
@@ -385,9 +385,9 @@ export PORT*LOG*LEVEL="INFO"           # Set logging level (DEBUG, INFO, WARN, E
 #### **User-Defined Device Patterns**
 ```bash
 ## Custom device patterns
-export CUSTOM*DEVICE*PATTERNS="/dev/ttyCustom*,/dev/ttyESP*"
-export CUSTOM*VENDOR*IDS="1234:5678,abcd:efgh"
-export CUSTOM*PRODUCT*NAMES="Custom ESP32,My Device"
+export CUSTOM_DEVICE_PATTERNS="/dev/ttyCustom*,/dev/ttyESP*"
+export CUSTOM_VENDOR_IDS="1234:5678,abcd:efgh"
+export CUSTOM_PRODUCT_NAMES="Custom ESP32,My Device"
 
 ## Pattern format
 - Device files: /dev/tty*
@@ -398,9 +398,9 @@ export CUSTOM*PRODUCT*NAMES="Custom ESP32,My Device"
 #### **Custom Validation Rules**
 ```bash
 ## Custom validation configuration
-export CUSTOM*VALIDATION*RULES="strict,permissive,auto"
-export CUSTOM*TIMEOUT*VALUES="10,5,3"
-export CUSTOM*RETRY*STRATEGIES="linear,exponential,adaptive"
+export CUSTOM_VALIDATION_RULES="strict,permissive,auto"
+export CUSTOM_TIMEOUT_VALUES="10,5,3"
+export CUSTOM_RETRY_STRATEGIES="linear,exponential,adaptive"
 
 ## Validation levels
 - strict: Maximum validation, slower detection
@@ -413,14 +413,14 @@ export CUSTOM*RETRY*STRATEGIES="linear,exponential,adaptive"
 #### **Build System Integration**
 ```bash
 ## CMake integration
-set(PORT*DETECTION*SCRIPT "${CMAKE*SOURCE*DIR}/scripts/detect*ports.sh")
-set(PORT*DETECTION*ARGS "--verbose" "--test-connection")
+set(PORT_DETECTION_SCRIPT "${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh")
+set(PORT_DETECTION_ARGS "--verbose" "--test-connection")
 
 ## Build target integration
-add*custom*target(detect*ports
-    COMMAND ${PORT*DETECTION*SCRIPT} ${PORT*DETECTION*ARGS}
+add_custom_target(detect_ports
+    COMMAND ${PORT_DETECTION_SCRIPT} ${PORT_DETECTION_ARGS}
     COMMENT "Detecting ESP32 ports"
-    DEPENDS ${CMAKE*SOURCE*DIR}/scripts/detect*ports.sh
+    DEPENDS ${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh
 )
 ```text
 
@@ -430,16 +430,16 @@ add*custom*target(detect*ports
 - name: Detect ESP32 Ports
   run: |
     cd examples/esp32
-    ./scripts/detect*ports.sh --verbose --test-connection
+    ./scripts/detect_ports.sh --verbose --test-connection
 
 ## GitLab CI integration
-detect*ports:
+detect_ports:
   script:
     - cd examples/esp32
-    - ./scripts/detect*ports.sh --verbose
+    - ./scripts/detect_ports.sh --verbose
   artifacts:
     reports:
-      junit: port*detection*report.xml
+      junit: port_detection_report.xml
 ```text
 
 ## 🚀 **Usage Examples and Patterns**
@@ -449,7 +449,7 @@ detect*ports:
 #### **1. Quick Port Check**
 ```bash
 ## Basic port detection
-./detect*ports.sh
+./detect_ports.sh
 
 ## Expected output
 - Available ESP32 devices
@@ -461,7 +461,7 @@ detect*ports:
 #### **2. Detailed Port Analysis**
 ```bash
 ## Comprehensive port analysis
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Expected output
 - Detailed device information
@@ -474,7 +474,7 @@ detect*ports:
 #### **3. Port Connectivity Testing**
 ```bash
 ## Test port connectivity
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Expected output
 - Port accessibility verification
@@ -488,7 +488,7 @@ detect*ports:
 #### **1. Troubleshooting Workflow**
 ```bash
 ## Complete troubleshooting process
-./detect*ports.sh --verbose --test-connection --fix-permissions
+./detect_ports.sh --verbose --test-connection --fix-permissions
 
 ## Process steps
 1. Port detection and enumeration
@@ -501,18 +501,18 @@ detect*ports:
 #### **2. Development Environment Setup**
 ```bash
 ## Port detection for development setup
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 ## Integration with setup scripts
-./setup*repo.sh
-./detect*ports.sh --verify
-./flash*app.sh gpio*test Release flash*monitor
+./setup_repo.sh
+./detect_ports.sh --verify
+./flash_app.sh gpio_test Release flash_monitor
 ```text
 
 #### **3. CI/CD Port Validation**
 ```bash
 ## Automated port validation
-./detect*ports.sh --verbose --test-connection --ci-mode
+./detect_ports.sh --verbose --test-connection --ci-mode
 
 ## CI process integration
 - Pre-build port validation
@@ -526,28 +526,28 @@ detect*ports:
 #### **1. Build System Integration**
 ```bash
 ## CMake integration example
-cmake*minimum*required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 ## Port detection before build
-add*custom*target(check*ports
-    COMMAND ${CMAKE*SOURCE*DIR}/scripts/detect*ports.sh --verbose
+add_custom_target(check_ports
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh --verbose
     COMMENT "Checking ESP32 ports before build"
 )
 
 ## Build dependency on port check
-add*custom*target(build*with*port*check
-    COMMAND ${CMAKE*COMMAND} --build ${CMAKE*BINARY*DIR}
-    DEPENDS check*ports
+add_custom_target(build_with_port_check
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
+    DEPENDS check_ports
 )
 ```text
 
 #### **2. Flash System Integration**
 ```bash
 ## Port detection before flashing
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 ## Flash with port validation
-./flash*app.sh gpio*test Release flash*monitor
+./flash_app.sh gpio_test Release flash_monitor
 
 ## Integration workflow
 1. Port detection and validation
@@ -562,15 +562,15 @@ add*custom*target(build*with*port*check
 cd examples/esp32
 
 ## Environment setup
-./setup*repo.sh
+./setup_repo.sh
 
 ## Port verification
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 ## Development cycle
-./build*app.sh gpio*test Release
-./flash*app.sh gpio*test Release flash*monitor
-./manage*logs.sh search "ERROR"
+./build_app.sh gpio_test Release
+./flash_app.sh gpio_test Release flash_monitor
+./manage_logs.sh search "ERROR"
 ```text
 
 ## 🔧 **Troubleshooting and Debugging**
@@ -583,11 +583,11 @@ cd examples/esp32
 **Solutions**:
 ```bash
 ## Check device connections
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Verify USB drivers
 lsusb | grep -i esp
-system*profiler SPUSBDataType | grep -i esp
+system_profiler SPUSBDataType | grep -i esp
 
 ## Check device enumeration
 dmesg | grep -i usb
@@ -629,10 +629,10 @@ ls -la /dev/ttyUSB*
 **Solutions**:
 ```bash
 ## Test port connectivity
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Check port stability
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 ## Verify device mode
 ## Check for bootloader mode
@@ -651,7 +651,7 @@ kextstat | grep -i usb
 ## Driver problems
 sudo modprobe cp210x
 sudo modprobe ch341
-sudo modprobe ftdi*sio
+sudo modprobe ftdi_sio
 
 ## Kernel module issues
 dmesg | grep -i "module not found"
@@ -669,7 +669,7 @@ sudo udevadm test /sys/class/tty/ttyUSB0
 ## Add Terminal or your IDE to Full Disk Access
 
 ## USB device enumeration
-system*profiler SPUSBDataType
+system_profiler SPUSBDataType
 ioreg -p IOUSB -l -w 0
 
 ## Driver compatibility
@@ -698,10 +698,10 @@ ls /dev/ttyUSB*
 ## Enable debug mode
 export DEBUG=1
 export VERBOSE=1
-export PORT*DEBUG=1
+export PORT_DEBUG=1
 
 ## Run with debug output
-./detect*ports.sh --verbose --debug
+./detect_ports.sh --verbose --debug
 
 ## Debug information available
 - Port detection process details
@@ -728,7 +728,7 @@ export PORT*DEBUG=1
 
 #### **Port Detection Commands**
 ```bash
-./detect*ports.sh [options]
+./detect_ports.sh [options]
 
 ## Basic options:
 ##   --help, -h           - Show usage information
@@ -746,12 +746,12 @@ export PORT*DEBUG=1
 #### **Environment Variables**
 ```bash
 ## Port detection configuration
-export PORT*DETECTION*VERBOSE=1        # Enable verbose output
-export PORT*TEST*TIMEOUT=5             # Set connection test timeout
-export PORT*SCAN*TIMEOUT=3             # Set port scan timeout
-export PORT*MAX*RETRIES=3              # Set maximum retry attempts
-export PORT*DEBUG=1                    # Enable debug mode
-export PORT*AUTO*FIX=1                 # Enable automatic problem resolution
+export PORT_DETECTION_VERBOSE=1        # Enable verbose output
+export PORT_TEST_TIMEOUT=5             # Set connection test timeout
+export PORT_SCAN_TIMEOUT=3             # Set port scan timeout
+export PORT_MAX_RETRIES=3              # Set maximum retry attempts
+export PORT_DEBUG=1                    # Enable debug mode
+export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
 ```text
 
 ### **Configuration Examples**
@@ -759,7 +759,7 @@ export PORT*AUTO*FIX=1                 # Enable automatic problem resolution
 #### **Minimal Port Detection Configuration**
 ```bash
 ## Basic port detection
-./detect*ports.sh
+./detect_ports.sh
 
 ## Expected behavior
 - Automatic ESP32 device detection
@@ -771,7 +771,7 @@ export PORT*AUTO*FIX=1                 # Enable automatic problem resolution
 #### **Advanced Port Detection Configuration**
 ```bash
 ## Comprehensive port analysis
-./detect*ports.sh --verbose --test-connection --fix-permissions
+./detect_ports.sh --verbose --test-connection --fix-permissions
 
 ## Expected behavior
 - Detailed device information
@@ -784,8 +784,8 @@ export PORT*AUTO*FIX=1                 # Enable automatic problem resolution
 #### **CI/CD Port Detection Configuration**
 ```bash
 ## CI-optimized port detection
-export CI*MODE=1
-./detect*ports.sh --verbose --ci-mode --test-connection
+export CI_MODE=1
+./detect_ports.sh --verbose --ci-mode --test-connection
 
 ## Expected behavior
 - Automated port validation
@@ -799,19 +799,19 @@ export CI*MODE=1
 #### **CMake Integration**
 ```cmake
 ## CMakeLists.txt port detection integration
-cmake*minimum*required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 ## Port detection target
-add*custom*target(detect*ports
-    COMMAND ${CMAKE*SOURCE*DIR}/scripts/detect*ports.sh --verbose
+add_custom_target(detect_ports
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh --verbose
     COMMENT "Detecting ESP32 ports"
-    DEPENDS ${CMAKE*SOURCE*DIR}/scripts/detect*ports.sh
+    DEPENDS ${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh
 )
 
 ## Build dependency on port detection
-add*custom*target(build*with*port*check
-    COMMAND ${CMAKE*COMMAND} --build ${CMAKE*BINARY*DIR}
-    DEPENDS detect*ports
+add_custom_target(build_with_port_check
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
+    DEPENDS detect_ports
 )
 ```text
 
@@ -821,12 +821,12 @@ add*custom*target(build*with*port*check
 - name: Detect ESP32 Ports
   run: |
     cd examples/esp32
-    ./scripts/detect*ports.sh --verbose --test-connection
+    ./scripts/detect_ports.sh --verbose --test-connection
 
 - name: Validate Port Configuration
   run: |
     cd examples/esp32
-    ./scripts/detect*ports.sh --ci-mode --verbose
+    ./scripts/detect_ports.sh --ci-mode --verbose
 ```text
 
 #### **Automation Scripts**
@@ -838,19 +838,19 @@ cd examples/esp32
 
 ## Detect available ports
 echo "Detecting ESP32 ports..."
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Test port connectivity
 echo "Testing port connectivity..."
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Fix permission issues if needed
 echo "Checking and fixing permissions..."
-./detect*ports.sh --fix-permissions
+./detect_ports.sh --fix-permissions
 
 ## Final validation
 echo "Final port validation..."
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 
 echo "Port detection complete!"
 ```text
@@ -887,5 +887,5 @@ echo "Port detection complete!"
 
 ---
 
-**Navigation**: [← Previous: Utility Scripts](README*UTILITY*SCRIPTS.md) | [Back to
-Scripts](../README.md) | [Next: Centralized Config →](README*CENTRALIZED*CONFIG.md)
+**Navigation**: [← Previous: Utility Scripts](README_UTILITY_SCRIPTS.md) | [Back to
+Scripts](../README.md) | [Next: Centralized Config →](README_CENTRALIZED_CONFIG.md)

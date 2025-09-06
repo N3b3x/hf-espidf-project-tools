@@ -5,8 +5,8 @@ detection, firmware flashing, monitoring, and troubleshooting.
 
 ---
 
-**Navigation**: [← Previous: Build System](README*BUILD*SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Configuration System →](README*CONFIG*SYSTEM.md)
+**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
+| [Next: Configuration System →](README_CONFIG_SYSTEM.md)
 
 ---
 
@@ -47,16 +47,16 @@ and integrated logging for professional ESP32 development.
 
 ### **System Architecture**
 ```text
-User Commands → flash*app.sh → Port Detection → ESP-IDF Tools → Device Communication
+User Commands → flash_app.sh → Port Detection → ESP-IDF Tools → Device Communication
      ↓              ↓              ↓              ↓              ↓
 Operation      Parameter      Device ID      Flash/Monitor   Serial I/O
 Specification  Validation     & Port         Commands        & Control
 ```text
 
 ### **Component Interaction**
-- **`flash*app.sh`**: Main flash orchestration script
-- **`detect*ports.sh`**: Port detection and device identification
-- **`manage*logs.sh`**: Logging system integration
+- **`flash_app.sh`**: Main flash orchestration script
+- **`detect_ports.sh`**: Port detection and device identification
+- **`manage_logs.sh`**: Logging system integration
 - **ESP-IDF Tools**: esptool, idf.py for device communication
 - **Serial Port Management**: Cross-platform port access and control
 
@@ -87,7 +87,7 @@ The flash system automatically detects ESP32 devices across different platforms:
 **macOS Detection**:
 ```bash
 ## USB serial devices
-/dev/cu.usbserial-*, /dev/cu.SLAB*USBtoUART*
+/dev/cu.usbserial-*, /dev/cu.SLAB_USBtoUART*
 
 ## ESP32-specific patterns
 /dev/cu.usbmodem*, /dev/cu.usbserial*
@@ -109,13 +109,13 @@ CDC ACM: USB CDC ACM devices
 #### **Connectivity Testing**
 ```bash
 ## Test port connectivity
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Verify port accessibility
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Check port permissions and status
-./detect*ports.sh --verbose --test-connection
+./detect_ports.sh --verbose --test-connection
 ```text
 
 #### **Permission Management**
@@ -148,10 +148,10 @@ When multiple ports are available, the system uses intelligent selection:
 ```bash
 ## Override automatic port detection
 export ESPPORT="/dev/ttyUSB0"
-./flash*app.sh flash gpio*test Release
+./flash_app.sh flash gpio_test Release
 
 ## Specify port in command
-./flash*app.sh flash gpio*test Release --port /dev/ttyUSB1
+./flash_app.sh flash gpio_test Release --port /dev/ttyUSB1
 ```text
 
 ## ⚡ **Flash Operations and Workflows**
@@ -160,7 +160,7 @@ export ESPPORT="/dev/ttyUSB0"
 
 #### **1. Flash Operations**
 - **`flash`**: Flash firmware only (no monitoring)
-- **`flash*monitor`**: Flash firmware and start monitoring (default)
+- **`flash_monitor`**: Flash firmware and start monitoring (default)
 - **`monitor`**: Monitor existing firmware (no flashing)
 - **`size`**: Show firmware size information and memory usage analysis
 - **`list`**: List available applications and configurations
@@ -170,16 +170,16 @@ The system supports both operation-first and legacy syntax:
 
 ```bash
 ## Operation-first syntax (RECOMMENDED)
-./flash*app.sh flash gpio*test Release
-./flash*app.sh monitor --log
-./flash*app.sh flash*monitor adc*test Debug
-./flash*app.sh size gpio*test Release
-./flash*app.sh size gpio*test Release release/v5.5
+./flash_app.sh flash gpio_test Release
+./flash_app.sh monitor --log
+./flash_app.sh flash_monitor adc_test Debug
+./flash_app.sh size gpio_test Release
+./flash_app.sh size gpio_test Release release/v5.5
 
 ## Legacy syntax (still supported)
-./flash*app.sh gpio*test Release flash
-./flash*app.sh gpio*test Release flash*monitor
-./flash*app.sh gpio*test Release size
+./flash_app.sh gpio_test Release flash
+./flash_app.sh gpio_test Release flash_monitor
+./flash_app.sh gpio_test Release size
 ```text
 
 ### **Flash Process Workflow**
@@ -225,20 +225,20 @@ The system supports both operation-first and legacy syntax:
 #### **Build Type Integration**
 ```bash
 ## Flash with specific build type
-./flash*app.sh flash gpio*test Release
-./flash*app.sh flash gpio*test Debug
+./flash_app.sh flash gpio_test Release
+./flash_app.sh flash gpio_test Debug
 
 ## Automatic build type validation
 - Ensures build type is supported by app
-- Validates against app*config.yml configuration
+- Validates against app_config.yml configuration
 - Provides clear error messages for incompatibilities
 ```text
 
 #### **ESP-IDF Version Support**
 ```bash
 ## Flash with specific ESP-IDF version
-./flash*app.sh flash gpio*test Release release/v5.5
-./flash*app.sh flash gpio*test Release release/v5.4
+./flash_app.sh flash gpio_test Release release/v5.5
+./flash_app.sh flash gpio_test Release release/v5.4
 
 ## Version compatibility validation
 - Checks app support for specified version
@@ -251,13 +251,13 @@ The size operation provides comprehensive firmware analysis without requiring de
 
 ```bash
 ## Basic size analysis
-./flash*app.sh size gpio*test Release
+./flash_app.sh size gpio_test Release
 
 ## Size analysis with specific ESP-IDF version
-./flash*app.sh size gpio*test Release release/v5.5
+./flash_app.sh size gpio_test Release release/v5.5
 
 ## Size analysis with app-first syntax
-./flash*app.sh gpio*test Release size
+./flash_app.sh gpio_test Release size
 ```text
 
 **Size Operation Features**:
@@ -277,11 +277,11 @@ The flash system automatically generates comprehensive logs:
 
 ```bash
 ## Automatic log creation
-./flash*app.sh flash*monitor gpio*test Release --log
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Log file naming convention
-gpio*test*Release*20250115*143022.log
-## Format: {app}*{build*type}*{date}*{time}.log
+gpio_test_Release_20250115_143022.log
+## Format: {app}*{build_type}*{date}*{time}.log
 ```text
 
 #### **Log Content and Structure**
@@ -300,13 +300,13 @@ gpio*test*Release*20250115*143022.log
 #### **Real-Time Monitoring**
 ```bash
 ## Start monitoring after flash
-./flash*app.sh flash*monitor gpio*test Release --log
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Monitor existing firmware
-./flash*app.sh monitor --log
+./flash_app.sh monitor --log
 
 ## Monitor with custom log name
-./flash*app.sh monitor --log debug*session
+./flash_app.sh monitor --log debug_session
 ```text
 
 #### **Monitor Configuration**
@@ -333,10 +333,10 @@ gpio*test*Release*20250115*143022.log
 #### **Log Analysis Tools**
 ```bash
 ## Integrated log management
-./manage*logs.sh list          # List all logs
-./manage*logs.sh latest        # Show latest log
-./manage*logs.sh search "ERROR" # Search for errors
-./manage*logs.sh stats         # Log statistics
+./manage_logs.sh list          # List all logs
+./manage_logs.sh latest        # Show latest log
+./manage_logs.sh search "ERROR" # Search for errors
+./manage_logs.sh stats         # Log statistics
 ```text
 
 ## 🚀 **Usage Examples and Patterns**
@@ -346,8 +346,8 @@ gpio*test*Release*20250115*143022.log
 #### **1. Development Flash Workflow**
 ```bash
 ## Build and flash for development
-./build*app.sh gpio*test Debug
-./flash*app.sh flash*monitor gpio*test Debug --log
+./build_app.sh gpio_test Debug
+./flash_app.sh flash_monitor gpio_test Debug --log
 
 ## Expected result:
 ## - Firmware flashed to device
@@ -359,8 +359,8 @@ gpio*test*Release*20250115*143022.log
 #### **2. Production Flash Workflow**
 ```bash
 ## Build and flash for production
-./build*app.sh gpio*test Release
-./flash*app.sh flash gpio*test Release --log production*deploy
+./build_app.sh gpio_test Release
+./flash_app.sh flash gpio_test Release --log production_deploy
 
 ## Expected result:
 ## - Optimized firmware flashed
@@ -372,45 +372,45 @@ gpio*test*Release*20250115*143022.log
 #### **3. Portable Flash Usage**
 ```bash
 ## Default behavior (scripts in project/scripts/)
-./flash*app.sh flash*monitor gpio*test Release
+./flash_app.sh flash_monitor gpio_test Release
 
 ## Portable usage with --project-path
-./flash*app.sh --project-path /path/to/project flash*monitor gpio*test Release
-./flash*app.sh --project-path ../project flash adc*test Debug --log
+./flash_app.sh --project-path /path/to/project flash_monitor gpio_test Release
+./flash_app.sh --project-path ../project flash adc_test Debug --log
 
 ## Environment variable usage
-export PROJECT*PATH=/path/to/project
-./flash*app.sh flash*monitor gpio*test Release
+export PROJECT_PATH=/path/to/project
+./flash_app.sh flash_monitor gpio_test Release
 
 ## Multiple project support
-./flash*app.sh --project-path ~/projects/robot-controller flash*monitor gpio*test Release
-./flash*app.sh --project-path ~/projects/sensor-node flash adc*test Debug
+./flash_app.sh --project-path ~/projects/robot-controller flash_monitor gpio_test Release
+./flash_app.sh --project-path ~/projects/sensor-node flash adc_test Debug
 ```text
 
 #### **4. Debugging Workflow**
 ```bash
 ## Monitor existing firmware
-./flash*app.sh monitor --log debug*session
+./flash_app.sh monitor --log debug_session
 
 ## Search for issues
-./manage*logs.sh search "ERROR"
-./manage*logs.sh search "WARNING"
+./manage_logs.sh search "ERROR"
+./manage_logs.sh search "WARNING"
 
 ## Analyze log patterns
-./manage*logs.sh stats
+./manage_logs.sh stats
 ```text
 
 #### **4. Size Analysis Workflow**
 ```bash
 ## Analyze firmware size before deployment
-./flash*app.sh size gpio*test Release
+./flash_app.sh size gpio_test Release
 
 ## Check memory usage for optimization
-./flash*app.sh size gpio*test Debug
+./flash_app.sh size gpio_test Debug
 
 ## Compare sizes between versions
-./flash*app.sh size gpio*test Release release/v5.5
-./flash*app.sh size gpio*test Release release/v5.4
+./flash_app.sh size gpio_test Release release/v5.5
+./flash_app.sh size gpio_test Release release/v5.4
 
 ## Expected result:
 ## - Comprehensive size analysis
@@ -426,23 +426,23 @@ export PROJECT*PATH=/path/to/project
 ## Flash to multiple devices
 for port in /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2; do
     export ESPPORT="$port"
-    ./flash*app.sh flash gpio*test Release --log "deploy*${port}"
+    ./flash_app.sh flash gpio_test Release --log "deploy*${port}"
 done
 ```text
 
 #### **2. Conditional Flash Operations**
 ```bash
 ## Flash only if build is newer
-if [ "build*gpio*test*Release/gpio*test.bin" -nt "last*flash" ]; then
-    ./flash*app.sh flash gpio*test Release --log
-    touch last*flash
+if [ "build_gpio_test_Release/gpio_test.bin" -nt "last_flash" ]; then
+    ./flash_app.sh flash gpio_test Release --log
+    touch last_flash
 fi
 ```text
 
 #### **3. Automated Testing Flash**
 ```bash
 ## Flash for automated testing
-./flash*app.sh flash gpio*test Release --log "test*$(date +%Y%m%d*%H%M%S)"
+./flash_app.sh flash gpio_test Release --log "test*$(date +%Y%m%d*%H%M%S)"
 
 ## Run automated tests
 ## Monitor test results
@@ -454,8 +454,8 @@ fi
 #### **Build-Flash Integration**
 ```bash
 ## Combined build and flash
-./build*app.sh gpio*test Release && \
-./flash*app.sh flash*monitor gpio*test Release --log
+./build_app.sh gpio_test Release && \
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Automatic build verification
 - Ensures build exists before flashing
@@ -469,12 +469,12 @@ fi
 - name: Flash ESP32 Application
   run: |
     cd examples/esp32
-    ./scripts/flash*app.sh flash gpio*test Release --log ci*deploy
+    ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Verify Flash
   run: |
-    ./scripts/flash*app.sh monitor --log ci*verify
-    timeout 30s ./scripts/flash*app.sh monitor --log ci*verify
+    ./scripts/flash_app.sh monitor --log ci_verify
+    timeout 30s ./scripts/flash_app.sh monitor --log ci_verify
 ```text
 
 ## 🔍 **Troubleshooting and Debugging**
@@ -487,14 +487,14 @@ fi
 **Solutions**:
 ```bash
 ## Check device connections
-./detect*ports.sh --verbose
+./detect_ports.sh --verbose
 
 ## Test port connectivity
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Verify USB drivers
 lsusb | grep -i esp
-system*profiler SPUSBDataType | grep -i esp
+system_profiler SPUSBDataType | grep -i esp
 ```text
 
 #### **2. Permission Issues**
@@ -519,13 +519,13 @@ sudo nano /etc/udev/rules.d/99-esp32.rules
 **Solutions**:
 ```bash
 ## Check device connection
-./detect*ports.sh --test-connection
+./detect_ports.sh --test-connection
 
 ## Verify firmware file
-ls -la build*gpio*test*Release/*.bin
+ls -la build_gpio_test_Release/*.bin
 
 ## Check device mode
-./flash*app.sh monitor --log flash*debug
+./flash_app.sh monitor --log flash_debug
 
 ## Reset device and retry
 ## Hold BOOT button during flash
@@ -537,10 +537,10 @@ ls -la build*gpio*test*Release/*.bin
 **Solutions**:
 ```bash
 ## Check baud rate compatibility
-./flash*app.sh monitor --log
+./flash_app.sh monitor --log
 
 ## Verify device is running
-./flash*app.sh monitor --log debug*monitor
+./flash_app.sh monitor --log debug_monitor
 
 ## Check for bootloader mode
 ## Press RESET button to restart
@@ -552,11 +552,11 @@ ls -la build*gpio*test*Release/*.bin
 ```bash
 ## Enable debug mode
 export DEBUG=1
-./flash*app.sh flash*monitor gpio*test Release --log
+./flash_app.sh flash_monitor gpio_test Release --log
 
 ## Enable verbose ESP-IDF output
-export IDF*VERBOSE=1
-./flash*app.sh flash gpio*test Release --log
+export IDF_VERBOSE=1
+./flash_app.sh flash gpio_test Release --log
 ```text
 
 #### **Debug Information Available**
@@ -571,24 +571,24 @@ export IDF*VERBOSE=1
 #### **Flash Log Analysis**
 ```bash
 ## Check flash operation logs
-./manage*logs.sh latest
-./manage*logs.sh search "ERROR"
-./manage*logs.sh search "FAILED"
+./manage_logs.sh latest
+./manage_logs.sh search "ERROR"
+./manage_logs.sh search "FAILED"
 
 ## Analyze flash patterns
-./manage*logs.sh search "Flash completed"
-./manage*logs.sh search "Upload failed"
+./manage_logs.sh search "Flash completed"
+./manage_logs.sh search "Upload failed"
 ```text
 
 #### **Monitor Log Analysis**
 ```bash
 ## Check monitor session logs
-./manage*logs.sh search "monitor"
-./manage*logs.sh search "serial"
+./manage_logs.sh search "monitor"
+./manage_logs.sh search "serial"
 
 ## Analyze device output
-./manage*logs.sh search "ESP32"
-./manage*logs.sh search "boot"
+./manage_logs.sh search "ESP32"
+./manage_logs.sh search "boot"
 ```text
 
 ## 📚 **Reference and Examples**
@@ -597,13 +597,13 @@ export IDF*VERBOSE=1
 
 #### **Flash Script Parameters**
 ```bash
-./flash*app.sh [operation] [app*type] [build*type] [idf*version] [options]
+./flash_app.sh [operation] [app_type] [build_type] [idf_version] [options]
 
 ## Parameters:
-##   operation    - What to do (flash, monitor, flash*monitor, list)
-##   app*type     - Application to flash (from app*config.yml)
-##   build*type   - Build type to flash (Debug, Release)
-##   idf*version  - ESP-IDF version used for build
+##   operation    - What to do (flash, monitor, flash_monitor, list)
+##   app_type     - Application to flash (from app_config.yml)
+##   build_type   - Build type to flash (Debug, Release)
+##   idf_version  - ESP-IDF version used for build
 ##   options      - Flash options (--log, --port, etc.)
 ```text
 
@@ -617,13 +617,13 @@ export IDF*VERBOSE=1
 #### **Environment Variables**
 ```bash
 ## Override default application
-export CONFIG*DEFAULT*APP="gpio*test"
+export CONFIG_DEFAULT_APP="gpio_test"
 
 ## Override default build type
-export CONFIG*DEFAULT*BUILD*TYPE="Debug"
+export CONFIG_DEFAULT_BUILD_TYPE="Debug"
 
 ## Override default ESP-IDF version
-export CONFIG*DEFAULT*IDF*VERSION="release/v5.4"
+export CONFIG_DEFAULT_IDF_VERSION="release/v5.4"
 
 ## Override port detection
 export ESPPORT="/dev/ttyUSB0"
@@ -636,35 +636,35 @@ export DEBUG=1
 
 #### **Minimal Flash Configuration**
 ```yaml
-## app*config.yml minimal configuration
+## app_config.yml minimal configuration
 metadata:
-  default*app: "gpio*test"
-  default*build*type: "Release"
+  default_app: "gpio_test"
+  default_build_type: "Release"
   target: "esp32c6"
 
 apps:
-  gpio*test:
-    source*file: "GpioComprehensiveTest.cpp"
-    build*types: ["Debug", "Release"]
+  gpio_test:
+    source_file: "GpioComprehensiveTest.cpp"
+    build_types: ["Debug", "Release"]
 ```text
 
 #### **Advanced Flash Configuration**
 ```yaml
-## app*config.yml advanced configuration
+## app_config.yml advanced configuration
 metadata:
-  default*app: "gpio*test"
-  default*build*type: "Release"
+  default_app: "gpio_test"
+  default_build_type: "Release"
   target: "esp32c6"
-  idf*versions: ["release/v5.5", "release/v5.4"]
+  idf_versions: ["release/v5.5", "release/v5.4"]
 
 apps:
-  gpio*test:
+  gpio_test:
     description: "GPIO testing application"
-    source*file: "GpioComprehensiveTest.cpp"
+    source_file: "GpioComprehensiveTest.cpp"
     category: "peripheral"
-    build*types: ["Debug", "Release"]
-    idf*versions: ["release/v5.5"]
-    ci*enabled: true
+    build_types: ["Debug", "Release"]
+    idf_versions: ["release/v5.5"]
+    ci_enabled: true
     featured: true
 ```text
 
@@ -673,13 +673,13 @@ apps:
 #### **CMake Integration**
 ```cmake
 ## CMakeLists.txt flash integration
-cmake*minimum*required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 ## Flash target integration
-add*custom*target(flash
-    COMMAND ${CMAKE*SOURCE*DIR}/scripts/flash*app.sh flash ${APP*TYPE} ${BUILD*TYPE}
-    DEPENDS ${PROJECT*NAME}
-    COMMENT "Flashing ${APP*TYPE} ${BUILD*TYPE} to device"
+add_custom_target(flash
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/flash_app.sh flash ${APP_TYPE} ${BUILD_TYPE}
+    DEPENDS ${PROJECT_NAME}
+    COMMENT "Flashing ${APP_TYPE} ${BUILD_TYPE} to device"
 )
 ```text
 
@@ -689,12 +689,12 @@ add*custom*target(flash
 - name: Flash ESP32 Application
   run: |
     cd examples/esp32
-    ./scripts/flash*app.sh flash gpio*test Release --log ci*deploy
+    ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Verify Flash
   run: |
-    ./scripts/flash*app.sh monitor --log ci*verify
-    timeout 30s ./scripts/flash*app.sh monitor --log ci*verify
+    ./scripts/flash_app.sh monitor --log ci_verify
+    timeout 30s ./scripts/flash_app.sh monitor --log ci_verify
 ```text
 
 ### **Best Practices**
@@ -725,5 +725,5 @@ add*custom*target(flash
 
 ---
 
-**Navigation**: [← Previous: Build System](README*BUILD*SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Configuration System →](README*CONFIG*SYSTEM.md)
+**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
+| [Next: Configuration System →](README_CONFIG_SYSTEM.md)
