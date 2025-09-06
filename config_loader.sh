@@ -151,16 +151,27 @@ if [[ -n "$PROJECT_PATH" ]]; then
         PROJECT_DIR="$PROJECT_PATH"
     else
         # Relative path - resolve from current working directory
-        PROJECT_DIR="$(cd "$PROJECT_PATH" && pwd)"
+        echo "DEBUG: Resolving relative PROJECT_PATH: $PROJECT_PATH from $(pwd)" >&2
+        if ! PROJECT_DIR="$(cd "$PROJECT_PATH" && pwd)"; then
+            echo "ERROR: Cannot resolve PROJECT_PATH: $PROJECT_PATH" >&2
+            echo "Current working directory: $(pwd)" >&2
+            echo "Directory contents:" >&2
+            ls -la . >&2
+            return 1
+        fi
+        echo "DEBUG: Resolved PROJECT_DIR to: $PROJECT_DIR" >&2
     fi
     
     # Set config file path within the project directory
     CONFIG_FILE="$PROJECT_DIR/app_config.yml"
+    echo "DEBUG: Looking for config file at: $CONFIG_FILE" >&2
     
     # Validate that the config file exists
     if [[ ! -f "$CONFIG_FILE" ]]; then
         echo "ERROR: PROJECT_PATH specified but app_config.yml not found: $CONFIG_FILE" >&2
         echo "Please check the project path or unset PROJECT_PATH to use default location." >&2
+        echo "Directory contents of $PROJECT_DIR:" >&2
+        ls -la "$PROJECT_DIR" >&2
         return 1
     fi
 else
