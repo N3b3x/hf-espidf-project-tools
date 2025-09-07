@@ -46,12 +46,12 @@ intelligent automation for common development tasks.
 ## 🏗️ **Architecture and Design**
 
 ### **New System Architecture**
-```text
+```
 Utility Scripts → Environment Detection → Setup Selection → Tool Installation → Validation
       ↓              ↓                    ↓                ↓                ↓
 Port Detection   Local vs CI        setup_repo.sh      Dependency Mgmt   Environment
 & Troubleshooting  Environment       vs ESP-IDF CI      & Installation    Verification
-```text
+```
 
 ### **Environment Setup Architecture**
 
@@ -90,7 +90,7 @@ Port Detection   Local vs CI        setup_repo.sh      Dependency Mgmt   Environ
 │  • CI workflows use ESP-IDF CI action directly                              │
 │  • Local development uses setup_repo.sh for environment                     │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
+```
 
 ### **Component Interaction**
 - **Port Detection**: Cross-platform ESP32 device identification
@@ -126,7 +126,7 @@ CDC ACM: USB CDC ACM devices
 
 ## Automatic detection
 ./detect_ports.sh --verbose
-```text
+```
 
 #### **macOS Port Detection**
 The system adapts to macOS-specific device patterns:
@@ -141,7 +141,7 @@ system_profiler SPUSBDataType | grep -i esp
 
 ## Automatic detection
 ./detect_ports.sh --verbose
-```text
+```
 
 #### **Windows (WSL2) Port Detection**
 The system provides WSL2 compatibility:
@@ -155,7 +155,7 @@ lsusb for device identification
 
 ## Port accessibility testing
 ./detect_ports.sh --test-connection
-```text
+```
 
 ### **Port Validation and Testing**
 
@@ -169,7 +169,7 @@ lsusb for device identification
 
 ## Check port permissions and status
 ./detect_ports.sh --verbose --test-connection
-```text
+```
 
 #### **Permission Management**
 The system handles common permission issues:
@@ -186,7 +186,7 @@ sudo usermod -a -G tty $USER
 ## Permission verification
 ls -la /dev/ttyUSB*
 groups $USER
-```text
+```
 
 ### **Troubleshooting Capabilities**
 
@@ -197,7 +197,7 @@ groups $USER
 - Port permission problems
 - Device enumeration issues
 - Connection stability problems
-```text
+```
 
 #### **Problem Resolution**
 ```bash
@@ -206,7 +206,7 @@ groups $USER
 - Driver installation guidance
 - Port configuration
 - Connection testing
-```text
+```
 
 ## ⚙️ **Environment Setup and Automation**
 
@@ -227,7 +227,7 @@ The system now provides two distinct setup approaches optimized for different us
 - yq (YAML processor)
 - Development aliases and environment variables
 - Complete development toolchain
-```text
+```
 
 #### **Direct ESP-IDF CI Action - Simplified CI/CD**
 ```bash
@@ -243,7 +243,7 @@ The system now provides two distinct setup approaches optimized for different us
 
 ## NEW: Required environment variables
 - ESP32_PROJECT_PATH: Path to ESP32 project directory (e.g., 'examples/esp32')
-```text
+```
 
 ### **Environment-Specific Features**
 
@@ -256,7 +256,7 @@ The system now provides two distinct setup approaches optimized for different us
 - Progress feedback
 - Completion verification
 - User guidance and troubleshooting
-```text
+```
 
 #### **CI/CD Environment Features**
 ```bash
@@ -268,7 +268,7 @@ The system now provides two distinct setup approaches optimized for different us
 - Build directory preparation
 - ESP-IDF integration with CI actions
 - Reliable tool installation (no caching issues)
-```text
+```
 
 ### **Setup Script Selection Guide**
 
@@ -298,7 +298,7 @@ The system now provides two distinct setup approaches optimized for different us
 - Tool installation methods
 - Path handling
 - Permission management
-```text
+```
 
 #### **Dependency Management**
 ```bash
@@ -308,7 +308,7 @@ The system now provides two distinct setup approaches optimized for different us
 - Installation method selection
 - Fallback mechanisms
 - Environment-specific optimization
-```text
+```
 
 ## 🔧 **Configuration and Information Tools**
 
@@ -325,7 +325,7 @@ The system now provides two distinct setup approaches optimized for different us
 - Application existence verification
 - Source file path validation
 - Configuration integrity checking
-```text
+```
 
 #### **Configuration Integration**
 ```bash
@@ -340,7 +340,7 @@ execute_process(
 - Source file resolution
 - Configuration validation
 - Build parameter extraction
-```text
+```
 
 ### **Information Extraction**
 
@@ -353,7 +353,7 @@ execute_process(
 - ESP-IDF version compatibility
 - CI/CD configuration
 - Featured status
-```text
+```
 
 #### **System Information**
 ```bash
@@ -363,7 +363,7 @@ execute_process(
 - Version information
 - Path configurations
 - Environment variables
-```text
+```
 
 ## 🚀 **Usage Examples and Patterns**
 
@@ -381,7 +381,7 @@ execute_process(
 4. Environment configuration
 5. Verification and testing
 6. User guidance and troubleshooting
-```text
+```
 
 #### **2. CI/CD Environment Setup**
 ```bash
@@ -394,7 +394,7 @@ execute_process(
 4. Cache statistics
 5. Build directory preparation
 6. ESP-IDF CI action integration
-```text
+```
 
 #### **3. Environment Verification**
 ```bash
@@ -407,7 +407,7 @@ execute_process(
 - Path configuration
 - Environment variables
 - Functionality testing
-```text
+```
 
 ### **Port Detection Workflows**
 
@@ -420,7 +420,7 @@ execute_process(
 - Available ESP32 devices
 - Port accessibility status
 - Basic device information
-```text
+```
 
 #### **2. Detailed Port Analysis**
 ```bash
@@ -432,7 +432,7 @@ execute_process(
 - USB device details
 - Permission status
 - Driver information
-```text
+```
 
 #### **3. Port Connectivity Testing**
 ```bash
@@ -443,7 +443,7 @@ execute_process(
 - Port accessibility verification
 - Connection stability testing
 - Error detection and reporting
-```text
+```
 
 ### **Configuration Management Workflows**
 
@@ -459,7 +459,7 @@ execute_process(
 - Configuration validation
 - Documentation generation
 - CI/CD pipeline configuration
-```text
+```
 
 #### **2. Configuration Validation**
 ```bash
@@ -472,7 +472,7 @@ execute_process(
 - Source file verification
 - Configuration integrity
 - Dependency validation
-```text
+```
 
 ### **Troubleshooting Workflows**
 
@@ -486,7 +486,7 @@ execute_process(
 2. Automatic resolution attempts
 3. Manual resolution guidance
 4. Verification testing
-```text
+```
 
 #### **2. Environment Problem Resolution**
 ```bash
@@ -499,7 +499,7 @@ execute_process(
 3. Tool reinstallation
 4. Configuration repair
 5. Verification testing
-```text
+```
 
 #### **3. Environment-Specific Troubleshooting**
 ```bash
@@ -508,7 +508,7 @@ execute_process(
 
 ## Environment verification
 ./setup_repo.sh --verify  # Local
-```text
+```
 
 ## 🔍 **Troubleshooting and Debugging**
 
@@ -528,7 +528,7 @@ system_profiler SPUSBDataType | grep -i esp
 
 ## Check device enumeration
 dmesg | grep -i usb
-```text
+```
 
 #### **2. Port Permission Issues**
 **Problem**: Port access denied
@@ -544,7 +544,7 @@ sudo usermod -a -G dialout,tty $USER
 
 ## Create udev rules
 sudo nano /etc/udev/rules.d/99-esp32.rules
-```text
+```
 
 #### **3. Port Connectivity Issues**
 **Problem**: Port not accessible or unstable
@@ -560,7 +560,7 @@ sudo nano /etc/udev/rules.d/99-esp32.rules
 ## Verify device mode
 ## Check for bootloader mode
 ## Reset device if necessary
-```text
+```
 
 ### **Environment Setup Issues**
 
@@ -576,7 +576,7 @@ sudo nano /etc/udev/rules.d/99-esp32.rules
 
 ## Check script help for details
 ./setup_repo.sh --help
-```text
+```
 
 #### **2. Dependency Installation Failures**
 **Problem**: Required tools not installed
@@ -591,7 +591,7 @@ sudo apt-get install git cmake ninja-build ccache
 
 ## Verify installation
 ./setup_repo.sh --verify  # Local
-```text
+```
 
 #### **3. ESP-IDF Installation Issues**
 **Problem**: ESP-IDF not properly installed
@@ -607,7 +607,7 @@ sudo apt-get install git cmake ninja-build ccache
 ## Verify environment
 source ~/esp/esp-idf/export.sh
 idf.py --version
-```text
+```
 
 #### **4. Permission and Path Issues**
 **Problem**: Insufficient permissions or incorrect paths
@@ -625,7 +625,7 @@ chmod -R 755 ~/.espressif/
 ## Verify paths
 echo $IDF_PATH
 echo $PATH
-```text
+```
 
 ### **Debug and Verbose Mode**
 
@@ -639,7 +639,7 @@ export VERBOSE=1
 ./detect_ports.sh --verbose
 ./setup_repo.sh --debug
 ./get_app_info.py --verbose
-```text
+```
 
 #### **Debug Information Available**
 ```bash
@@ -649,10 +649,10 @@ export VERBOSE=1
 - Permission checking details
 - Installation process information
 - Configuration loading details
-- Error context and resolution
+- Error con and resolution
 - Environment setup process details
 - CI vs local environment differences
-```text
+```
 
 ## 📚 **Reference and Examples**
 
@@ -666,7 +666,7 @@ export VERBOSE=1
 ##   --verbose              - Show detailed device information
 ##   --test-connection     - Test port connectivity
 ##   --help, -h           - Show usage information
-```text
+```
 
 #### **Setup Commands**
 ```bash
@@ -683,7 +683,7 @@ export VERBOSE=1
 ##   --interactive        - Interactive setup mode
 ##   --non-interactive   - Non-interactive setup mode
 
-```text
+```
 
 #### **Configuration Commands**
 ```bash
@@ -694,7 +694,7 @@ export VERBOSE=1
 ##   source_file <app_type>  - Get source file path for application
 ##   validate <app_type>     - Validate application configuration
 ##   --help, -h             - Show usage information
-```text
+```
 
 ### **Environment Variables**
 
@@ -704,7 +704,7 @@ export VERBOSE=1
 export PORT_DETECTION_VERBOSE=1    # Enable verbose output
 export PORT_TEST_TIMEOUT=5         # Set connection test timeout
 export PORT_SCAN_TIMEOUT=3         # Set port scan timeout
-```text
+```
 
 #### **Setup Configuration Variables**
 ```bash
@@ -719,7 +719,7 @@ export ESP32_PROJECT_PATH="examples/esp32"  # Project path
 export IDF_TARGET="esp32c6"        # Target MCU
 export BUILD_TYPE="Release"        # Build type
 export APP_TYPE="gpio_test"        # Application type
-```text
+```
 
 #### **Debug Configuration Variables**
 ```bash
@@ -728,7 +728,7 @@ export DEBUG=1                     # Enable debug mode
 export VERBOSE=1                   # Enable verbose output
 export SETUP_DEBUG=1               # Enable setup debug mode
 export PORT_DEBUG=1                # Enable port debug mode
-```text
+```
 
 ### **Configuration Examples**
 
@@ -741,7 +741,7 @@ export PORT_DEBUG=1                # Enable port debug mode
 - Automatic ESP32 device detection
 - Basic port information display
 - Error reporting for issues
-```text
+```
 
 #### **Advanced Port Detection Configuration**
 ```bash
@@ -753,7 +753,7 @@ export PORT_DEBUG=1                # Enable port debug mode
 - Port connectivity testing
 - Permission verification
 - Troubleshooting guidance
-```text
+```
 
 #### **Environment Setup Configuration**
 
@@ -768,7 +768,7 @@ export PORT_DEBUG=1                # Enable port debug mode
 - Tool configuration
 - Environment verification
 - Interactive user guidance
-```text
+```
 
 #### **CI/CD Environment Setup**
 ```bash
@@ -781,7 +781,7 @@ export PORT_DEBUG=1                # Enable port debug mode
 - Build directory preparation
 - Non-interactive operation
 - CI-specific optimizations
-```text
+```
 
 ### **Integration Examples**
 
@@ -801,7 +801,7 @@ add_custom_target(validate_config
     COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/get_app_info.py validate ${APP_TYPE}
     COMMENT "Validating application configuration"
 )
-```text
+```
 
 #### **CI/CD Integration**
 
@@ -822,7 +822,7 @@ add_custom_target(validate_config
   run: |
     cd examples/esp32
     python3 ./scripts/get_app_info.py validate gpio_test
-```text
+```
 
 #### **GitLab CI Integration**
 ```yaml
@@ -834,7 +834,7 @@ setup_environment:
   artifacts:
     paths:
       - examples/esp32/build*/
-```text
+```
 
 #### **Jenkins Pipeline Integration**
 ```groovy
@@ -858,7 +858,7 @@ pipeline {
     }
   }
 }
-```text
+```
 
 #### **Automation Scripts**
 ```bash
@@ -892,7 +892,7 @@ echo "Validating configuration..."
 python3 ./get_app_info.py validate gpio_test
 
 echo "Setup complete!"
-```text
+```
 
 ### **Best Practices**
 
