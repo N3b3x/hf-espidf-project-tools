@@ -445,18 +445,18 @@ echo "======================================================"
 echo "BUILD SIZE INFORMATION"
 echo "======================================================"
 
-# Print and capture size in one call
-if idf.py -B "$BUILD_DIR" size | tee "$BUILD_DIR/size.txt" >/dev/null; then
+# Print and capture size in one call - make this non-fatal
+if idf.py -B "$BUILD_DIR" size | tee "$BUILD_DIR/size.txt" >/dev/null 2>&1; then
   # If supported, also emit JSON for machine parsing
   if idf.py -B "$BUILD_DIR" size-json >/dev/null 2>&1; then
-    idf.py -B "$BUILD_DIR" size-json > "$BUILD_DIR/size.json" || true
+    idf.py -B "$BUILD_DIR" size-json > "$BUILD_DIR/size.json" 2>/dev/null || true
   fi
 
   # (Optional) map/ELF pointers to aid later analysis
-  ELF_FILE="$(find "$BUILD_DIR" -maxdepth 1 -name '*.elf' | head -n1 || true)"
-  MAP_FILE="$(find "$BUILD_DIR" -maxdepth 1 -name '*.map' | head -n1 || true)"
-  [ -n "$ELF_FILE" ] && echo "ELF_FILE=$ELF_FILE" >> "$BUILD_DIR/size.meta"
-  [ -n "$MAP_FILE" ] && echo "MAP_FILE=$MAP_FILE" >> "$BUILD_DIR/size.meta"
+  ELF_FILE="$(find "$BUILD_DIR" -maxdepth 1 -name '*.elf' 2>/dev/null | head -n1 || true)"
+  MAP_FILE="$(find "$BUILD_DIR" -maxdepth 1 -name '*.map' 2>/dev/null | head -n1 || true)"
+  [ -n "$ELF_FILE" ] && echo "ELF_FILE=$ELF_FILE" >> "$BUILD_DIR/size.meta" 2>/dev/null || true
+  [ -n "$MAP_FILE" ] && echo "MAP_FILE=$MAP_FILE" >> "$BUILD_DIR/size.meta" 2>/dev/null || true
 
   # Helpful metadata for your PR summarizer job
   {
@@ -466,7 +466,7 @@ if idf.py -B "$BUILD_DIR" size | tee "$BUILD_DIR/size.txt" >/dev/null; then
     echo "TARGET=$IDF_TARGET"
     echo "PROJECT_NAME=$PROJECT_NAME"
     echo "BUILD_DIR=$BUILD_DIR"
-  } > "$BUILD_DIR/size.info"
+  } > "$BUILD_DIR/size.info" 2>/dev/null || true
 else
   echo "WARNING: Could not display size information"
 fi
