@@ -473,7 +473,9 @@ install_esp_idf() {
     
     # Install each required ESP-IDF version
     for idf_version in "${idf_versions[@]}"; do
-        local idf_dir="$esp_dir/esp-idf-${idf_version//\//_}"
+        # Use consistent sanitization method
+        local sanitized_version=$(echo "$idf_version" | sed 's/[^a-zA-Z0-9._-]/-/g')
+        local idf_dir="$esp_dir/esp-idf-${sanitized_version}"
     
     if [[ -d "$idf_dir" ]]; then
             print_status "ESP-IDF $idf_version already exists, updating..."
@@ -496,11 +498,11 @@ install_esp_idf() {
     else
             print_status "Cloning ESP-IDF $idf_version..."
         cd "$esp_dir"
-        if ! git clone --recursive --branch "$idf_version" https://github.com/espressif/esp-idf.git "esp-idf-${idf_version//\//_}"; then
+        if ! git clone --recursive --branch "$idf_version" https://github.com/espressif/esp-idf.git "$idf_dir"; then
             print_error "Failed to clone ESP-IDF $idf_version"
             return 1
         fi
-        cd "esp-idf-${idf_version//\//_}"
+        cd "$idf_dir"
         # Extra safety to keep submodules in sync even after clone
         if ! git submodule sync --recursive; then
             print_warning "Failed to sync submodules, continuing anyway..."
@@ -521,7 +523,8 @@ install_esp_idf() {
     # Create symlink for default version (first in the list)
     local default_idf_dir="$esp_dir/esp-idf"
     local first_version="${idf_versions[0]}"
-    local first_idf_dir="$esp_dir/esp-idf-${first_version//\//_}"
+    local first_sanitized=$(echo "$first_version" | sed 's/[^a-zA-Z0-9._-]/-/g')
+    local first_idf_dir="$esp_dir/esp-idf-${first_sanitized}"
     
     if [[ -L "$default_idf_dir" ]]; then
         rm "$default_idf_dir"
@@ -531,7 +534,8 @@ install_esp_idf() {
     
     # If IDF_VERSION is set, override the symlink to point to that version
     if [[ -n "$IDF_VERSION" ]]; then
-        local ci_idf_dir="$esp_dir/esp-idf-${IDF_VERSION//\//_}"
+        local ci_sanitized=$(echo "$IDF_VERSION" | sed 's/[^a-zA-Z0-9._-]/-/g')
+        local ci_idf_dir="$esp_dir/esp-idf-${ci_sanitized}"
         if [[ -d "$ci_idf_dir" ]]; then
             if [[ -L "$default_idf_dir" ]]; then
                 rm "$default_idf_dir"
@@ -566,7 +570,9 @@ export_esp_idf_version() {
     fi
     
     local esp_dir="$HOME/esp"
-    local idf_dir="$esp_dir/esp-idf-${idf_version//\//_}"
+    # Use the same sanitization as installation function
+    local sanitized_version=$(echo "$idf_version" | sed 's/[^a-zA-Z0-9._-]/-/g')
+    local idf_dir="$esp_dir/esp-idf-${sanitized_version}"
     
     if [[ ! -d "$idf_dir" ]]; then
         if [[ "$auto_install" == "true" ]]; then
@@ -720,7 +726,7 @@ list_esp_idf_versions() {
     local found_versions=0
     for dir in "$esp_dir"/esp-idf-*; do
         if [[ -d "$dir" ]]; then
-            local version_name=$(basename "$dir" | sed 's/esp-idf-//' | sed 's/_/\//')
+            local version_name=$(basename "$dir" | sed 's/esp-idf-//' | sed 's/-/\//')
             local is_default=""
             
             # Check if this is the default symlink

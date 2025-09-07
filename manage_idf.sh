@@ -136,7 +136,8 @@ install_idf_versions() {
         print_status "Installing ESP-IDF $version..."
         
         local esp_dir="$HOME/esp"
-        local idf_dir="$esp_dir/esp-idf-${version//\//_}"
+        local sanitized_version=$(echo "$version" | sed 's/[^a-zA-Z0-9._-]/-/g')
+        local idf_dir="$esp_dir/esp-idf-${sanitized_version}"
         
         if [[ -d "$idf_dir" ]] && [[ "$1" != "--force" ]]; then
             print_warning "ESP-IDF $version already exists at $idf_dir"
@@ -152,8 +153,8 @@ install_idf_versions() {
         
         # Clone and install
         cd "$esp_dir"
-        git clone --recursive --branch "$version" https://github.com/espressif/esp-idf.git "esp-idf-${version//\//_}"
-        cd "esp-idf-${version//\//_}"
+        git clone --recursive --branch "$version" https://github.com/espressif/esp-idf.git "$idf_dir"
+        cd "$idf_dir"
         git submodule sync --recursive
         git submodule update --init --recursive
         ./install.sh esp32c6
