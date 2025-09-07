@@ -382,13 +382,26 @@ else
     fi
 fi
 
+# Get source file from configuration and export as environment variable
+echo "Discovering source file for app type: $APP_TYPE"
+SOURCE_FILE=$(python3 "$SCRIPT_DIR/get_app_info.py" source_file "$APP_TYPE")
+if [ $? -ne 0 ] || [ -z "$SOURCE_FILE" ]; then
+    echo "ERROR: Failed to get source file for APP_TYPE: $APP_TYPE"
+    exit 1
+fi
+echo "Source file: $SOURCE_FILE"
+
+# Export source file as environment variable for CMakeLists.txt
+export APP_SOURCE_FILE="$SOURCE_FILE"
+echo "APP_SOURCE_FILE=$SOURCE_FILE"
+
 # Configure and build with proper error handling
 echo "Configuring project for $IDF_TARGET..."
 
 # Change to project directory before running idf.py commands
 cd "$PROJECT_DIR"
 
-if ! idf.py -B "$BUILD_DIR" -D CMAKE_BUILD_TYPE="$BUILD_TYPE" -D BUILD_TYPE="$BUILD_TYPE" -D APP_TYPE="$APP_TYPE" -D IDF_CCACHE_ENABLE="$USE_CCACHE" reconfigure; then
+if ! idf.py -B "$BUILD_DIR" -D CMAKE_BUILD_TYPE="$BUILD_TYPE" -D BUILD_TYPE="$BUILD_TYPE" -D APP_TYPE="$APP_TYPE" -D APP_SOURCE_FILE="$SOURCE_FILE" -D IDF_CCACHE_ENABLE="$USE_CCACHE" reconfigure; then
     echo "ERROR: Configuration failed"
     exit 1
 fi

@@ -35,6 +35,8 @@ and optimized build processes for ESP32 applications.
 - **Cross-Platform**: Consistent behavior across Linux and macOS
 - **Build Optimization**: ccache integration and incremental build support
 - **Error Prevention**: Prevents incompatible build configurations with clear error messages
+- **🆕 Ultra-Minimal CMakeLists.txt**: No Python dependencies or complex source file discovery in CMake
+- **🆕 Environment Variable Approach**: `build_app.sh` handles all complexity, CMakeLists.txt stays simple
 
 ### **Key Capabilities**
 - ESP-IDF version compatibility validation
@@ -250,8 +252,8 @@ The build system automatically validates:
 
 ### **Build Execution Flow**
 ```text
-1. Configuration Loading → 2. Parameter Validation → 3. Environment Setup → 4. Build Execution → 5. Output Generation
-```yaml
+1. Configuration Loading → 2. Source File Discovery → 3. Parameter Validation → 4. Environment Setup → 5. Build Execution → 6. Output Generation
+```
 
 #### **1. Configuration Loading**
 - Load `app_config.yml` configuration file
@@ -259,25 +261,33 @@ The build system automatically validates:
 - Extract ESP-IDF version compatibility information
 - Load build configuration and optimization settings
 
-#### **2. Parameter Validation**
+#### **2. Source File Discovery**
+- Get source file name from `app_config.yml` using `get_app_info.py`
+- Export source file as `APP_SOURCE_FILE` environment variable
+- Validate source file exists in project directory
+- Pass source file to CMakeLists.txt via `idf.py` parameters
+
+#### **3. Parameter Validation**
 - Validate ESP-IDF version compatibility
 - Check build type support for application
 - Verify application exists in configuration
 - Validate required dependencies and tools
 
-#### **3. Environment Setup**
+#### **4. Environment Setup**
 - Source ESP-IDF environment variables
 - Set target MCU configuration
 - Configure build directory structure
 - Initialize build cache and optimization
 
-#### **4. Build Execution**
+#### **5. Build Execution**
+- Call `idf.py` with `-D APP_SOURCE_FILE=source_file` parameter
+- CMakeLists.txt uses `APP_SOURCE_FILE` environment variable
 - Execute ESP-IDF build commands
 - Monitor build progress and output
 - Handle build errors and warnings
 - Generate build artifacts and firmware
 
-#### **5. Output Generation**
+#### **6. Output Generation**
 - Create build output directory
 - Generate firmware binary files
 - Create build log and summary
@@ -702,21 +712,55 @@ build_config:
 
 ### **Integration Examples**
 
-#### **CMake Integration**
+#### **CMake Integration (Ultra-Minimal Approach)**
+
+**Project-Level CMakeLists.txt:**
 ```cmake
-## CMakeLists.txt integration
 cmake_minimum_required(VERSION 3.16)
 
-## Get app information from configuration
-execute_process(
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/get_app_info.py source_file ${APP_TYPE}
-    OUTPUT_VARIABLE APP_SOURCE_FILE
-    OUTPUT_STRIP_TRAILING_WHITESPACE
+# Define APP_TYPE with default value
+if(NOT DEFINED APP_TYPE)
+    set(APP_TYPE "ascii_art")
+endif()
+
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(esp32_iid_${APP_TYPE}_app)
+```
+
+**Component-Level CMakeLists.txt:**
+```cmake
+# Ultra-minimal setup - build_app.sh handles source file discovery
+# Get source file from environment variable set by build_app.sh
+if(NOT DEFINED APP_SOURCE_FILE)
+    message(FATAL_ERROR "APP_SOURCE_FILE not defined. Use build_app.sh to build.")
+endif()
+
+# Register component with source file from build_app.sh
+idf_component_register(
+    SRCS "${APP_SOURCE_FILE}"  # Source file from build_app.sh
+    INCLUDE_DIRS "."  # Add your own include directories as needed
+    REQUIRES driver esp_timer freertos  # Add your own requirements as needed
 )
 
-## Use app source file
-add_executable(${PROJECT_NAME} ${APP_SOURCE_FILE})
-```text
+# Add compile definitions for each example type
+target_compile_definitions(${COMPONENT_LIB} PRIVATE 
+    "EXAMPLE_TYPE_${APP_TYPE}=1"
+)
+```
+
+**How It Works:**
+- `build_app.sh` discovers source file from `app_config.yml` and exports `APP_SOURCE_FILE`
+- `build_app.sh` calls `idf.py` with `-D APP_SOURCE_FILE=source_file`
+- CMakeLists.txt simply uses the `APP_SOURCE_FILE` variable provided by the script
+- No Python dependencies or `execute_process` calls in CMakeLists.txt
+
+**Benefits of Ultra-Minimal Approach:**
+- ✅ **No Python Dependencies in CMake**: CMakeLists.txt doesn't need `get_app_info.py`
+- ✅ **Faster CMake Configuration**: No `execute_process` calls during CMake setup
+- ✅ **Centralized Logic**: All app selection logic in `build_app.sh`
+- ✅ **Clear Separation**: Script handles configuration, CMake handles building
+- ✅ **Error Prevention**: Prevents direct `idf.py` usage without proper setup
+- ✅ **CI-Optimized**: Perfect for CI workflows where script manages everything
 
 #### **CI/CD Integration**
 ```yaml
