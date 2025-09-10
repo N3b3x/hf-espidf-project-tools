@@ -58,8 +58,7 @@ app_config.yml → config_loader.sh → build_app.sh → ESP-IDF → Build Outpu
      ↓                    ↓              ↓           ↓         ↓
 Configuration    Validation &      Build Logic   Build    Firmware
 Definitions      Fallbacks        & Execution    Process  & Artifacts
-```text
-
+```
 ### **Component Interaction**
 - **`app_config.yml`**: Centralized configuration source
 - **`config_loader.sh`**: Configuration parsing and validation
@@ -90,7 +89,7 @@ combinations and provides clear guidance to users.
 
 ### **✅ OPTIMIZED Validation Flow**
 
-```text
+```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           BUILD REQUEST                                     │
 │  app: gpio_test, build_type: Release, idf_version: (unspecified)            │
@@ -132,7 +131,7 @@ combinations and provides clear guidance to users.
 │  → Show error with valid combinations                                       │
 │  → Provide helpful next steps                                               │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
+```
 
 **Key Optimization Points:**
 - **Early Exit**: Basic validation happens first, failing fast on invalid inputs
@@ -155,8 +154,7 @@ The build system now includes several new commands for better user experience:
 ## Validate a specific build combination
 ./scripts/build_app.sh validate gpio_test Release
 ./scripts/build_app.sh validate gpio_test Release release/v5.4
-```text
-
+```
 #### **🛡️ Validation Examples**
 ```bash
 ## Valid combination - proceeds with build
@@ -167,8 +165,7 @@ The build system now includes several new commands for better user experience:
 ## Output: ❌ INVALID: This combination is not allowed
 ##        Valid combinations for 'gpio_test':
 ##        • release/v5.5: Debug Release
-```text
-
+```
 #### **🧠 Smart Default Examples**
 ```bash
 ## No IDF version specified - uses smart default
@@ -178,7 +175,7 @@ The build system now includes several new commands for better user experience:
 ## IDF version explicitly specified
 ./scripts/build_app.sh gpio_test Release release/v5.5
 ## Output: Uses specified version directly
-```yaml
+```
 
 ## ⚙️ **Configuration System**
 
@@ -233,7 +230,7 @@ build_config:
   
   build_directory_pattern: "build*{app_type}*{build_type}"
   project_name_pattern: "esp32_project*{app_type}*app"
-```yaml
+```
 
 ### **Configuration Loading Process**
 1. **Primary Method**: Uses `yq` for reliable YAML parsing
@@ -253,9 +250,7 @@ The build system automatically validates:
 ## 🔧 **Build Process and Workflow**
 
 ### **Build Execution Flow**
-```text
 1. Configuration Loading → 2. Source File Discovery → 3. Parameter Validation → 4. Environment Setup → 5. Build Execution → 6. Output Generation
-```
 
 #### **1. Configuration Loading**
 - Load `app_config.yml` configuration file
@@ -311,8 +306,7 @@ The build system automatically validates:
 
 ## List available options
 ./build_app.sh list
-```text
-
+```
 ### **Build Type Configurations**
 
 #### **Debug Build**
@@ -343,8 +337,7 @@ The build system automatically validates:
 ## - Verbose logging enabled
 ## - Assertions active
 ## - Build artifacts in build_gpio_test_Debug/
-```text
-
+```
 #### **2. Production Build**
 ```bash
 ## Build with release configuration for production
@@ -355,8 +348,7 @@ The build system automatically validates:
 ## - Performance optimized
 ## - Minimal debug information
 ## - Build artifacts in build_gpio_test_Release/
-```text
-
+```
 #### **3. Portable Build Usage**
 ```bash
 ## Default behavior (scripts in project/scripts/)
@@ -373,8 +365,7 @@ export PROJECT_PATH=/path/to/project
 ## Multiple project support
 ./build_app.sh --project-path ~/projects/robot-controller gpio_test Release
 ./build_app.sh --project-path ~/projects/sensor-node adc_test Debug
-```text
-
+```
 #### **4. Multi-Version Testing**
 ```bash
 ## Test with different ESP-IDF versions
@@ -382,8 +373,7 @@ export PROJECT_PATH=/path/to/project
 ./build_app.sh gpio_test Release release/v5.4
 
 ## Validation ensures compatibility before building
-```text
-
+```
 ### **Advanced Build Patterns**
 
 #### **1. Clean Build Workflow**
@@ -392,28 +382,25 @@ export PROJECT_PATH=/path/to/project
 ./build_app.sh gpio_test Release --clean
 
 ## Use case: After configuration changes or dependency updates
-```text
-
+```
 #### **2. Cache-Optimized Build**
 ```bash
 ## Disable cache for troubleshooting
 ./build_app.sh gpio_test Release --no-cache
 
 ## Use case: Debugging build issues or cache corruption
-```text
-
+```
 #### **3. Configuration Validation**
 ```bash
 ## Validate configuration without building
 ./build_app.sh gpio_test Release release/v5.5
 
 ## Use case: Verify configuration before CI/CD deployment
-```text
-
+```
 ### **Build Output and Artifacts**
 
 #### **Build Directory Structure**
-```text
+```
 build_gpio_test_Release/
 ├── bootloader/           # Bootloader binary
 ├── partition-table/      # Partition table binary
@@ -422,7 +409,7 @@ build_gpio_test_Release/
 ├── gpio_test.map        # Memory map file
 ├── gpio_test.hex        # Intel HEX format
 └── build.log            # Build process log
-```cpp
+```
 
 #### **Firmware Files**
 - **`.bin`**: Binary firmware for flashing
@@ -447,12 +434,12 @@ build_gpio_test_Release/
 - **Reliable Tool Installation**: Tools installed fresh each run for maximum reliability
 
 ### **CI Build Workflow**
-```text
+```
 1. Matrix Generation → 2. Parallel Build Jobs → 3. Independent Analysis
      ↓                        ↓                        ↓
 Single execution        Each matrix entry        Static analysis
 with result reuse       gets fresh runner        runs in parallel
-```text
+```
 
 ### **CI Environment Variables**
 ```bash
@@ -462,8 +449,7 @@ export ESP32_PROJECT_PATH="examples/esp32"
 ## Optional optimizations
 export IDF_CCACHE_ENABLE=1
 export CCACHE_DIR="$HOME/.ccache"
-```text
-
+```
 ## ⚡ **Performance and Optimization**
 
 ### **Build Acceleration Features**
@@ -487,8 +473,7 @@ export CCACHE_DIR="$HOME/.ccache"
 ## ESP-IDF automatically uses parallel compilation
 ## Number of jobs based on available CPU cores
 export MAKEFLAGS="-j$(nproc)"
-```text
-
+```
 #### **2. Build Cache Optimization**
 ```bash
 ## Enable ccache for build acceleration
@@ -498,8 +483,7 @@ export CCACHE_DIR="$HOME/.ccache"
 ## Configure ccache size and optimization
 ccache -M 10G
 ccache -s
-```text
-
+```
 #### **3. Dependency Optimization**
 - **Selective Installation**: Only install required dependencies
 - **Cache Utilization**: Leverage system package caches
@@ -537,8 +521,7 @@ yq eval app_config.yml
 
 ## Check file permissions
 ls -la app_config.yml
-```text
-
+```
 #### **2. ESP-IDF Issues**
 **Problem**: ESP-IDF not found or incompatible
 **Symptoms**: "ESP-IDF not found" or "idf.py command not found" errors
@@ -552,8 +535,7 @@ source ~/esp/esp-idf/export.sh
 
 ## Verify ESP-IDF installation
 idf.py --version
-```text
-
+```
 #### **3. Build Failures**
 **Problem**: Compilation or linking errors
 **Symptoms**: Build errors, missing dependencies, or toolchain issues
@@ -567,8 +549,7 @@ cat build_gpio_test_Release/build.log
 
 ## Verify toolchain
 idf.py set-target esp32c6
-```text
-
+```
 #### **4. Cache Issues**
 **Problem**: Build cache corruption or performance degradation
 **Symptoms**: Unexpected build failures or slow build times
@@ -582,8 +563,7 @@ ccache -C
 
 ## Verify cache integrity
 ccache -s
-```text
-
+```
 ### **Debug and Verbose Mode**
 
 #### **Enabling Debug Output**
@@ -595,8 +575,7 @@ export DEBUG=1
 ## Enable verbose ESP-IDF output
 export IDF_VERBOSE=1
 ./build_app.sh gpio_test Release
-```text
-
+```
 #### **Debug Information Available**
 - Configuration loading and validation details
 - ESP-IDF environment setup information
@@ -616,8 +595,7 @@ cat build_gpio_test_Release/log/build.log
 
 ## CMake configuration log
 cat build_gpio_test_Release/log/cmake.log
-```text
-
+```
 #### **Common Log Patterns**
 - **Configuration Errors**: Look for "ERROR:" or "FATAL:" messages
 - **Dependency Issues**: Search for "not found" or "missing" messages
@@ -637,8 +615,7 @@ cat build_gpio_test_Release/log/cmake.log
 ##   build_type   - Build configuration (Debug, Release)
 ##   idf_version  - ESP-IDF version to use
 ##   options      - Build options (--clean, --no-cache, etc.)
-```text
-
+```
 #### **Build Options**
 - **`--clean`**: Remove previous build artifacts
 - **`--no-clean`**: Skip cleaning (default)
@@ -663,8 +640,7 @@ export DEBUG=1
 
 ## Enable verbose ESP-IDF output
 export IDF_VERBOSE=1
-```text
-
+```
 ### **Configuration Examples**
 
 #### **Minimal Configuration**
@@ -678,8 +654,7 @@ apps:
   gpio_test:
     source_file: "GpioComprehensiveTest.cpp"
     build_types: ["Debug", "Release"]
-```text
-
+```
 #### **Advanced Configuration**
 ```yaml
 metadata:
@@ -710,8 +685,7 @@ build_config:
       optimization: "-O2"
       debug_level: "-g"
       defines: ["NDEBUG"]
-```text
-
+```
 ### **Integration Examples**
 
 #### **CMake Integration (Ultra-Minimal Approach)**
@@ -776,8 +750,7 @@ target_compile_definitions(${COMPONENT_LIB} PRIVATE
   run: |
     cd examples/esp32
     ./scripts/build_app.sh gpio_test Debug
-```text
-
+```
 ### **Best Practices**
 
 #### **1. Configuration Management**

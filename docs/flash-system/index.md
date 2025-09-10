@@ -48,12 +48,12 @@ and integrated logging for professional ESP32 development.
 ## 🏗️ **Architecture and Design**
 
 ### **System Architecture**
-```text
+```
 User Commands → flash_app.sh → Port Detection → ESP-IDF Tools → Device Communication
      ↓              ↓              ↓              ↓              ↓
 Operation      Parameter      Device ID      Flash/Monitor   Serial I/O
 Specification  Validation     & Port         Commands        & Control
-```text
+```
 
 ### **Component Interaction**
 - **`flash_app.sh`**: Main flash orchestration script
@@ -84,8 +84,7 @@ The flash system automatically detects ESP32 devices across different platforms:
 ## ESP32-specific patterns
 /dev/ttyUSB* (CP210x, CH340, FTDI)
 /dev/ttyACM* (CDC ACM devices)
-```text
-
+```
 **macOS Detection**:
 ```bash
 ## USB serial devices
@@ -93,8 +92,7 @@ The flash system automatically detects ESP32 devices across different platforms:
 
 ## ESP32-specific patterns
 /dev/cu.usbmodem*, /dev/cu.usbserial*
-```text
-
+```
 #### **Device Identification Patterns**
 The system recognizes common ESP32 development board USB identifiers:
 
@@ -104,8 +102,7 @@ CP210x: Silicon Labs CP210x USB to UART Bridge
 CH340: WCH CH340 USB to Serial
 FTDI: FTDI FT232R USB UART
 CDC ACM: USB CDC ACM devices
-```text
-
+```
 ### **Port Validation and Testing**
 
 #### **Connectivity Testing**
@@ -118,8 +115,7 @@ CDC ACM: USB CDC ACM devices
 
 ## Check port permissions and status
 ./detect_ports.sh --verbose --test-connection
-```text
-
+```
 #### **Permission Management**
 The system handles common permission issues:
 
@@ -131,8 +127,7 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE="0666"
 ## User group membership
 sudo usermod -a -G dialout $USER
 sudo usermod -a -G tty $USER
-```text
-
+```
 ### **Port Selection Logic**
 
 #### **Automatic Port Selection**
@@ -144,8 +139,7 @@ When multiple ports are available, the system uses intelligent selection:
 2. Previously used ports (from configuration)
 3. First available USB serial port
 4. Fallback to manual selection
-```text
-
+```
 #### **Manual Port Override**
 ```bash
 ## Override automatic port detection
@@ -154,8 +148,7 @@ export ESPPORT="/dev/ttyUSB0"
 
 ## Specify port in command
 ./flash_app.sh flash gpio_test Release --port /dev/ttyUSB1
-```text
-
+```
 ## ⚡ **Flash Operations and Workflows**
 
 ### **Operation Types**
@@ -182,8 +175,7 @@ The system supports both operation-first and legacy syntax:
 ./flash_app.sh gpio_test Release flash
 ./flash_app.sh gpio_test Release flash_monitor
 ./flash_app.sh gpio_test Release size
-```text
-
+```
 ### **Flash Process Workflow**
 
 #### **1. Pre-Flash Validation**
@@ -193,8 +185,7 @@ The system supports both operation-first and legacy syntax:
 - Verify build type support
 - Validate ESP-IDF version compatibility
 - Confirm target device compatibility
-```text
-
+```
 #### **2. Port Detection and Selection**
 ```bash
 ## Automatic port detection
@@ -202,8 +193,7 @@ The system supports both operation-first and legacy syntax:
 - Identify compatible ports
 - Test port connectivity
 - Select optimal port for operation
-```text
-
+```
 #### **3. Flash Execution**
 ```bash
 ## ESP-IDF flash process
@@ -211,8 +201,7 @@ The system supports both operation-first and legacy syntax:
 - Configure flash parameters
 - Execute flash operation
 - Validate flash completion
-```text
-
+```
 #### **4. Post-Flash Operations**
 ```bash
 ## Post-flash actions
@@ -220,8 +209,7 @@ The system supports both operation-first and legacy syntax:
 - Start monitoring (if requested)
 - Generate operation logs
 - Update port configuration
-```text
-
+```
 ### **Flash Configuration Options**
 
 #### **Build Type Integration**
@@ -234,8 +222,7 @@ The system supports both operation-first and legacy syntax:
 - Ensures build type is supported by app
 - Validates against app_config.yml configuration
 - Provides clear error messages for incompatibilities
-```text
-
+```
 #### **ESP-IDF Version Support**
 ```bash
 ## Flash with specific ESP-IDF version
@@ -246,8 +233,7 @@ The system supports both operation-first and legacy syntax:
 - Checks app support for specified version
 - Validates against app configuration
 - Ensures consistent toolchain usage
-```text
-
+```
 #### **Size Analysis Operations**
 The size operation provides comprehensive firmware analysis without requiring device connection:
 
@@ -260,8 +246,7 @@ The size operation provides comprehensive firmware analysis without requiring de
 
 ## Size analysis with app-first syntax
 ./flash_app.sh gpio_test Release size
-```text
-
+```
 **Size Operation Features**:
 - **Firmware Size Analysis**: Total image size and memory usage breakdown
 - **Component Size Breakdown**: Per-archive contributions to ELF file
@@ -284,8 +269,7 @@ The flash system automatically generates comprehensive logs:
 ## Log file naming convention
 gpio_test_Release_20250115_143022.log
 ## Format: {app}*{build_type}*{date}*{time}.log
-```text
-
+```
 #### **Log Content and Structure**
 ```bash
 ## Log file contents
@@ -295,8 +279,7 @@ gpio_test_Release_20250115_143022.log
 - Monitor session data
 - Error messages and warnings
 - Performance metrics
-```text
-
+```
 ### **Monitoring Capabilities**
 
 #### **Real-Time Monitoring**
@@ -309,8 +292,7 @@ gpio_test_Release_20250115_143022.log
 
 ## Monitor with custom log name
 ./flash_app.sh monitor --log debug_session
-```text
-
+```
 #### **Monitor Configuration**
 ```bash
 ## Monitor options
@@ -319,8 +301,7 @@ gpio_test_Release_20250115_143022.log
 - Parity: None
 - Stop bits: 1
 - Flow control: None
-```text
-
+```
 ### **Log Management Integration**
 
 #### **Automatic Log Rotation**
@@ -330,8 +311,7 @@ gpio_test_Release_20250115_143022.log
 - Automatic log directory management
 - Configurable retention policies
 - Storage optimization
-```text
-
+```
 #### **Log Analysis Tools**
 ```bash
 ## Integrated log management
@@ -339,8 +319,7 @@ gpio_test_Release_20250115_143022.log
 ./manage_logs.sh latest        # Show latest log
 ./manage_logs.sh search "ERROR" # Search for errors
 ./manage_logs.sh stats         # Log statistics
-```text
-
+```
 ## 🚀 **Usage Examples and Patterns**
 
 ### **Basic Flash Workflows**
@@ -356,8 +335,7 @@ gpio_test_Release_20250115_143022.log
 ## - Monitoring started automatically
 ## - Debug output captured in logs
 ## - Real-time debugging available
-```text
-
+```
 #### **2. Production Flash Workflow**
 ```bash
 ## Build and flash for production
@@ -369,8 +347,7 @@ gpio_test_Release_20250115_143022.log
 ## - No monitoring (production mode)
 ## - Deployment log generated
 ## - Ready for production use
-```text
-
+```
 #### **3. Portable Flash Usage**
 ```bash
 ## Default behavior (scripts in project/scripts/)
@@ -387,8 +364,7 @@ export PROJECT_PATH=/path/to/project
 ## Multiple project support
 ./flash_app.sh --project-path ~/projects/robot-controller flash_monitor gpio_test Release
 ./flash_app.sh --project-path ~/projects/sensor-node flash adc_test Debug
-```text
-
+```
 #### **4. Debugging Workflow**
 ```bash
 ## Monitor existing firmware
@@ -400,8 +376,7 @@ export PROJECT_PATH=/path/to/project
 
 ## Analyze log patterns
 ./manage_logs.sh stats
-```text
-
+```
 #### **4. Size Analysis Workflow**
 ```bash
 ## Analyze firmware size before deployment
@@ -419,8 +394,7 @@ export PROJECT_PATH=/path/to/project
 ## - Component breakdown
 ## - Memory usage summary
 ## - No device connection required
-```text
-
+```
 ### **Advanced Flash Patterns**
 
 #### **1. Multi-Device Deployment**
@@ -430,8 +404,7 @@ for port in /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2; do
     export ESPPORT="$port"
     ./flash_app.sh flash gpio_test Release --log "deploy*${port}"
 done
-```text
-
+```
 #### **2. Conditional Flash Operations**
 ```bash
 ## Flash only if build is newer
@@ -439,8 +412,7 @@ if [ "build_gpio_test_Release/gpio_test.bin" -nt "last_flash" ]; then
     ./flash_app.sh flash gpio_test Release --log
     touch last_flash
 fi
-```text
-
+```
 #### **3. Automated Testing Flash**
 ```bash
 ## Flash for automated testing
@@ -449,8 +421,7 @@ fi
 ## Run automated tests
 ## Monitor test results
 ## Collect test logs
-```text
-
+```
 ### **Integration with Build System**
 
 #### **Build-Flash Integration**
@@ -463,8 +434,7 @@ fi
 - Ensures build exists before flashing
 - Validates build type compatibility
 - Checks firmware integrity
-```text
-
+```
 #### **CI/CD Integration**
 ```yaml
 ## GitHub Actions flash workflow
@@ -477,8 +447,7 @@ fi
   run: |
     ./scripts/flash_app.sh monitor --log ci_verify
     timeout 30s ./scripts/flash_app.sh monitor --log ci_verify
-```text
-
+```
 ## 🔍 **Troubleshooting and Debugging**
 
 ### **Common Flash Issues**
@@ -497,8 +466,7 @@ fi
 ## Verify USB drivers
 lsusb | grep -i esp
 system_profiler SPUSBDataType | grep -i esp
-```text
-
+```
 #### **2. Permission Issues**
 **Problem**: Port access denied
 **Symptoms**: "Permission denied" or "Access denied" errors
@@ -513,8 +481,7 @@ sudo usermod -a -G dialout,tty $USER
 
 ## Create udev rules
 sudo nano /etc/udev/rules.d/99-esp32.rules
-```text
-
+```
 #### **3. Flash Failures**
 **Problem**: Firmware flash fails
 **Symptoms**: "Flash failed" or "Upload failed" errors
@@ -531,8 +498,7 @@ ls -la build_gpio_test_Release/*.bin
 
 ## Reset device and retry
 ## Hold BOOT button during flash
-```text
-
+```
 #### **4. Monitor Issues**
 **Problem**: Cannot monitor device
 **Symptoms**: "Monitor failed" or "No output" errors
@@ -546,8 +512,7 @@ ls -la build_gpio_test_Release/*.bin
 
 ## Check for bootloader mode
 ## Press RESET button to restart
-```text
-
+```
 ### **Debug and Verbose Mode**
 
 #### **Enabling Debug Output**
@@ -559,8 +524,7 @@ export DEBUG=1
 ## Enable verbose ESP-IDF output
 export IDF_VERBOSE=1
 ./flash_app.sh flash gpio_test Release --log
-```text
-
+```
 #### **Debug Information Available**
 - Port detection and selection details
 - Flash operation progress and status
@@ -580,8 +544,7 @@ export IDF_VERBOSE=1
 ## Analyze flash patterns
 ./manage_logs.sh search "Flash completed"
 ./manage_logs.sh search "Upload failed"
-```text
-
+```
 #### **Monitor Log Analysis**
 ```bash
 ## Check monitor session logs
@@ -591,8 +554,7 @@ export IDF_VERBOSE=1
 ## Analyze device output
 ./manage_logs.sh search "ESP32"
 ./manage_logs.sh search "boot"
-```text
-
+```
 ## 📚 **Reference and Examples**
 
 ### **Command Reference**
@@ -607,8 +569,7 @@ export IDF_VERBOSE=1
 ##   build_type   - Build type to flash (Debug, Release)
 ##   idf_version  - ESP-IDF version used for build
 ##   options      - Flash options (--log, --port, etc.)
-```text
-
+```
 #### **Flash Options**
 - **`--log [name]`**: Enable logging with optional custom name
 - **`--port <port>`**: Override automatic port detection
@@ -632,8 +593,7 @@ export ESPPORT="/dev/ttyUSB0"
 
 ## Enable debug mode
 export DEBUG=1
-```text
-
+```
 ### **Configuration Examples**
 
 #### **Minimal Flash Configuration**
@@ -648,8 +608,7 @@ apps:
   gpio_test:
     source_file: "GpioComprehensiveTest.cpp"
     build_types: ["Debug", "Release"]
-```text
-
+```
 #### **Advanced Flash Configuration**
 ```yaml
 ## app_config.yml advanced configuration
@@ -668,8 +627,7 @@ apps:
     idf_versions: ["release/v5.5"]
     ci_enabled: true
     featured: true
-```text
-
+```
 ### **Integration Examples**
 
 #### **CMake Integration**
@@ -683,8 +641,7 @@ add_custom_target(flash
     DEPENDS ${PROJECT_NAME}
     COMMENT "Flashing ${APP_TYPE} ${BUILD_TYPE} to device"
 )
-```text
-
+```
 #### **CI/CD Integration**
 ```yaml
 ## GitHub Actions flash workflow
@@ -697,8 +654,7 @@ add_custom_target(flash
   run: |
     ./scripts/flash_app.sh monitor --log ci_verify
     timeout 30s ./scripts/flash_app.sh monitor --log ci_verify
-```text
-
+```
 ### **Best Practices**
 
 #### **1. Flash Operations**

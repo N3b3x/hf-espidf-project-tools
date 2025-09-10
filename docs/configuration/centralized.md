@@ -50,8 +50,7 @@ enabling consistent configuration management across different scripts and develo
 Configuration System → YAML Parser → Validation Engine → Script Integration → Environment Overrides
         ↓                ↓              ↓                ↓                ↓
    app_config.yml    yq/grep/sed    Schema Check    Script Loading    Env Var Priority
-```text
-
+```
 ### **Component Interaction**
 - **Configuration File**: Central YAML file with all project settings
 - **Loading Engine**: Primary (yq) and fallback (grep/sed) loading mechanisms
@@ -78,8 +77,7 @@ examples/esp32/app_config.yml
 ../app_config.yml                   # Parent directory
 $HOME/.esp32_config.yml            # User home directory
 $ESP32_CONFIG_PATH/app_config.yml  # Custom path via environment variable
-```text
-
+```
 ### **Configuration Schema**
 
 #### **Metadata Section**
@@ -99,8 +97,7 @@ metadata:
     esp_idf_recommended: "v5.5"
     python_min: "3.8"
     bash_min: "4.0"
-```text
-
+```
 #### **Applications Section**
 ```yaml
 apps:
@@ -155,8 +152,7 @@ apps:
       baud_rate: 115200
       log_output: true
       log_file: "adc_test_monitor.log"
-```text
-
+```
 #### **Build Configuration Section**
 ```yaml
 build_config:
@@ -200,8 +196,7 @@ build_config:
   build_timeout: 1800
   memory_limit: "4G"
   cpu_limit: 4
-```text
-
+```
 #### **Flash Configuration Section**
 ```yaml
 flash_config:
@@ -230,8 +225,7 @@ flash_config:
   flash_logging: true
   flash_log_file: "flash_operation.log"
   flash_verbose: false
-```text
-
+```
 #### **System Configuration Section**
 ```yaml
 system_config:
@@ -260,7 +254,7 @@ system_config:
   cmake_integration: true
   ci_cd_integration: true
   ide_integration: true
-```yaml
+```
 
 ## 🔧 **Configuration Loading and Validation**
 
@@ -287,8 +281,7 @@ load_config_yq() {
 load_config_yq "app_config.yml" ".metadata.project_name"
 load_config_yq "app_config.yml" ".apps.gpio_test.description"
 load_config_yq "app_config.yml" ".build_config.default_build_type"
-```text
-
+```
 #### **Fallback Loading Method (grep/sed)**
 When `yq` is unavailable, the system falls back to `grep` and `sed`:
 
@@ -312,8 +305,7 @@ load_config_fallback() {
 ## Usage examples
 load_config_fallback "app_config.yml" "metadata.project_name"
 load_config_fallback "app_config.yml" "apps.gpio_test.description"
-```text
-
+```
 #### **Configuration Loading Priority**
 ```bash
 ## Loading priority order
@@ -364,8 +356,7 @@ load_config() {
     
     return 0
 }
-```text
-
+```
 ### **Configuration Validation**
 
 #### **Schema Validation**
@@ -403,8 +394,7 @@ validate_config_schema() {
     
     return $errors
 }
-```text
-
+```
 #### **Application Configuration Validation**
 ```bash
 ## Validate individual application configuration
@@ -444,8 +434,7 @@ validate_app_config() {
     
     return $errors
 }
-```text
-
+```
 #### **Configuration Integrity Checking**
 ```bash
 ## Comprehensive configuration validation
@@ -487,8 +476,7 @@ validate_config_integrity() {
         return 1
     fi
 }
-```text
-
+```
 ## 🌍 **Environment Variable Overrides**
 
 ### **Override Priority System**
@@ -531,8 +519,7 @@ get_config_value() {
     # Use default value
     echo "$default_value"
 }
-```text
-
+```
 #### **Environment Variable Naming Convention**
 ```bash
 ## Environment variable naming pattern
@@ -558,8 +545,7 @@ yaml_path_to_env_var() {
 ## Usage
 env_var=$(yaml_path_to_env_var "build_config.default_build_type")
 ## Result: ESP32_BUILD_CONFIG_DEFAULT_BUILD_TYPE
-```text
-
+```
 ### **Supported Environment Variables**
 
 #### **Build Configuration Overrides**
@@ -580,8 +566,7 @@ export ESP32_BUILD_CONFIG_IDF_VERSIONS_ESP32S3="v5.0.0"
 export ESP32_BUILD_CONFIG_CCACHE_SIZE="4G"
 export ESP32_BUILD_CONFIG_INCREMENTAL_BUILDS="true"
 export ESP32_BUILD_CONFIG_DEBUG_SYMBOLS="true"
-```text
-
+```
 #### **Application Configuration Overrides**
 ```bash
 ## Application-specific overrides
@@ -593,8 +578,7 @@ export ESP32_APPS_UART_TEST_MONITOR_CONFIG_BAUD_RATE="230400"
 ## Application dependencies
 export ESP32_APPS_GPIO_TEST_DEPENDENCIES="ESP-IDF v5.5+,GPIO hardware"
 export ESP32_APPS_ADC_TEST_DEPENDENCIES="ESP-IDF v5.5+,ADC hardware"
-```text
-
+```
 #### **Flash Configuration Overrides**
 ```bash
 ## Flash parameters
@@ -608,8 +592,7 @@ export ESP32_FLASH_CONFIG_DEFAULT_FLASH_SIZE="8MB"
 export ESP32_FLASH_CONFIG_FLASH_VERIFICATION="true"
 export ESP32_FLASH_CONFIG_FLASH_CHECKSUM="true"
 export ESP32_FLASH_CONFIG_RETRY_ATTEMPTS="5"
-```text
-
+```
 #### **System Configuration Overrides**
 ```bash
 ## System settings
@@ -626,8 +609,7 @@ export ESP32_SYSTEM_CONFIG_LOG_ROTATION_SIZE="50M"
 export ESP32_SYSTEM_CONFIG_MAX_PARALLEL_JOBS="8"
 export ESP32_SYSTEM_CONFIG_MEMORY_LIMIT="8G"
 export ESP32_SYSTEM_CONFIG_CPU_LIMIT="8"
-```text
-
+```
 ### **Dynamic Configuration Updates**
 
 #### **Runtime Configuration Modification**
@@ -648,8 +630,7 @@ update_config_runtime() {
 update_config_runtime "build_config.default_build_type" "Debug"
 update_config_runtime "flash_config.port_auto_detect" "false"
 update_config_runtime "system_config.debug_mode" "true"
-```text
-
+```
 #### **Configuration Reloading**
 ```bash
 ## Reload configuration from file
@@ -672,8 +653,7 @@ reload_config() {
     
     echo "Configuration reloaded successfully"
 }
-```text
-
+```
 ## 🚀 **Usage Examples and Patterns**
 
 ### **Basic Configuration Usage**
@@ -689,8 +669,7 @@ default_build_type=$(load_config "build_config.default_build_type" "Release")
 gpio_description=$(load_config "apps.gpio_test.description" "")
 gpio_target=$(load_config "apps.gpio_test.target" "esp32c6")
 gpio_build_types=$(load_config "apps.gpio_test.build_types" "Debug Release")
-```text
-
+```
 #### **2. Configuration Validation**
 ```bash
 ## Validate configuration file
@@ -704,8 +683,7 @@ if ! validate_app_config "gpio_test"; then
     echo "GPIO test configuration validation failed"
     exit 1
 fi
-```text
-
+```
 #### **3. Environment Variable Overrides**
 ```bash
 ## Override build configuration
@@ -719,8 +697,7 @@ export ESP32_APPS_GPIO_TEST_BUILD_TYPES="Debug"
 ## Override flash configuration
 export ESP32_FLASH_CONFIG_PORT_AUTO_DETECT="false"
 export ESP32_FLASH_CONFIG_DEFAULT_BAUD_RATE="460800"
-```text
-
+```
 ### **Advanced Configuration Patterns**
 
 #### **1. Configuration-Driven Scripts**
@@ -745,8 +722,7 @@ fi
 ## Execute build with configuration
 idf.py set-target "$target"
 idf.py build -b "$build_type" -j "$parallel_jobs"
-```text
-
+```
 #### **2. Dynamic Configuration Updates**
 ```bash
 #!/bin/bash
@@ -764,8 +740,7 @@ if [ "$USER_PREFERS_DEBUG" = "true" ]; then
     update_config_runtime "build_config.default_build_type" "Debug"
     update_config_runtime "system_config.verbose_output" "true"
 fi
-```text
-
+```
 #### **3. Configuration Testing and Validation**
 ```bash
 #!/bin/bash
@@ -797,8 +772,7 @@ if [ -n "$build_type" ]; then
 else
     echo "✗ Failed to load build type"
 fi
-```text
-
+```
 ### **Integration Examples**
 
 #### **1. CMake Integration**
@@ -828,8 +802,7 @@ add_custom_target(validate_config
     COMMAND bash -c "cd ${CMAKE_SOURCE_DIR} && source scripts/config_loader.sh && validate_config_integrity app_config.yml"
     COMMENT "Validating configuration"
 )
-```text
-
+```
 #### **2. CI/CD Integration**
 ```yaml
 ## GitHub Actions configuration integration
@@ -851,8 +824,7 @@ add_custom_target(validate_config
     cd examples/esp32
     idf.py set-target ${{ env.TARGET }}
     idf.py build -b ${{ env.BUILD_TYPE }}
-```text
-
+```
 #### **3. Development Environment Setup**
 ```bash
 #!/bin/bash
@@ -888,8 +860,7 @@ echo "Development environment configured:"
 echo "  Target: $target"
 echo "  Build Type: $build_type"
 echo "  Debug Mode: $debug_mode"
-```text
-
+```
 ## 🔍 **Troubleshooting and Debugging**
 
 ### **Common Configuration Issues**
@@ -913,7 +884,7 @@ find . -name "app_config.yml" -type f
 
 ## Verify file location
 ## Configuration file should be in examples/esp32/ directory
-```yaml
+```
 
 #### **2. YAML Syntax Errors**
 **Problem**: Invalid YAML syntax in configuration file
@@ -934,8 +905,7 @@ yamllint app_config.yml
 
 ## Check for hidden characters
 cat -A app_config.yml
-```text
-
+```
 #### **3. Configuration Validation Failures**
 **Problem**: Configuration validation fails during loading
 **Symptoms**: "Configuration validation failed" or missing required fields
@@ -953,8 +923,7 @@ validate_app_config "gpio_test"
 load_config "metadata.project_name" "" true
 load_config "apps.gpio_test.description" "" true
 load_config "build_config.default_build_type" "" true
-```text
-
+```
 #### **4. Environment Variable Conflicts**
 **Problem**: Environment variables conflict with configuration file values
 **Symptoms**: Unexpected configuration values or override issues
@@ -971,8 +940,7 @@ unset ESP32_APPS_GPIO_TEST_TARGET
 load_config "build_config.default_build_type" "Release"
 update_config_runtime "build_config.default_build_type" "Debug"
 load_config "build_config.default_build_type" "Release"
-```text
-
+```
 ### **Debug and Verbose Mode**
 
 #### **Enabling Debug Output**
@@ -991,8 +959,7 @@ load_config "metadata.project_name" "" true
 - Environment variable processing
 - Configuration validation details
 - Error context and resolution
-```text
-
+```
 #### **Configuration Testing**
 ```bash
 ## Test configuration loading
@@ -1019,8 +986,7 @@ test_config_loading() {
 
 ## Run configuration test
 test_config_loading
-```text
-
+```
 ## 📚 **Reference and Examples**
 
 ### **Configuration Function Reference**
@@ -1040,8 +1006,7 @@ load_config_fallback <config_file> <key>
 validate_config_integrity <config_file>
 validate_config_schema <config_file>
 validate_app_config <app_name>
-```text
-
+```
 #### **Environment Variable Functions**
 ```bash
 ## Environment variable management
@@ -1052,16 +1017,14 @@ update_config_runtime <key> <value>
 ## Configuration reloading
 reload_config <config_file>
 source_config_file <config_file>
-```text
-
+```
 #### **Utility Functions**
 ```bash
 ## Configuration utilities
 get_config_value <key> [default_value]
 check_config_conflicts <config_file>
 get_cmd_line_arg <key>
-```text
-
+```
 ### **Configuration Examples**
 
 #### **Minimal Configuration**
@@ -1082,8 +1045,7 @@ build_config:
   default_target: "esp32c6"
   supported_build_types: ["Debug", "Release"]
   supported_targets: ["esp32", "esp32c6"]
-```text
-
+```
 #### **Standard Configuration**
 ```yaml
 metadata:
@@ -1181,8 +1143,7 @@ system_config:
   cmake_integration: true
   ci_cd_integration: true
   ide_integration: true
-```text
-
+```
 #### **Advanced Configuration**
 ```yaml
 metadata:
@@ -1339,8 +1300,7 @@ system_config:
   alerting: true
   reporting: true
   analytics: true
-```text
-
+```
 ### **Best Practices**
 
 #### **1. Configuration Management**

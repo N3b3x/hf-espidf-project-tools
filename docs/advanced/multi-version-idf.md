@@ -255,7 +255,7 @@ jobs:
 ## Test with different version
 ./manage_idf.sh export release/v5.4
 ./build_app.sh gpio_test Debug
-```bash
+```
 
 ## Troubleshooting
 

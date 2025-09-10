@@ -79,8 +79,7 @@ your-esp32-project/
 ## Usage (from project root)
 ./hf-espidf-project-tools/build_app.sh gpio_test Release
 ./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
-```text
-
+```
 **Alternative: `scripts/` Directory** (requires special setup)
 ```bash
 ## Project structure (alternative)
@@ -96,8 +95,7 @@ your-esp32-project/
 ## Usage (from project root)
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor adc_test
-```text
-
+```
 ### **Mode 2: Portable Tools** 🚀
 **When**: Scripts are placed anywhere (shared tools, CI systems, etc.)
 **Location**: Any directory (`/opt/esp32-tools/`, `~/tools/`, CI runners, etc.)
@@ -118,7 +116,7 @@ your-esp32-project/
 ## Or with environment variable
 export PROJECT_PATH=~/my-esp32-project
 /opt/esp32-tools/build_app.sh gpio_test Release
-```yaml
+```
 
 ### **Configuration Discovery** 🔍
 
@@ -163,8 +161,7 @@ git clone https://github.com/N3b3x/hf-espidf-project-tools.git
 ## Usage (from project root)
 ./hf-espidf-project-tools/build_app.sh gpio_test Release
 ./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
-```text
-
+```
 **Benefits:**
 - ✅ Simple one-command setup
 - ✅ Full control over scripts
@@ -197,8 +194,7 @@ git submodule update --init --recursive
 
 ## Usage (from project root)
 ./hf-espidf-project-tools/build_app.sh gpio_test Release
-```text
-
+```
 **Benefits:**
 - ✅ Keeps scripts as separate repository
 - ✅ Easy to update with `git submodule update`
@@ -232,8 +228,7 @@ git submodule add --name scripts https://github.com/N3b3x/hf-espidf-project-tool
 ## Usage (from project root)
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor adc_test
-```text
-
+```
 **Note:** This method requires special setup and is not the default behavior.
 The scripts will work the same way,
 but you'll need to use `./scripts/` instead of `./hf-espidf-project-tools/` in all commands.
@@ -258,8 +253,7 @@ cd ~/my-esp32-project
 ./scripts/build_app.sh combinations
 
 ## Should show available apps and build combinations
-```text
-
+```
 ---
 
 ## 🚀 **Usage Examples**
@@ -287,8 +281,7 @@ my-esp32-project/
 ## Python scripts
 python3 hf-espidf-project-tools/get_app_info.py list
 python3 hf-espidf-project-tools/generate_matrix.py
-```text
-
+```
 **Alternative: Custom `scripts/` Directory**
 ```bash
 ## Project structure (alternative)
@@ -309,8 +302,7 @@ my-esp32-project/
 ## Python scripts
 python3 scripts/get_app_info.py list
 python3 scripts/generate_matrix.py
-```text
-
+```
 ### **Mode 2: Portable Tools Usage** 🚀
 
 When scripts are shared tools or in CI systems:
@@ -334,8 +326,7 @@ export PROJECT_PATH=~/my-esp32-project
 ## Python scripts
 python3 /opt/esp32-tools/get_app_info.py list --project-path ~/my-esp32-project
 python3 /opt/esp32-tools/generate_matrix.py --project-path ~/my-esp32-project
-```text
-
+```
 ### **Real-World Scenarios**
 
 ```bash
@@ -357,8 +348,7 @@ cd ~/project-with-tools
 
 cd ~/project-without-tools
 /opt/esp32-tools/build_app.sh --project-path . gpio_test Release
-```text
-
+```
 ---
 
 ## 🏗️ **Script Architecture**
@@ -368,7 +358,6 @@ cd ~/project-without-tools
 The scripts are designed to work in **two flexible modes** while maintaining the same core
 functionality:
 
-```text
 ## Mode 1: Project-Integrated (default)
 your-esp32-project/
 ├── app_config.yml              # ← Configuration file
@@ -400,7 +389,6 @@ your-esp32-project/
 
 ## Usage with --project-path
 /opt/esp32-tools/build_app.sh --project-path /path/to/project app_name build_type
-```yaml
 
 ### **Core Scripts**
 
@@ -438,7 +426,6 @@ Both modes automatically discover `app_config.yml`:
 
 ### **Data Flow**
 
-```text
 Configuration Discovery:
 ├── Mode 1 (default): hf-espidf-project-tools/ → parent directory → app_config.yml
 ├── Mode 1 (alternative): scripts/ → parent directory → app_config.yml
@@ -446,11 +433,8 @@ Configuration Discovery:
 
 Build Process:
 app_config.yml → config_loader.sh → build_app.sh → flash_app.sh
-```text
-
 ### **🆕 New Environment Setup Architecture**
 
-```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           SETUP COMMON FUNCTIONS                            │
 │                    (setup_common.sh - shared utilities)                     │
@@ -485,7 +469,6 @@ app_config.yml → config_loader.sh → build_app.sh → flash_app.sh
 │  • CI workflows use ESP-IDF CI action directly                              │
 │  • Local development uses setup_repo.sh for environment                     │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
 
 ### **Script Categories**
 
@@ -511,7 +494,6 @@ combinations and provides clear guidance to users.
 
 ### **Validation Flow**
 
-```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           BUILD REQUEST                                     │
 │  app: gpio_test, build_type: Release, idf_version: (unspecified)            │
@@ -553,7 +535,6 @@ combinations and provides clear guidance to users.
 │  → Show error with valid combinations                                       │
 │  → Provide helpful next steps                                               │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
 
 **Key Optimization Points:**
 - **Early Exit**: Basic validation happens first, failing fast on invalid inputs
@@ -567,7 +548,6 @@ combinations and provides clear guidance to users.
 
 ### **File Structure**
 
-```text
 scripts/
 ├── 📄 app_config.yml           # Centralized configuration
 ├── 📄 generate_matrix.py       # CI matrix generator
@@ -577,7 +557,6 @@ scripts/
 ├── 📄 build_app.sh             # Main build script
 ├── 📄 flash_app.sh             # Flashing and monitoring
 └── 📄 README.md                # This documentation
-```yaml
 
 ### **Script Dependencies**
 
@@ -621,20 +600,18 @@ The primary build script that orchestrates the entire build process.
 **Mode 1: Project-Integrated (default)**
 ```bash
 ./hf-espidf-project-tools/build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
-```text
-
+```
 **Mode 1: Project-Integrated (alternative)**
 ```bash
 ./scripts/build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
-```text
-
+```
 **Mode 2: Portable Tools**
 ```bash
 ./build_app.sh [OPTIONS] --project-path <path> <app_name> <build_type> [idf_version]
 ## OR
 export PROJECT_PATH=<path>
 ./build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
-```yaml
+```
 
 **Options:**
 - `-c, --clean` - Clean build (remove existing build directory)
@@ -654,23 +631,20 @@ export PROJECT_PATH=<path>
 ./hf-espidf-project-tools/build_app.sh gpio_test Release
 ./hf-espidf-project-tools/build_app.sh adc_test Debug release/v5.4
 ./hf-espidf-project-tools/build_app.sh --clean wifi_test Release
-```text
-
+```
 **Mode 1: Project-Integrated (alternative)**
 ```bash
 ./scripts/build_app.sh gpio_test Release
 ./scripts/build_app.sh adc_test Debug release/v5.4
 ./scripts/build_app.sh --clean wifi_test Release
-```text
-
+```
 **Mode 2: Portable Tools**
 ```bash
 ./build_app.sh --project-path ~/my-esp32-project gpio_test Release
 ./build_app.sh --project-path ~/my-esp32-project adc_test Debug release/v5.4
 export PROJECT_PATH=~/my-esp32-project
 ./build_app.sh --clean wifi_test Release
-```text
-
+```
 **Enhanced Commands:**
 ```bash
 ## Show app information
@@ -687,9 +661,7 @@ export PROJECT_PATH=~/my-esp32-project
 ./hf-espidf-project-tools/build_app.sh validate <app> <type> [idf]        # Mode 1 (default)
 ./scripts/build_app.sh validate <app> <type> [idf]                        # Mode 1 (alternative)
 ./build_app.sh --project-path <path> validate <app> <type> [idf]          # Mode 2
-```text
-```text
-
+```
 #### **Environment Variables**
 ```bash
 ## Exported variables
@@ -700,7 +672,7 @@ export IDF_TARGET="esp32c6"
 export BUILD_TYPE="Release"
 export APP_TYPE="gpio_test"
 export IDF_VERSION="release/v5.5"
-```yaml
+```
 
 #### **Build Process**
 1. **Configuration Loading** - Parse `app_config.yml` for build parameters
@@ -725,12 +697,12 @@ Handles device flashing, monitoring, and related operations.
 **Mode 1: Project-Integrated (default)**
 ```bash
 ./hf-espidf-project-tools/flash_app.sh <action> [app_name] [build_type]
-```text
+```
 
 **Mode 1: Project-Integrated (alternative)**
 ```bash
 ./scripts/flash_app.sh <action> [app_name] [build_type]
-```text
+```
 
 **Mode 2: Portable Tools**
 ```bash
@@ -738,7 +710,7 @@ Handles device flashing, monitoring, and related operations.
 ## OR
 export PROJECT_PATH=<path>
 ./flash_app.sh <action> [app_name] [build_type]
-```text
+```
 
 **Actions:**
 - `flash` - Flash firmware only
@@ -753,14 +725,14 @@ export PROJECT_PATH=<path>
 ./hf-espidf-project-tools/flash_app.sh flash_monitor gpio_test Release
 ./hf-espidf-project-tools/flash_app.sh monitor
 ./hf-espidf-project-tools/flash_app.sh flash_erase adc_test Debug
-```text
+```
 
 **Mode 1: Project-Integrated (alternative)**
 ```bash
 ./scripts/flash_app.sh flash_monitor gpio_test Release
 ./scripts/flash_app.sh monitor
 ./scripts/flash_app.sh flash_erase adc_test Debug
-```text
+```
 
 **Mode 2: Portable Tools**
 ```bash
@@ -768,7 +740,7 @@ export PROJECT_PATH=<path>
 ./flash_app.sh --project-path ~/my-esp32-project monitor
 export PROJECT_PATH=~/my-esp32-project
 ./flash_app.sh flash_erase adc_test Debug
-```text
+```
 
 ---
 
@@ -793,7 +765,7 @@ verify_tools()               # Verify tool installation
 ## System Utilities
 check_system_requirements()  # Check system compatibility
 setup_environment()          # Setup common environment
-```text
+```
 
 #### **ESP-IDF Management**
 ```bash
@@ -812,7 +784,7 @@ install_esp_idf() {
     # Setup environment
     source export.sh
 }
-```text
+```
 
 ### **`setup_repo.sh` - Local Development Setup**
 
@@ -836,7 +808,7 @@ source scripts/setup_repo.sh
 ## 3. Configure build tools
 ## 4. Export necessary environment variables
 ## 5. Provide complete development environment
-```text
+```
 
 #### **Installed Tools**
 - **Clang Toolchain** - C/C++ compiler and tools
@@ -865,8 +837,7 @@ The CI workflow now uses the ESP-IDF CI action directly without file copying.
     command: |
       cd "${ESP32_PROJECT_PATH}"
       ./scripts/build_app.sh --project-path "${ESP32_PROJECT_PATH}" ...
-```text
-
+```
 #### **CI Environment Features**
 - **Faster CI** - No file copying overhead
 - **More Reliable** - Official ESP-IDF action handles environment
@@ -912,8 +883,7 @@ get_app_idf_versions()       # Get app-specific IDF versions
 get_app_build_types()        # Get app-specific build types
 show_valid_combinations()    # Show valid combinations for specific app
 get_idf_version_smart()      # Smart IDF version selection with build type matching
-```text
-
+```
 #### **Configuration Parsing**
 ```bash
 ## Load configuration with fallback paths
@@ -934,7 +904,7 @@ load_config() {
     
     return 1
 }
-```text
+```
 
 #### **Build Directory Generation**
 ```bash
@@ -951,7 +921,7 @@ get_build_directory() {
     # Generate directory name
     echo "build-app-${app_type}-type-${build_type}-target-${target}-idf-${sanitized_idf_version}"
 }
-```text
+```
 
 #### **Directory Parsing**
 ```bash
@@ -970,7 +940,7 @@ parse_build_directory() {
     echo "target:$target"
     echo "idf_version:$idf_version"
 }
-```text
+```
 
 #### **🆕 Enhanced Validation System**
 ```bash
@@ -1039,7 +1009,7 @@ get_idf_version_smart() {
     # Final fallback
     echo "release/v5.5"
 }
-```python
+```
 
 ---
 
@@ -1065,9 +1035,8 @@ Python script that generates CI/CD build matrices from centralized configuration
 --filter <app>              # Filter output for specific app only
 --verbose                   # Show detailed processing information
 --validate                  # Validate configuration before generating matrix
-```text
-
 #### **Usage Examples**
+```
 **Mode 1: Project-Integrated (default)**
 ```bash
 ## Basic usage (output to stdout)
@@ -1081,8 +1050,7 @@ python3 hf-espidf-project-tools/generate_matrix.py --filter gpio_test
 
 ## Validate configuration
 python3 hf-espidf-project-tools/generate_matrix.py --validate
-```text
-
+```
 **Mode 1: Project-Integrated (alternative)**
 ```bash
 ## Basic usage (output to stdout)
@@ -1096,8 +1064,7 @@ python3 scripts/generate_matrix.py --filter gpio_test
 
 ## Validate configuration
 python3 scripts/generate_matrix.py --validate
-```text
-
+```
 **Mode 2: Portable Tools**
 ```bash
 ## Basic usage with project path
@@ -1111,8 +1078,7 @@ python3 generate_matrix.py --project-path ~/my-esp32-project --filter gpio_test
 
 ## Validate configuration
 python3 generate_matrix.py --project-path ~/my-esp32-project --validate
-```text
-
+```
 **Advanced Examples:**
 ```bash
 ## Verbose output with validation
@@ -1132,9 +1098,8 @@ python3 scripts/generate_matrix.py --filter wifi_test --validate --verbose --for
 wifi_matrix.yaml
 python3 generate_matrix.py --project-path <path> --filter wifi_test --validate --verbose --format
 yaml --output wifi_matrix.yaml
-```text
-
 #### **Output Structure**
+```
 
 **Standard Matrix Output**
 ```json
@@ -1150,8 +1115,7 @@ yaml --output wifi_matrix.yaml
     }
   ]
 }
-```text
-
+```
 **Matrix Entry Fields**
 - `idf_version`: Git format for ESP-IDF cloning (e.g., "release/v5.5")
 - `idf_version_docker`: Docker-safe format for artifacts (e.g., "release-v5.5")
@@ -1177,8 +1141,7 @@ Configuration warnings:
   ⚠️  App 'gpio_test' missing description
   ⚠️  App 'adc_test' missing source_file
   ⚠️  No 'target' specified in metadata, using default
-```text
-
+```
 #### **Verbose Processing**
 
 With `--verbose` flag, the script shows:
@@ -1193,8 +1156,7 @@ With `--verbose` flag, the script shows:
   📋 Matrix entries: 32
 
 🔍 Filtered matrix for app: gpio_test (2 entries)
-```text
-
+```
 #### **Configuration Overrides**
 
 **Global Configuration**
@@ -1203,8 +1165,7 @@ metadata:
   idf_versions: ["release/v5.5", "release/v5.4"]
   build_types: [["Debug", "Release"], ["Debug", "Release"]]
   target: "esp32c6"
-```text
-
+```
 **Per-App Overrides**
 ```yaml
 apps:
@@ -1219,8 +1180,7 @@ apps:
     ci_enabled: false  # Exclude from CI
     idf_versions: ["release/v5.4"]  # Specific version only
     build_types: [["Debug"]]  # Limited build types
-```text
-
+```
 **CI Exclusions**
 ```yaml
 ci_config:
@@ -1228,7 +1188,7 @@ ci_config:
     - app_name: "bluetooth_test"
       build_type: "Debug"
       idf_version: "release/v5.4"
-```yaml
+```
 
 #### **Path Detection**
 
@@ -1255,8 +1215,7 @@ The script automatically detects configuration files from:
     matrix: ${{ fromJson(steps.matrix.outputs.matrix) }}
   run: |
     ./hf-espidf-project-tools/build_app.sh ${{ matrix.app_name }} ${{ matrix.build_type }}
-```text
-
+```
 **Mode 1: Project-Integrated (alternative)**
 ```yaml
 - name: Generate Build Matrix
@@ -1269,8 +1228,7 @@ The script automatically detects configuration files from:
     matrix: ${{ fromJson(steps.matrix.outputs.matrix) }}
   run: |
     ./scripts/build_app.sh ${{ matrix.app_name }} ${{ matrix.build_type }}
-```text
-
+```
 **Mode 2: Portable Tools**
 ```yaml
 - name: Generate Build Matrix
@@ -1283,9 +1241,8 @@ The script automatically detects configuration files from:
     matrix: ${{ fromJson(steps.matrix.outputs.matrix) }}
   run: |
     /opt/esp32-tools/build_app.sh --project-path ${{ github.workspace }} ${{ matrix.app_name }} ${{ matrix.build_type }}
-```text
-
 **GitLab CI**
+```
 ```yaml
 generate_matrix:
   script:
@@ -1293,8 +1250,7 @@ generate_matrix:
   artifacts:
     paths:
       - matrix.yml
-```text
-
+```
 **Jenkins Pipeline**
 ```groovy
 pipeline {
@@ -1314,7 +1270,7 @@ pipeline {
     }
   }
 }
-```yaml
+```
 
 #### **Error Handling**
 
@@ -1368,8 +1324,7 @@ ci_config:
     - app_name: "wifi_test"
       idf_version: "release/v5.3"
       build_type: "Release"
-```text
-
+```
 #### **Configuration Features**
 - **Hierarchical Overrides** - Per-app configuration overrides global settings
 - **CI Control** - Enable/disable applications in CI builds
@@ -1394,8 +1349,7 @@ ci_config:
 ## • Development aliases and environment variables
 ## • Interactive setup with user guidance
 ## • Complete dependency installation
-```text
-
+```
 #### **CI/CD Environment Setup**
 ```bash
 ## CI builds use ESP-IDF CI action directly
@@ -1407,10 +1361,9 @@ ci_config:
 ## • Cache-aware installation
 ## • Non-interactive operation
 ## • ESP-IDF handled by ESP-IDF CI action
-```text
-
 ### **New Enhanced Commands**
 
+```
 The build system now includes several new commands for better user experience and validation:
 
 #### **📋 Information Commands**
@@ -1424,9 +1377,8 @@ The build system now includes several new commands for better user experience an
 ## Validate a specific build combination
 ./scripts/build_app.sh validate gpio_test Release
 ./scripts/build_app.sh validate gpio_test Release release/v5.4
-```text
-
 #### **🛡️ Validation Examples**
+```
 ```bash
 ## Valid combination - proceeds with build
 ./scripts/build_app.sh validate gpio_test Release
@@ -1436,8 +1388,7 @@ The build system now includes several new commands for better user experience an
 ## Output: ❌ INVALID: This combination is not allowed
 ##        Valid combinations for 'gpio_test':
 ##        • release/v5.5: Debug Release
-```text
-
+```
 #### **🧠 Smart Default Examples**
 ```bash
 ## No IDF version specified - uses smart default
@@ -1447,7 +1398,7 @@ The build system now includes several new commands for better user experience an
 ## IDF version explicitly specified
 ./scripts/build_app.sh gpio_test Release release/v5.5
 ## Output: Uses specified version directly
-```text
+```
 
 ### **Local Development Workflow**
 
@@ -1463,7 +1414,7 @@ The build system now includes several new commands for better user experience an
 
 ## 4. Monitor only
 ./hf-espidf-project-tools/flash_app.sh monitor
-```text
+```
 
 ### **CI/CD Integration**
 
@@ -1477,11 +1428,10 @@ The build system now includes several new commands for better user experience an
     
     # Capture build directory for artifacts
     echo "build_dir=$ESP32_BUILD_APP_MOST_RECENT_DIRECTORY" >> $GITHUB_OUTPUT
-```text
-
+```
 **Mode 1: Project-Integrated (alternative)**
-```yaml
 ## GitHub Actions workflow
+```yaml
 - name: ESP-IDF Build
   run: |
     # Build application directly (no setup needed)
@@ -1489,11 +1439,10 @@ The build system now includes several new commands for better user experience an
     
     # Capture build directory for artifacts
     echo "build_dir=$ESP32_BUILD_APP_MOST_RECENT_DIRECTORY" >> $GITHUB_OUTPUT
-```text
-
+```
 **Mode 2: Portable Tools**
-```yaml
 ## GitHub Actions workflow
+```yaml
 - name: ESP-IDF Build
   run: |
     # Build application directly (no setup needed)
@@ -1501,7 +1450,7 @@ The build system now includes several new commands for better user experience an
     
     # Capture build directory for artifacts
     echo "build_dir=$ESP32_BUILD_APP_MOST_RECENT_DIRECTORY" >> $GITHUB_OUTPUT
-```python
+```
 
 ## 🔄 **CI/CD Workflows & Quality Assurance**
 
@@ -1527,7 +1476,6 @@ All workflows run automatically on every push and pull request.
 
 ### **📊 CI Pipeline Overview**
 
-```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    🚀 Push/PR Trigger                          │
 └─────────────────────┬───────────────────────────────────────────┘
@@ -1567,7 +1515,6 @@ All workflows run automatically on every push and pull request.
     └─────────────┘ └─────────────┘
 
 All jobs run in PARALLEL for maximum speed! ⚡
-```python
 
 ### **🔍 What Each Workflow Does**
 
@@ -1606,7 +1553,6 @@ All jobs run in PARALLEL for maximum speed! ⚡
 
 Before pushing, you can run similar checks locally:
 
-```bash
 ## Python formatting and linting
 black --check --diff .
 isort --check-only --diff .
@@ -1621,8 +1567,6 @@ safety check --requirement requirements.txt
 
 ## Markdown link checking
 markdown-link-check README.md
-```text
-
 ### **📈 CI Performance**
 
 - **Total Runtime**: ~5-10 minutes (all jobs run in parallel)
@@ -1650,8 +1594,9 @@ For detailed CI documentation, see [`.github/README.md`](.github/README.md).
 
 ### **Advanced Configuration**
 
-```bash
 ## Custom ESP-IDF version
+
+```bash
 ./scripts/build_app.sh gpio_test Release release/v5.4
 
 ## Clean build
@@ -1664,11 +1609,8 @@ CLEAN=1 ./scripts/build_app.sh gpio_test Release
 for app in gpio_test adc_test uart_test; do
     ./scripts/build_app.sh "$app" Release
 done
-```text
-
 ### **Configuration Management**
 
-```bash
 ## List available applications
 source scripts/config_loader.sh
 get_app_types
@@ -1681,8 +1623,7 @@ list_build_directories
 
 ## Parse build directory
 parse_build_directory "build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5"
-```text
-
+```
 ---
 
 ## 🔍 **Troubleshooting**
@@ -1700,35 +1641,28 @@ git clone --recursive https://github.com/espressif/esp-idf.git esp-idf-release_v
 cd esp-idf-release_v5_5
 ./install.sh
 source export.sh
-```text
-
 #### **Permission Issues**
-```bash
 ## Error: Permission denied
 ## Solution: Make scripts executable
 chmod +x scripts/*.sh
 chmod +x scripts/*.py
-```python
+```
 
 #### **Python Dependencies**
-```bash
+
+```python
 ## Error: Module not found
 ## Solution: Install required packages
 pip install pyyaml
 pip install esptool
-```text
-
+```
 #### **Build Directory Issues**
-```bash
 ## Error: Invalid build directory name
 ## Solution: Check app_config.yml build_directory_pattern
 
 ## Ensure pattern follows format:
 build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
-```text
-
 #### **🆕 Validation System Issues**
-```bash
 ## Error: Invalid build combination
 ## Solution: Use validation commands to see what's allowed
 
@@ -1745,10 +1679,7 @@ build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}
 ## • App doesn't support requested build type
 ## • App doesn't support requested IDF version
 ## • Combination constraint violation
-```text
-
 #### **Smart Default Issues**
-```bash
 ## Error: Smart default not working
 ## Solution: Check app_config.yml configuration
 
@@ -1762,13 +1693,11 @@ apps:
 metadata:
   idf_versions: ["release/v5.5", "release/v5.4"]
   build_types: [["Debug", "Release"], ["Debug"]]
-```text
-
+  
 #### **🆕 Environment Setup Issues**
 **Problem**: Setup scripts fail or don't work as expected
 **Symptoms**: Setup errors or missing dependencies
 **Solutions**:
-```bash
 ## For local development (complete environment)
 ./setup_repo.sh
 
@@ -1779,13 +1708,10 @@ chmod +x scripts/*.sh
 
 ## Verify system requirements and dependencies
 ## Check environment variables and paths
-```text
-
 ### **Debug Mode**
 
 Enable verbose output for debugging:
 
-```bash
 ## Verbose build
 ./scripts/build_app.sh --verbose gpio_test Release
 
@@ -1796,13 +1722,10 @@ CLEAN=1 ./scripts/build_app.sh gpio_test Release
 source scripts/setup_repo.sh
 echo $IDF_PATH
 echo $IDF_TARGET
-```text
-
 ### **Log Files**
 
 Build logs are available in:
 
-```bash
 ## Build log
 cat build-*/log/build.log
 
@@ -1811,8 +1734,6 @@ cat build-*/CMakeFiles/CMakeOutput.log
 
 ## Ninja log
 cat build-*/.ninja_log
-```text
-
 ---
 
 ## 🤝 **Contributing**
@@ -1820,11 +1741,9 @@ cat build-*/.ninja_log
 ### **Adding New Scripts**
 
 1. **Create Script File**
-```bash
    # Create new script
    touch scripts/new_script.sh
    chmod +x scripts/new_script.sh
-   ```
 
 1. **Add Documentation**
    - Update this README
@@ -1839,9 +1758,7 @@ cat build-*/.ninja_log
 ### **Modifying Existing Scripts**
 
 1. **Backup Original**
-   ```bash
    cp scripts/script_name.sh scripts/script_name.sh.backup
-   ```
 
 1. **Make Changes**
    - Implement new functionality

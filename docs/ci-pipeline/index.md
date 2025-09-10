@@ -49,7 +49,7 @@ and minimal resource usage while maintaining comprehensive build coverage.
 
 ### **Job Structure and Dependencies**
 
-```cpp
+```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        CI PIPELINE ARCHITECTURE                             │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -73,11 +73,10 @@ and minimal resource usage while maintaining comprehensive build coverage.
 │  └── No dependency on other jobs                                            │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
-
+```
 ### **Environment Setup Architecture**
 
-```python
+```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           SETUP COMMON FUNCTIONS                            │
 │                    (setup_common.sh - shared utilities)                     │
@@ -100,8 +99,7 @@ and minimal resource usage while maintaining comprehensive build coverage.
 │  • Complete toolchain                        • No file copying needed       │
 │  • Interactive setup                         • Self-contained functions     │
 └─────────────────────────────────────────────────────────────────────────────┘
-```text
-
+```
 ## ⚡ **Performance Optimizations**
 
 ### **1. Matrix Generation Optimization**
@@ -111,8 +109,7 @@ The workflow uses single matrix generation with result reuse:
 ## Generate once, reuse result
 MATRIX=$(python3 generate_matrix.py)
 echo "$MATRIX" | python3 -m json.tool  # Reuse stored result
-```text
-
+```
 **Benefits**: **~50% faster** matrix generation
 
 ### **2. Static Analysis Independence**
@@ -121,8 +118,7 @@ The workflow runs static analysis in parallel with builds:
 ```yaml
 static-analysis:
   # No dependencies needed - cppcheck analyzes source code, not build artifacts
-```text
-
+```
 **Benefits**: **Significant time reduction** - no blocking
 
 ### **3. Direct Project Building**
@@ -134,16 +130,14 @@ static-analysis:
     command: |
       cd "${ESP32_PROJECT_PATH}"
       ./scripts/build_app.sh --project-path "${ESP32_PROJECT_PATH}" ...
-```text
-
+```
 ### **4. Clean Caching Strategy**
 
 The workflow uses clean, focused caching without unnecessary Docker buildx cache:
 ```yaml
 ## ESP-IDF action handles its own containerization
 ## No unused Docker caching overhead
-```text
-
+```
 **Benefits**: **No wasted resources** - efficient caching
 
 ### **5. Package Installation Optimization**
@@ -156,7 +150,7 @@ if ! command -v yamllint &> /dev/null; then
 else
   echo "yamllint already installed: $(yamllint --version)"
 fi
-```cpp
+```
 
 **Benefits**: **~30% faster** package installation
 
@@ -169,8 +163,7 @@ docker run --rm cppcheck \
   --xml --output-file=cppcheck_report.xml \
   --quiet \
   /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck_output.txt
-```text
-
+```
 **Benefits**: **~50% faster** static analysis
 
 ## 🔧 **Configuration and Setup**
@@ -180,8 +173,7 @@ docker run --rm cppcheck \
 ```bash
 ## Required for CI setup
 export ESP32_PROJECT_PATH="examples/esp32"  # Path to ESP32 project directory
-```text
-
+```
 ### **Environment Variable Validation**
 
 The CI workflow validates required environment variables:
@@ -198,8 +190,7 @@ if [[ ! -d "$ESP32_PROJECT_PATH" ]]; then
     print_error "ESP32_PROJECT_PATH directory does not exist: $ESP32_PROJECT_PATH"
     exit 1
 fi
-```text
-
+```
 ### **Direct CI Building**
 
 The CI workflow now uses direct project building without file copying:
@@ -212,8 +203,7 @@ The CI workflow now uses direct project building without file copying:
     command: |
       cd "${ESP32_PROJECT_PATH}"
       ./scripts/build_app.sh --project-path "${ESP32_PROJECT_PATH}" ...
-```text
-
+```
 ### **Portable CI Usage**
 
 The build system supports portable usage through the `--project-path` flag:
@@ -228,8 +218,7 @@ export PROJECT_PATH=/path/to/project
 
 ## CI environment with portable scripts
 ./ci-scripts/build_app.sh --project-path $GITHUB_WORKSPACE/examples/esp32 gpio_test Release
-```text
-
+```
 #### **Portable CI Benefits**
 - **Flexible Script Placement**: Build scripts can be placed anywhere
 - **Multiple Project Support**: Same build system for different projects
@@ -246,8 +235,7 @@ python3 generate_matrix.py --project-path /path/to/project --output matrix.json
 - name: Generate Build Matrix
   run: |
     python3 scripts/generate_matrix.py --project-path ${{ github.workspace }}/examples/esp32 --output matrix.json
-```text
-
+```
 ## 🚀 **Job Execution and Workflow**
 
 ### **Matrix Generation Job**
@@ -273,8 +261,7 @@ generate-matrix:
         # Pretty-print the stored result instead of regenerating
         echo "Generated matrix:"
         echo "$MATRIX" | python3 -m json.tool
-```text
-
+```
 ### **Build Job (Parallel Matrix)**
 
 ```yaml
@@ -292,8 +279,7 @@ build:
         command: |
           cd ${{ env.ESP32_PROJECT_PATH }}
           ./scripts/build_app.sh --project-path "${{ env.ESP32_PROJECT_PATH }}" "${{ matrix.app_name }}" "${{ matrix.build_type }}" "${{ matrix.idf_version }}"
-```text
-
+```
 ### **Static Analysis Job (Independent)**
 
 ```yaml
@@ -326,8 +312,7 @@ static-analysis:
             --output-file=/src/cppcheck_report.xml \
             --quiet \
             /src/src/ /src/inc/ /src/examples/ 2>&1 | tee cppcheck_output.txt
-```text
-
+```
 ### **Workflow Lint Job (Independent)**
 
 ```yaml
@@ -376,8 +361,7 @@ workflow-lint:
         else
           echo "actionlint already installed: $(actionlint --version)"
         fi
-```text
-
+```
 ## 💾 **Caching Strategy**
 
 ### **Cache Key Design Principles**
@@ -407,8 +391,7 @@ env.ESP32_PROJECT_PATH }}/scripts/setup_common.sh', '${{ env.ESP32_PROJECT_PATH
 ## ccache (build jobs)
 key: esp32-ci-ccache-${{ matrix.idf_version_docker }}-${{ matrix.build_type }}-${{
 hashFiles('src/**', 'inc/**', 'examples/**') }}
-```text
-
+```
 ### **Cache Paths**
 
 ```yaml
@@ -430,8 +413,7 @@ path: |
 
 ## ccache
 path: ~/.ccache
-```text
-
+```
 ## 🔍 **Troubleshooting and Debugging**
 
 ### **Common CI Issues**
@@ -440,18 +422,14 @@ path: ~/.ccache
 
 **Problem**: `ESP32_PROJECT_PATH` not set or invalid
 **Symptoms**: 
-```text
 ERROR: ESP32_PROJECT_PATH environment variable is required but not set
 ERROR: This should point to the ESP32 project directory (e.g., 'examples/esp32')
-```text
-
 **Solutions**:
 ```yaml
 ## In GitHub workflow
 env:
   ESP32_PROJECT_PATH: examples/esp32
-```text
-
+```
 #### **2. Matrix Generation Failures**
 
 **Problem**: Matrix generation script fails
@@ -468,8 +446,7 @@ chmod +x generate_matrix.py
 
 ## Verify Python dependencies
 pip install pyyaml
-```text
-
+```
 #### **3. Cache Misses**
 
 **Problem**: Poor cache hit rates
@@ -485,8 +462,7 @@ key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32_PROJ
 path: |
   ~/.cache/apt
   ~/.local/share
-```text
-
+```
 #### **4. Build Directory Issues**
 
 **Problem**: Build environment preparation fails
@@ -499,8 +475,7 @@ ls -la src/ inc/ examples/
 
 ## Check ESP32_PROJECT_PATH is correct
 echo $ESP32_PROJECT_PATH
-```text
-
+```
 ### **Debugging Commands**
 
 ```bash
@@ -513,8 +488,7 @@ python3 examples/esp32/scripts/generate_matrix.py
 ## Check cache status
 ls -la ~/.cache/apt
 ls -la ~/.ccache
-```text
-
+```
 ## 📊 **Performance Metrics**
 
 ### **Performance Characteristics**

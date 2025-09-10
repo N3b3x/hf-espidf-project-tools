@@ -49,12 +49,12 @@ and seamless integration with the build and flash systems.
 ## 🏗️ **Architecture and Design**
 
 ### **System Architecture**
-```text
+```
 Script Execution → Log Capture → Log Storage → Log Management → Log Analysis
       ↓              ↓            ↓            ↓              ↓
 Build/Flash     Output        File System   Organization   Search/Stats
 Operations      Capture       Storage       & Rotation     & Analysis
-```text
+```
 
 ### **Component Interaction**
 - **Script Execution**: All scripts generate log output
@@ -86,8 +86,7 @@ The logging system automatically generates logs for all major operations:
 
 ## Monitor operations automatically log
 ./flash_app.sh monitor --log
-```text
-
+```
 #### **Log File Naming Convention**
 Logs follow a consistent naming pattern:
 
@@ -103,8 +102,7 @@ monitor_session_20250115_151230.log
 ## Custom log naming
 ./flash_app.sh flash gpio_test Release --log production_deploy
 ## Result: production_deploy_20250115_143022.log
-```text
-
+```
 #### **Log Content Structure**
 Each log file contains comprehensive information:
 
@@ -128,8 +126,7 @@ Target: esp32c6
 - Error messages and warnings
 - Performance metrics
 - Completion status
-```text
-
+```
 ### **Log Capture Mechanisms**
 
 #### **Output Capture**
@@ -144,8 +141,7 @@ The system captures all relevant output:
 - Progress information
 - Performance metrics
 - Debug information
-```text
-
+```
 #### **Integration Points**
 Logging integrates with all major systems:
 
@@ -167,14 +163,12 @@ Logging integrates with all major systems:
 - Parameter processing
 - Environment setup
 - Error handling
-```text
-
+```
 ## 🗂️ **Log Management and Organization**
 
 ### **Log Directory Structure**
 
 #### **Standard Organization**
-```text
 examples/esp32/logs/
 ├── 2025-01-15/                    # Date-based organization
 │   ├── gpio_test_Release_143022.log
@@ -187,8 +181,6 @@ examples/esp32/logs/
 └── archive/                        # Archived logs
     ├── 2025-01-14/
     └── 2025-01-13/
-```text
-
 #### **Automatic Organization**
 The system automatically organizes logs:
 
@@ -198,8 +190,7 @@ The system automatically organizes logs:
 - Latest log symlinks
 - Archive organization
 - Cleanup and rotation
-```text
-
+```
 ### **Log Rotation and Cleanup**
 
 #### **Automatic Rotation**
@@ -209,8 +200,7 @@ The system automatically organizes logs:
 - Retention period: 30 days (configurable)
 - Archive old logs automatically
 - Clean up expired logs
-```text
-
+```
 #### **Cleanup Operations**
 ```bash
 ## Manual cleanup
@@ -222,8 +212,7 @@ The system automatically organizes logs:
 - Daily cleanup of expired logs
 - Archive creation for old logs
 - Storage optimization
-```text
-
+```
 ### **Log File Management**
 
 #### **File Operations**
@@ -239,8 +228,7 @@ The system automatically organizes logs:
 
 ## Get log statistics
 ./manage_logs.sh stats
-```text
-
+```
 #### **Storage Optimization**
 ```bash
 ## Storage features
@@ -248,8 +236,7 @@ The system automatically organizes logs:
 - Efficient file organization
 - Configurable retention policies
 - Storage usage monitoring
-```text
-
+```
 ## 🔍 **Log Analysis and Search**
 
 ### **Cross-Log Search**
@@ -266,8 +253,7 @@ The system automatically organizes logs:
 ./manage_logs.sh search "gpio.*error"     # GPIO-related errors
 ./manage_logs.sh search "flash.*failed"   # Flash failures
 ./manage_logs.sh search "build.*success"  # Build successes
-```text
-
+```
 #### **Search Capabilities**
 The search system provides powerful capabilities:
 
@@ -279,8 +265,7 @@ The search system provides powerful capabilities:
 - Context display
 - Result highlighting
 - Search result summary
-```text
-
+```
 ### **Log Statistics and Analysis**
 
 #### **Statistical Analysis**
@@ -295,8 +280,7 @@ The search system provides powerful capabilities:
 - Error frequency
 - Success rates
 - Performance metrics
-```text
-
+```
 #### **Trend Analysis**
 ```bash
 ## Trend analysis features
@@ -305,8 +289,7 @@ The search system provides powerful capabilities:
 - Build success trends
 - Flash success trends
 - Time-based patterns
-```text
-
+```
 ### **Log Comparison and Diff**
 
 #### **Cross-Log Comparison**
@@ -319,8 +302,7 @@ The search system provides powerful capabilities:
 - Difference highlighting
 - Common pattern identification
 - Change tracking
-```text
-
+```
 ## 🚀 **Usage Examples and Patterns**
 
 ### **Basic Log Management**
@@ -335,8 +317,7 @@ The search system provides powerful capabilities:
 
 ## View a specific log file
 ./manage_logs.sh view gpio_test_Release_20250115_143022.log
-```text
-
+```
 #### **2. Search Logs**
 ```bash
 ## Search for errors
@@ -348,8 +329,7 @@ The search system provides powerful capabilities:
 
 ## Search with context
 ./manage_logs.sh search "gpio.*error" --context 5
-```text
-
+```
 #### **3. Log Maintenance**
 ```bash
 ## Clean old logs
@@ -361,8 +341,7 @@ The search system provides powerful capabilities:
 
 ## Archive old logs
 ./manage_logs.sh archive
-```text
-
+```
 ### **Advanced Log Patterns**
 
 #### **1. Development Workflow Logging**
@@ -377,8 +356,7 @@ The search system provides powerful capabilities:
 - Flash log with port detection
 - Monitor log with device output
 - Comprehensive development trace
-```text
-
+```
 #### **2. Production Deployment Logging**
 ```bash
 ## Production deployment with logging
@@ -391,8 +369,7 @@ The search system provides powerful capabilities:
 - Deployment log
 - Success verification
 - Audit trail for production
-```text
-
+```
 #### **3. Debugging and Troubleshooting**
 ```bash
 ## Debugging workflow with logging
@@ -406,8 +383,7 @@ The search system provides powerful capabilities:
 - Error context and patterns
 - Warning identification
 - Troubleshooting guidance
-```text
-
+```
 ### **Log Analysis Workflows**
 
 #### **1. Error Analysis**
@@ -420,8 +396,7 @@ The search system provides powerful capabilities:
 ## Analyze error patterns
 cat errors.txt | grep -o "ERROR:.*" | sort | uniq -c
 cat warnings.txt | grep -o "WARNING:.*" | sort | uniq -c
-```text
-
+```
 #### **2. Performance Analysis**
 ```bash
 ## Performance analysis
@@ -432,8 +407,7 @@ cat warnings.txt | grep -o "WARNING:.*" | sort | uniq -c
 for log in $(./manage_logs.sh list | grep "build.*Release"); do
     echo "$log: $(./manage_logs.sh search "build.*completed" "$log" | grep -o "in [0-9.]*s")"
 done
-```text
-
+```
 #### **3. Success Rate Analysis**
 ```bash
 ## Success rate analysis
@@ -445,8 +419,7 @@ echo "Total operations: $total_ops"
 echo "Successful operations: $success_ops"
 echo "Failed operations: $error_ops"
 echo "Success rate: $((success_ops * 100 / total_ops))%"
-```text
-
+```
 ## 🔧 **Integration and Automation**
 
 ### **Script Integration**
@@ -467,8 +440,7 @@ All scripts automatically support logging:
 ## Log management integration
 ./manage_logs.sh latest
 ./manage_logs.sh search "ERROR"
-```text
-
+```
 #### **Log Configuration**
 Logging can be configured through environment variables:
 
@@ -479,8 +451,7 @@ export LOG_LEVEL=INFO             # Set log level
 export LOG_RETENTION_DAYS=30      # Set retention period
 export LOG_MAX_FILES=50           # Set maximum log files
 export LOG_COMPRESSION=1          # Enable compression
-```text
-
+```
 ### **CI/CD Integration**
 
 #### **Automated Logging**
@@ -498,8 +469,7 @@ export LOG_COMPRESSION=1          # Enable compression
     ./scripts/manage_logs.sh search "ERROR"
     ./scripts/manage_logs.sh stats
     ./scripts/manage_logs.sh latest
-```text
-
+```
 #### **Log Artifacts**
 ```yaml
 ## Upload logs as artifacts
@@ -509,8 +479,7 @@ export LOG_COMPRESSION=1          # Enable compression
     name: esp32-logs
     path: examples/esp32/logs/
     retention-days: 30
-```text
-
+```
 ### **Automation Scripts**
 
 #### **Log Analysis Automation**
@@ -537,8 +506,7 @@ echo -e "\nWarning Summary:" >> daily_report.txt
 
 ## Send report
 mail -s "ESP32 Daily Log Report" admin@example.com < daily_report.txt
-```text
-
+```
 #### **Log Cleanup Automation**
 ```bash
 #!/bin/bash
@@ -559,8 +527,7 @@ echo "Old logs have been archived" >> cleanup_report.txt
 
 ## Send cleanup report
 mail -s "ESP32 Log Cleanup Report" admin@example.com < cleanup_report.txt
-```text
-
+```
 ## 🔍 **Troubleshooting and Debugging**
 
 ### **Common Log Issues**
@@ -583,8 +550,7 @@ chmod 755 logs/
 ## Enable logging explicitly
 export LOG_ENABLED=1
 ./flash_app.sh flash gpio_test Release --log
-```text
-
+```
 #### **2. Log Directory Issues**
 **Problem**: Cannot access or create log directory
 **Symptoms**: "Permission denied" or "Directory not found" errors
@@ -601,8 +567,7 @@ ls -la examples/esp32/logs/
 
 ## Fix permissions
 chmod 755 examples/esp32/logs/
-```text
-
+```
 #### **3. Log File Corruption**
 **Problem**: Log files are corrupted or incomplete
 **Symptoms**: Incomplete log files or parsing errors
@@ -619,8 +584,7 @@ rm logs/corrupted.log
 
 ## Regenerate logs
 ./flash_app.sh flash gpio_test Release --log
-```text
-
+```
 ### **Debug and Verbose Mode**
 
 #### **Enabling Log Debug Output**
@@ -638,8 +602,7 @@ export LOG_VERBOSE=1
 - Log capture process information
 - Log organization details
 - Search and analysis information
-```text
-
+```
 #### **Log System Debugging**
 ```bash
 ## Debug log system
@@ -651,8 +614,7 @@ debug_log_system() {
     echo "Log files count: $(find "$LOG_DIR" -name "*.log" | wc -l)"
     echo "Latest log: $(./manage_logs.sh latest 2>/dev/null || echo "None")"
 }
-```text
-
+```
 ### **Log Performance Issues**
 
 #### **Large Log Files**
@@ -671,8 +633,7 @@ debug_log_system() {
 
 ## Split large logs
 ./manage_logs.sh split large_log.log
-```text
-
+```
 #### **Search Performance**
 **Problem**: Log search operations are slow
 **Symptoms**: Long search times or high CPU usage
@@ -689,8 +650,7 @@ debug_log_system() {
 
 ## Search in specific time range
 ./manage_logs.sh search "ERROR" --since "2025-01-15"
-```text
-
+```
 ## 📚 **Reference and Examples**
 
 ### **Command Reference**
@@ -709,8 +669,7 @@ debug_log_system() {
 ##   compare <log1> <log2>  - Compare two log files
 ##   archive                - Archive old logs
 ##   compress               - Compress old logs
-```text
-
+```
 #### **Log Options**
 - **`--verbose`**: Enable verbose output
 - **`--context <lines>`**: Show context lines around search results
@@ -730,8 +689,7 @@ export LOG_MAX_FILES=50           # Set maximum log files
 export LOG_COMPRESSION=1          # Enable/disable compression
 export LOG_ROTATION=1             # Enable/disable rotation
 export LOG_ARCHIVE=1              # Enable/disable archiving
-```text
-
+```
 ### **Configuration Examples**
 
 #### **Minimal Log Configuration**
@@ -742,8 +700,7 @@ flash_config:
   log_rotation: true
   max_log_files: 30
   log_retention_days: 7
-```text
-
+```
 #### **Standard Log Configuration**
 ```yaml
 ## app_config.yml standard logging configuration
@@ -756,8 +713,7 @@ flash_config:
   log_archive: true
   log_format: "detailed"
   log_level: "INFO"
-```text
-
+```
 #### **Advanced Log Configuration**
 ```yaml
 ## app_config.yml advanced logging configuration
@@ -785,8 +741,7 @@ flash_config:
   log_buffer_size: "1MB"
   log_flush_interval: 5
   log_async_writing: true
-```text
-
+```
 ### **Integration Examples**
 
 #### **CMake Integration**
@@ -805,8 +760,7 @@ add_custom_target(clean_logs
     COMMAND ${CMAKE_SOURCE_DIR}/scripts/manage_logs.sh clean 7
     COMMENT "Cleaning logs older than 7 days"
 )
-```text
-
+```
 #### **CI/CD Integration**
 ```yaml
 ## GitHub Actions logging workflow
@@ -840,8 +794,7 @@ add_custom_target(clean_logs
     name: esp32-logs
     path: examples/esp32/logs/
     retention-days: 30
-```text
-
+```
 ### **Best Practices**
 
 #### **1. Log Management**
