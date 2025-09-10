@@ -1,0 +1,68 @@
+# Navigation data for the HardFOC ESP32 CI Tools
+main:
+  - title: "Home"
+    url: "/"
+    icon: "fas fa-home"
+
+  - title: "Getting Started"
+    url: "/getting-started/"
+    icon: "fas fa-rocket"
+    children:
+      - title: "Quick Start"
+        url: "/getting-started/"
+      - title: "Installation"
+        url: "/getting-started/installation/"
+      - title: "Configuration"
+        url: "/getting-started/configuration/"
+
+  - title: "Documentation"
+    url: "/build-system/"
+    icon: "fas fa-book"
+    children:
+      - title: "Build System"
+        url: "/build-system/"
+      - title: "CI Pipeline"
+        url: "/ci-pipeline/"
+      - title: "Configuration"
+        url: "/configuration/"
+        children:
+          - title: "Configuration System"
+            url: "/configuration/"
+          - title: "Centralized Config"
+            url: "/configuration/centralized/"
+      - title: "Flash System"
+        url: "/flash-system/"
+      - title: "Logging System"
+        url: "/logging-system/"
+
+  - title: "Advanced Topics"
+    url: "/advanced/multi-version-idf/"
+    icon: "fas fa-cogs"
+    children:
+      - title: "Multi-Version ESP-IDF"
+        url: "/advanced/multi-version-idf/"
+      - title: "Port Detection"
+        url: "/advanced/port-detection/"
+      - title: "Utility Scripts"
+        url: "/advanced/utility-scripts/"
+
+  - title: "Features"
+    url: "/features/"
+    icon: "fas fa-star"
+
+  - title: "Examples"
+    url: "/examples/"
+    icon: "fas fa-code"
+
+  - title: "Troubleshooting"
+    url: "/troubleshooting/"
+    icon: "fas fa-tools"
+
+  - title: "Contributing"
+    url: "/contributing/"
+    icon: "fas fa-hands-helping"
+
+  - title: "GitHub Repository"
+    url: "https://github.com/N3b3x/nt-espidf-project-tools"
+    icon: "fab fa-github"
+    external: true

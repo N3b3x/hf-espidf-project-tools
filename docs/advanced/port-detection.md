@@ -1,15 +1,17 @@
-# ESP32 HardFOC Interface Wrapper - Port Detection Guide
+---
+layout: default
+title: "Port Detection"
+description: "ESP32 port detection system with cross-platform device identification and troubleshooting"
+nav_order: 2
+parent: "Advanced Topics"
+permalink: /advanced/port-detection/
+---
+
+# ESP32 Port Detection Guide
 
 This document provides comprehensive documentation for the ESP32 port detection system, including
 cross-platform device identification, troubleshooting, and integration with the development
 workflow.
-
----
-
-**Navigation**: [← Previous: Utility Scripts](README_UTILITY_SCRIPTS.md) | [Back to
-Scripts](../README.md) | [Next: Centralized Config →](README_CENTRALIZED_CONFIG.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -47,13 +49,12 @@ and provides comprehensive troubleshooting guidance for common connectivity issu
 ## 🏗️ **Architecture and Design**
 
 ### **System Architecture**
-```text
+```
 Port Detection → Platform Detection → Device Enumeration → Port Validation → Status Reporting
       ↓              ↓                    ↓                ↓                ↓
 Cross-Platform   OS Adaptation      USB Device Scan    Connectivity    Troubleshooting
 Detection        & Optimization     & Identification   Testing         & Guidance
-```text
-
+```
 ### **Component Interaction**
 - **Platform Detection**: Operating system identification and adaptation
 - **Device Enumeration**: USB device scanning and ESP32 identification
@@ -87,8 +88,7 @@ CDC ACM: USB CDC ACM devices (various vendors)
 
 ## Automatic detection command
 ./detect_ports.sh --verbose
-```text
-
+```
 #### **Linux-Specific Features**
 ```bash
 ## Kernel message monitoring
@@ -102,8 +102,7 @@ lsusb -v | grep -A5 -B5 "10c4:ea60"
 ## Device file system information
 ls -la /sys/class/tty/
 ls -la /sys/bus/usb/devices/
-```text
-
+```
 #### **Permission Management**
 ```bash
 ## User group requirements
@@ -121,8 +120,7 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE="0666"
 ## Reload udev rules
 sudo udevadm control --reload-rules
 sudo udevadm trigger
-```text
-
+```
 ### **macOS Port Detection**
 
 #### **Device Detection Patterns**
@@ -141,8 +139,7 @@ system_profiler SPUSBDataType | grep -A10 -B5 "CH340"
 
 ## Device enumeration
 ls /dev/cu.* | grep -E "(usbserial|SLAB|usbmodem|wchusb|FTDI)"
-```text
-
+```
 #### **macOS-Specific Features**
 ```bash
 ## USB device information
@@ -156,8 +153,7 @@ ioreg -p IOUSB -l -w 0 | grep -A5 -B5 "CP210x"
 ## Permission handling
 ## macOS typically doesn't require special permissions for USB devices
 ## Check System Preferences > Security & Privacy > Privacy > Full Disk Access
-```text
-
+```
 #### **macOS Troubleshooting**
 ```bash
 ## Check USB device status
@@ -172,8 +168,7 @@ ls -la /dev/cu.*
 ## Check for driver issues
 kextstat | grep -i usb
 kextstat | grep -i serial
-```text
-
+```
 ### **Windows (WSL2) Port Detection**
 
 #### **WSL2 Compatibility**
@@ -195,8 +190,7 @@ lsusb for device identification
 ## COM1 → /dev/ttyS0
 ## COM2 → /dev/ttyS1
 ## USB devices → /dev/ttyUSB*
-```text
-
+```
 #### **WSL2-Specific Features**
 ```bash
 ## Windows device detection
@@ -209,8 +203,7 @@ lsusb for device identification
 
 ## Port validation
 ./detect_ports.sh --verbose --test-connection
-```text
-
+```
 #### **WSL2 Troubleshooting**
 ```bash
 ## Check WSL2 USB support
@@ -225,8 +218,7 @@ ls /dev/ttyUSB*
 
 ## Check Windows device sharing
 ## Ensure USB devices are shared with WSL2
-```text
-
+```
 ## 🔍 **Port Validation and Testing**
 
 ### **Connectivity Testing**
@@ -242,8 +234,7 @@ ls /dev/ttyUSB*
 - Basic serial communication capability
 - Device responsiveness
 - Connection stability
-```text
-
+```
 #### **Advanced Port Testing**
 ```bash
 ## Comprehensive port analysis
@@ -255,8 +246,7 @@ ls /dev/ttyUSB*
 - Permission level validation
 - Connection stability testing
 - Error condition simulation
-```text
-
+```
 #### **Test Output Examples**
 ```bash
 ## Successful port test
@@ -275,8 +265,7 @@ Port: /dev/ttyUSB0
   Serial communication: ✗ Not testable
   Status: PERMISSION_ERROR
   Solution: Add user to dialout group
-```text
-
+```
 ### **Permission Verification**
 
 #### **Permission Level Analysis**
@@ -293,8 +282,7 @@ ls -la /dev/ttyACM*
 ## User group verification
 groups $USER
 id $USER
-```text
-
+```
 #### **Permission Resolution**
 ```bash
 ## Automatic permission fixing
@@ -307,8 +295,7 @@ sudo chmod 666 /dev/ttyACM0
 ## User group management
 sudo usermod -a -G dialout,tty $USER
 newgrp dialout
-```text
-
+```
 ### **Device Identification**
 
 #### **USB Device Information**
@@ -322,8 +309,7 @@ newgrp dialout
 - Device descriptions
 - Driver information
 - Connection status
-```text
-
+```
 #### **Device Type Recognition**
 ```bash
 ## ESP32 device patterns
@@ -337,8 +323,7 @@ newgrp dialout
 - CH340: WCH (good compatibility)
 - FTDI: FTDI (excellent compatibility)
 - CDC ACM: Native USB (modern devices)
-```text
-
+```
 ## ⚙️ **Configuration and Customization**
 
 ### **Environment Variables**
@@ -351,8 +336,7 @@ export PORT_TEST_TIMEOUT=5             # Set connection test timeout (seconds)
 export PORT_SCAN_TIMEOUT=3             # Set port scan timeout (seconds)
 export PORT_MAX_RETRIES=3              # Set maximum retry attempts
 export PORT_DEBUG=1                    # Enable debug mode
-```text
-
+```
 #### **Platform-Specific Configuration**
 ```bash
 ## Linux configuration
@@ -369,8 +353,7 @@ export MACOS_IOREG=1
 export WSL2_PORT_MAPPING="/dev/ttyS*,/dev/ttyUSB*"
 export WSL2_USB_ACCESS=1
 export WSL2_COM_MAPPING=1
-```text
-
+```
 #### **Troubleshooting Configuration**
 ```bash
 ## Troubleshooting options
@@ -378,8 +361,7 @@ export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
 export PORT_VERBOSE_ERRORS=1           # Show detailed error information
 export PORT_SUGGEST_SOLUTIONS=1        # Provide solution suggestions
 export PORT_LOG_LEVEL="INFO"           # Set logging level (DEBUG, INFO, WARN, ERROR)
-```text
-
+```
 ### **Custom Detection Patterns**
 
 #### **User-Defined Device Patterns**
@@ -393,8 +375,7 @@ export CUSTOM_PRODUCT_NAMES="Custom ESP32,My Device"
 - Device files: /dev/tty*
 - Vendor IDs: xxxx:yyyy (hex format)
 - Product names: String patterns (case-insensitive)
-```text
-
+```
 #### **Custom Validation Rules**
 ```bash
 ## Custom validation configuration
@@ -406,8 +387,7 @@ export CUSTOM_RETRY_STRATEGIES="linear,exponential,adaptive"
 - strict: Maximum validation, slower detection
 - permissive: Basic validation, faster detection
 - auto: Automatic level selection based on platform
-```text
-
+```
 ### **Integration Configuration**
 
 #### **Build System Integration**
@@ -422,8 +402,7 @@ add_custom_target(detect_ports
     COMMENT "Detecting ESP32 ports"
     DEPENDS ${CMAKE_SOURCE_DIR}/scripts/detect_ports.sh
 )
-```text
-
+```
 #### **CI/CD Integration**
 ```bash
 ## GitHub Actions integration
@@ -440,8 +419,7 @@ detect_ports:
   artifacts:
     reports:
       junit: port_detection_report.xml
-```text
-
+```
 ## 🚀 **Usage Examples and Patterns**
 
 ### **Basic Port Detection Workflows**
@@ -456,8 +434,7 @@ detect_ports:
 - Port accessibility status
 - Basic device information
 - Quick status summary
-```text
-
+```
 #### **2. Detailed Port Analysis**
 ```bash
 ## Comprehensive port analysis
@@ -469,8 +446,7 @@ detect_ports:
 - Driver status
 - Permission information
 - Troubleshooting guidance
-```text
-
+```
 #### **3. Port Connectivity Testing**
 ```bash
 ## Test port connectivity
@@ -481,8 +457,7 @@ detect_ports:
 - Connection stability testing
 - Error detection and reporting
 - Solution suggestions
-```text
-
+```
 ### **Advanced Port Detection Workflows**
 
 #### **1. Troubleshooting Workflow**
@@ -496,8 +471,7 @@ detect_ports:
 3. Permission verification and fixing
 4. Connectivity testing
 5. Problem resolution and reporting
-```text
-
+```
 #### **2. Development Environment Setup**
 ```bash
 ## Port detection for development setup
@@ -507,8 +481,7 @@ detect_ports:
 ./setup_repo.sh
 ./detect_ports.sh --verify
 ./flash_app.sh gpio_test Release flash_monitor
-```text
-
+```
 #### **3. CI/CD Port Validation**
 ```bash
 ## Automated port validation
@@ -519,8 +492,7 @@ detect_ports:
 - Post-deployment verification
 - Automated troubleshooting
 - Status reporting
-```text
-
+```
 ### **Integration Workflows**
 
 #### **1. Build System Integration**
@@ -539,8 +511,7 @@ add_custom_target(build_with_port_check
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
     DEPENDS check_ports
 )
-```text
-
+```
 #### **2. Flash System Integration**
 ```bash
 ## Port detection before flashing
@@ -554,8 +525,7 @@ add_custom_target(build_with_port_check
 2. Port selection and confirmation
 3. Flash operation execution
 4. Post-flash verification
-```text
-
+```
 #### **3. Development Workflow Integration**
 ```bash
 ## Complete development workflow
@@ -571,8 +541,7 @@ cd examples/esp32
 ./build_app.sh gpio_test Release
 ./flash_app.sh gpio_test Release flash_monitor
 ./manage_logs.sh search "ERROR"
-```text
-
+```
 ## 🔧 **Troubleshooting and Debugging**
 
 ### **Common Port Issues**
@@ -597,8 +566,7 @@ journalctl -f | grep -i usb
 ## Try different USB ports
 ## Check USB cable integrity
 ## Verify device power status
-```text
-
+```
 #### **2. Port Permission Issues**
 **Problem**: Port access denied due to insufficient permissions
 **Symptoms**: "Permission denied" or "Access denied" errors
@@ -621,8 +589,7 @@ sudo udevadm trigger
 
 ## Verify permission changes
 ls -la /dev/ttyUSB*
-```text
-
+```
 #### **3. Port Connectivity Issues**
 **Problem**: Port not accessible or unstable connection
 **Symptoms**: "Port not accessible" or connection failures
@@ -642,8 +609,7 @@ ls -la /dev/ttyUSB*
 ## Check for driver issues
 lsmod | grep -i usb
 kextstat | grep -i usb
-```text
-
+```
 ### **Platform-Specific Issues**
 
 #### **Linux Issues**
@@ -660,8 +626,7 @@ dmesg | grep -i "driver not found"
 ## udev rule problems
 sudo udevadm info -a -n /dev/ttyUSB0
 sudo udevadm test /sys/class/tty/ttyUSB0
-```text
-
+```
 #### **macOS Issues**
 ```bash
 ## System Preferences issues
@@ -675,8 +640,7 @@ ioreg -p IOUSB -l -w 0
 ## Driver compatibility
 kextstat | grep -i usb
 kextstat | grep -i serial
-```text
-
+```
 #### **WSL2 Issues**
 ```bash
 ## USB device access
@@ -689,8 +653,7 @@ ls /dev/ttyUSB*
 
 ## Windows device sharing
 ## Enable USB device sharing in WSL2 settings
-```text
-
+```
 ### **Debug and Verbose Mode**
 
 #### **Enabling Debug Output**
@@ -709,8 +672,7 @@ export PORT_DEBUG=1
 - Permission checking details
 - USB device information
 - Error context and resolution
-```text
-
+```
 #### **Debug Information Available**
 ```bash
 ## Debug output includes
@@ -720,8 +682,7 @@ export PORT_DEBUG=1
 - Permission verification
 - Connection testing details
 - Error resolution attempts
-```text
-
+```
 ## 📚 **Reference and Examples**
 
 ### **Command Reference**
@@ -741,8 +702,7 @@ export PORT_DEBUG=1
 ##   --ci-mode            - Optimize for CI/CD environments
 ##   --timeout <seconds>  - Set operation timeout
 ##   --retries <count>    - Set retry attempts
-```text
-
+```
 #### **Environment Variables**
 ```bash
 ## Port detection configuration
@@ -752,8 +712,7 @@ export PORT_SCAN_TIMEOUT=3             # Set port scan timeout
 export PORT_MAX_RETRIES=3              # Set maximum retry attempts
 export PORT_DEBUG=1                    # Enable debug mode
 export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
-```text
-
+```
 ### **Configuration Examples**
 
 #### **Minimal Port Detection Configuration**
@@ -766,8 +725,7 @@ export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
 - Basic port information display
 - Error reporting for issues
 - Quick status summary
-```text
-
+```
 #### **Advanced Port Detection Configuration**
 ```bash
 ## Comprehensive port analysis
@@ -779,8 +737,7 @@ export PORT_AUTO_FIX=1                 # Enable automatic problem resolution
 - Permission verification and fixing
 - Troubleshooting guidance
 - Solution suggestions
-```text
-
+```
 #### **CI/CD Port Detection Configuration**
 ```bash
 ## CI-optimized port detection
@@ -792,8 +749,7 @@ export CI_MODE=1
 - CI-optimized output format
 - Error reporting for CI systems
 - Status code for automation
-```text
-
+```
 ### **Integration Examples**
 
 #### **CMake Integration**
@@ -813,8 +769,7 @@ add_custom_target(build_with_port_check
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
     DEPENDS detect_ports
 )
-```text
-
+```
 #### **CI/CD Integration**
 ```yaml
 ## GitHub Actions port detection integration
@@ -827,8 +782,7 @@ add_custom_target(build_with_port_check
   run: |
     cd examples/esp32
     ./scripts/detect_ports.sh --ci-mode --verbose
-```text
-
+```
 #### **Automation Scripts**
 ```bash
 #!/bin/bash
@@ -853,8 +807,7 @@ echo "Final port validation..."
 ./detect_ports.sh --verbose --test-connection
 
 echo "Port detection complete!"
-```text
-
+```
 ### **Best Practices**
 
 #### **1. Port Detection**
@@ -887,5 +840,3 @@ echo "Port detection complete!"
 
 ---
 
-**Navigation**: [← Previous: Utility Scripts](README_UTILITY_SCRIPTS.md) | [Back to
-Scripts](../README.md) | [Next: Centralized Config →](README_CENTRALIZED_CONFIG.md)

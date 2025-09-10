@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Multi-Version ESP-IDF Support"
+description: "Support for multiple ESP-IDF versions with intelligent version management"
+nav_order: 1
+parent: "Advanced Topics"
+permalink: /advanced/multi-version-idf/
+---
+
 # Multi-Version ESP-IDF Support
 
 This document explains how the ESP32 HardFOC Interface Wrapper supports multiple ESP-IDF versions
@@ -23,7 +32,7 @@ $HOME/esp/
 ├── esp-idf-release_v5.5/     # ESP-IDF v5.5 installation
 ├── esp-idf-release_v5.4/     # ESP-IDF v5.4 installation
 └── esp-idf -> esp-idf-release_v5.5/  # Default symlink
-```text
+```
 
 ### Version Naming Convention
 
@@ -54,7 +63,7 @@ apps:
     # Override global: use only ESP-IDF v5.4 with Debug only
     idf_versions: ["release/v5.4"]
     build_types: ["Debug"]
-```text
+```
 
 ### App-Specific Overrides
 
@@ -91,7 +100,7 @@ The main script for managing ESP-IDF versions:
 
 ## Show current status
 ./manage_idf.sh status
-```text
+```
 
 ### build_unified.sh
 
@@ -106,7 +115,7 @@ IDF_VERSION=release/v5.4 APP_TYPE=gpio_test ./build_unified.sh
 
 ## Validate configuration before building
 ./build_unified.sh --prepare-only
-```text
+```
 
 ### build_app.sh
 
@@ -118,7 +127,7 @@ Standard build script with automatic ESP-IDF version handling:
 
 ## Build with default version
 ./build_app.sh gpio_test Release
-```text
+```
 
 ## Usage Examples
 
@@ -133,7 +142,7 @@ cd examples/esp32/scripts
 
 ## Verify installation
 ./manage_idf.sh status
-```text
+```
 
 ### 2. Building Different Apps with Different Versions
 
@@ -143,7 +152,7 @@ cd examples/esp32/scripts
 
 ## Build legacy_app with ESP-IDF v5.4
 ./build_app.sh legacy_app Debug release/v5.4
-```text
+```
 
 ### 3. Manual Version Switching
 
@@ -158,7 +167,7 @@ idf.py --version
 
 ## Switch default version
 ./manage_idf.sh switch release/v5.4
-```text
+```
 
 ## Environment Variables
 
@@ -178,7 +187,7 @@ source ./setup_common.sh
 
 ## Export specific version
 export_esp_idf_version "release/v5.4"
-```text
+```
 
 ## Validation
 
@@ -203,7 +212,7 @@ ERROR: Failed to source ESP-IDF environment for version release/v5.4
 Available versions:
   - release/v5.5
 To install required versions, run: ./scripts/manage_idf.sh install
-```text
+```
 
 ## CI/CD Integration
 
@@ -232,7 +241,7 @@ jobs:
         run: |
           cd examples/esp32/scripts
           ./build_app.sh ${{ matrix.app_type }} ${{ matrix.build_type }} ${{ matrix.idf_version }}
-```text
+```
 
 ### Local Development
 
@@ -287,7 +296,7 @@ export SETUP_DEBUG=1
 ## Run commands with verbose output
 ./manage_idf.sh status
 ./build_app.sh gpio_test Debug release/v5.5
-```text
+```
 
 ## Best Practices
 

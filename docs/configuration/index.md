@@ -1,14 +1,16 @@
-# ESP32 HardFOC Interface Wrapper - Configuration System Guide
+---
+layout: default
+title: "Configuration System"
+description: "ESP32 configuration system with YAML management, validation, and smart defaults"
+nav_order: 6
+parent: "Documentation"
+permalink: /configuration/
+---
+
+# ESP32 Configuration System Guide
 
 This document provides comprehensive documentation for the ESP32 configuration system, including
 YAML configuration management, validation, and integration with all scripts.
-
----
-
-**Navigation**: [← Previous: Flash System](README_FLASH_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Logging System →](README_LOGGING_SYSTEM.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -1506,5 +1508,3 @@ is_valid_build_type(build_type, [app_type], [idf_version])  # Comprehensive vali
 
 ---
 
-**Navigation**: [← Previous: Flash System](README_FLASH_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Logging System →](README_LOGGING_SYSTEM.md)

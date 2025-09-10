@@ -1,14 +1,16 @@
-# ESP32 HardFOC Interface Wrapper - Logging System Guide
+---
+layout: default
+title: "Logging System"
+description: "ESP32 logging system with comprehensive log capture, management, and analysis"
+nav_order: 8
+parent: "Documentation"
+permalink: /logging-system/
+---
+
+# ESP32 Logging System Guide
 
 This document provides comprehensive documentation for the ESP32 logging system, including log
 generation, management, analysis, and integration with all scripts.
-
----
-
-**Navigation**: [← Previous: Configuration System](README_CONFIG_SYSTEM.md) | [Back to
-Scripts](../README.md) | [Next: Utility Scripts →](README_UTILITY_SCRIPTS.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -868,5 +870,3 @@ add_custom_target(clean_logs
 
 ---
 
-**Navigation**: [← Previous: Configuration System](README_CONFIG_SYSTEM.md) | [Back to
-Scripts](../README.md) | [Next: Utility Scripts →](README_UTILITY_SCRIPTS.md)

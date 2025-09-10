@@ -1,14 +1,16 @@
-# ESP32 HardFOC Interface Wrapper - Flash System Guide
+---
+layout: default
+title: "Flash System"
+description: "ESP32 flash system with intelligent port detection, firmware flashing, and monitoring"
+nav_order: 7
+parent: "Documentation"
+permalink: /flash-system/
+---
+
+# ESP32 Flash System Guide
 
 This document provides comprehensive documentation for the ESP32 flash system, including port
 detection, firmware flashing, monitoring, and troubleshooting.
-
----
-
-**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Configuration System →](README_CONFIG_SYSTEM.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -725,5 +727,3 @@ add_custom_target(flash
 
 ---
 
-**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Configuration System →](README_CONFIG_SYSTEM.md)

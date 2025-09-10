@@ -1,14 +1,16 @@
-# ESP32 Interface Wrapper - Utility Scripts Guide
+---
+layout: default
+title: "Utility Scripts"
+description: "ESP32 utility scripts for port detection, setup automation, and workflow management"
+nav_order: 3
+parent: "Advanced Topics"
+permalink: /advanced/utility-scripts/
+---
+
+# ESP32 Utility Scripts Guide
 
 This document provides comprehensive documentation for the ESP32 utility scripts, including port
 detection, setup automation, and helper tools for development workflow management.
-
----
-
-**Navigation**: [← Previous: Logging System](README_LOGGING_SYSTEM.md) | [Back to
-Scripts](../README.md) | [Next: Port Detection →](README_PORT_DETECTION.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -924,5 +926,3 @@ echo "Setup complete!"
 
 ---
 
-**Navigation**: [← Previous: Logging System](README_LOGGING_SYSTEM.md) | [Back to
-Scripts](../README.md) | [Next: Port Detection →](README_PORT_DETECTION.md)

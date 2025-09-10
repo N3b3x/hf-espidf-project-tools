@@ -1,14 +1,16 @@
-# ESP32 Interface Wrapper - Build System Guide
+---
+layout: default
+title: "Build System"
+description: "ESP32 build system with intelligent configuration management, validation, and optimization"
+nav_order: 3
+parent: "Documentation"
+permalink: /build-system/
+---
+
+# ESP32 Build System Guide
 
 This document provides comprehensive documentation for the ESP32 build system, including
 architecture, configuration, usage patterns, and troubleshooting.
-
----
-
-**Navigation**: [← Previous: Scripts Overview](README_SCRIPTS_OVERVIEW.md) | [Back to
-Scripts](../README.md) | [Next: Flash System →](README_FLASH_SYSTEM.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -804,6 +806,4 @@ target_compile_definitions(${COMPONENT_LIB} PRIVATE
 
 ---
 
-**Navigation**: [← Previous: Scripts Overview](README_SCRIPTS_OVERVIEW.md) | [Back to
-Scripts](../README.md) | [Next: Flash System →](README_FLASH_SYSTEM.md)
 

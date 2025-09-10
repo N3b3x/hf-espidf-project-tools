@@ -1,14 +1,16 @@
-# ESP32 Interface Wrapper - CI Pipeline Guide
+---
+layout: default
+title: "CI Pipeline"
+description: "Optimized ESP32 CI pipeline with parallel execution, intelligent caching, and performance monitoring"
+nav_order: 4
+parent: "Documentation"
+permalink: /ci-pipeline/
+---
+
+# ESP32 CI Pipeline Guide
 
 This document provides comprehensive documentation for the optimized ESP32 CI pipeline, including
 architecture, performance improvements, and configuration details.
-
----
-
-**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Flash System →](README_FLASH_SYSTEM.md)
-
----
 
 ## 📋 **Table of Contents**
 
@@ -595,5 +597,3 @@ ls -la ~/.ccache
 
 ---
 
-**Navigation**: [← Previous: Build System](README_BUILD_SYSTEM.md) | [Back to Scripts](../README.md)
-| [Next: Flash System →](README_FLASH_SYSTEM.md)

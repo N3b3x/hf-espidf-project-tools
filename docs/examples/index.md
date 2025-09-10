@@ -1,0 +1,301 @@
+---
+layout: default
+title: "Examples"
+description: "Real-world examples and usage patterns for HardFOC ESP32 CI Tools"
+nav_order: 6
+permalink: /examples/
+---
+
+# Examples
+
+This section provides real-world examples and usage patterns for the HardFOC ESP32 CI Tools.
+
+## 🚀 Quick Examples
+
+### Basic ESP32 Project
+
+A simple ESP32 project with GPIO testing:
+
+```yaml
+# examples/esp32/app_config.yml
+metadata:
+  default_app: "gpio_test"
+  default_build_type: "Release"
+  target: "esp32c6"
+  idf_versions: ["release/v5.5"]
+
+apps:
+  gpio_test:
+    description: "GPIO peripheral testing application"
+    source_file: "GpioTest.cpp"
+    category: "peripheral"
+    build_types: ["Debug", "Release"]
+    idf_versions: ["release/v5.5"]
+    ci_enabled: true
+    featured: true
+```
+
+### Multi-Version Testing
+
+Testing across multiple ESP-IDF versions:
+
+```yaml
+metadata:
+  idf_versions: ["release/v5.5", "release/v5.4"]
+  default_build_types: [["Debug", "Release"], ["Debug"]]
+
+apps:
+  sensor_app:
+    idf_versions: ["release/v5.5", "release/v5.4"]
+    build_types: ["Debug", "Release"]
+  legacy_app:
+    idf_versions: ["release/v5.4"]
+    build_types: ["Debug"]
+```
+
+## 🔧 Workflow Examples
+
+### Basic Build Workflow
+
+```yaml
+name: Build ESP32 Applications
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ["gpio_test", "sensor_app"]
+        build_type: ["Debug", "Release"]
+        idf_version: ["release/v5.5"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set Project Path
+      run: echo "ESP32_PROJECT_PATH=examples/esp32" >> $GITHUB_ENV
+    
+    - name: Build Application
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: ${{ matrix.idf_version }}
+        target: esp32c6
+        path: examples/esp32
+```
+
+### Security Workflow
+
+```yaml
+name: Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Security Audit
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: "release/v5.5"
+        target: esp32c6
+        path: examples/esp32
+        extra_components: |
+          - name: security_audit
+            path: .github/security
+```
+
+## 📊 Advanced Examples
+
+### Custom Build Types
+
+```yaml
+build_config:
+  build_types:
+    Debug:
+      cmake_build_type: "Debug"
+      optimization: "-O0"
+      debug_level: "-g3"
+      defines: ["DEBUG", "VERBOSE_LOGGING"]
+    Release:
+      cmake_build_type: "Release"
+      optimization: "-O2"
+      debug_level: "-g"
+      defines: ["NDEBUG"]
+    Profile:
+      cmake_build_type: "RelWithDebInfo"
+      optimization: "-O2"
+      debug_level: "-g"
+      defines: ["PROFILING", "PERFORMANCE_MONITORING"]
+    Test:
+      cmake_build_type: "Debug"
+      optimization: "-O1"
+      debug_level: "-g2"
+      defines: ["TESTING", "MOCK_HARDWARE"]
+```
+
+### Environment-Specific Configuration
+
+```yaml
+# Development environment
+metadata:
+  environment: "development"
+  debug_enabled: true
+  verbose_logging: true
+
+# Production environment
+metadata:
+  environment: "production"
+  debug_enabled: false
+  verbose_logging: false
+  security_audit: true
+```
+
+### CI/CD Pipeline with Artifacts
+
+```yaml
+- name: Build and Upload Artifacts
+  uses: espressif/esp-idf-ci-action@v1
+  with:
+    esp_idf_version: ${{ matrix.idf_version }}
+    target: esp32c6
+    path: examples/esp32
+
+- name: Upload Firmware
+  uses: actions/upload-artifact@v3
+  with:
+    name: firmware-${{ matrix.app }}-${{ matrix.build_type }}
+    path: examples/esp32/build/*.bin
+
+- name: Upload Build Logs
+  uses: actions/upload-artifact@v3
+  with:
+    name: logs-${{ matrix.app }}-${{ matrix.build_type }}
+    path: examples/esp32/build/log/
+```
+
+## 🎯 Use Case Examples
+
+### IoT Sensor Node
+
+```yaml
+apps:
+  sensor_node:
+    description: "IoT sensor node with WiFi and MQTT"
+    source_file: "SensorNode.cpp"
+    category: "iot"
+    build_types: ["Debug", "Release"]
+    idf_versions: ["release/v5.5"]
+    features: ["wifi", "mqtt", "sensors"]
+    ci_enabled: true
+```
+
+### Industrial Controller
+
+```yaml
+apps:
+  industrial_controller:
+    description: "Industrial control system with Modbus"
+    source_file: "IndustrialController.cpp"
+    category: "industrial"
+    build_types: ["Release"]
+    idf_versions: ["release/v5.5"]
+    features: ["modbus", "ethernet", "safety"]
+    ci_enabled: true
+    security_audit: true
+```
+
+### Educational Project
+
+```yaml
+apps:
+  learning_project:
+    description: "Educational ESP32 project for students"
+    source_file: "LearningProject.cpp"
+    category: "education"
+    build_types: ["Debug"]
+    idf_versions: ["release/v5.5"]
+    features: ["tutorial", "examples", "documentation"]
+    ci_enabled: true
+```
+
+## 🔍 Testing Examples
+
+### Unit Testing
+
+```yaml
+- name: Run Unit Tests
+  run: |
+    cd examples/esp32
+    ./scripts/build_app.sh test_app Test
+    ./scripts/run_tests.sh
+```
+
+### Integration Testing
+
+```yaml
+- name: Integration Tests
+  run: |
+    cd examples/esp32
+    ./scripts/build_app.sh integration_test Release
+    ./scripts/flash_app.sh integration_test
+    ./scripts/monitor_app.sh integration_test
+```
+
+### Performance Testing
+
+```yaml
+- name: Performance Tests
+  run: |
+    cd examples/esp32
+    ./scripts/build_app.sh performance_test Profile
+    ./scripts/benchmark.sh performance_test
+```
+
+## 📚 More Examples
+
+### Complete Project Templates
+
+- **[Basic ESP32 Project](examples/basic-project/)** - Simple GPIO project
+- **[IoT Sensor Node](examples/iot-sensor/)** - WiFi and MQTT enabled
+- **[Industrial Controller](examples/industrial/)** - Modbus and Ethernet
+- **[Educational Kit](examples/educational/)** - Learning-focused project
+
+### Configuration Templates
+
+- **[Minimal Configuration](examples/minimal-config/)** - Basic setup
+- **[Advanced Configuration](examples/advanced-config/)** - Full features
+- **[Multi-Version Setup](examples/multi-version/)** - Multiple ESP-IDF versions
+- **[Security-Focused](examples/security-config/)** - Enhanced security
+
+### Workflow Templates
+
+- **[Basic Build](examples/workflows/basic-build.yml)** - Simple build workflow
+- **[Advanced CI/CD](examples/workflows/advanced-cicd.yml)** - Full pipeline
+- **[Security Audit](examples/workflows/security-audit.yml)** - Security scanning
+- **[Documentation](examples/workflows/documentation.yml)** - Auto-generated docs
+
+## 🆘 Need Help?
+
+- **[Getting Started](getting-started/)** - Basic setup guide
+- **[Configuration](configuration/)** - Configuration management
+- **[Troubleshooting](troubleshooting/)** - Common issues and solutions
+- **[GitHub Issues](https://github.com/N3b3x/nt-espidf-project-tools/issues)** - Report bugs or request features
+
+---
+
+**Found an example you like?** Copy the configuration and adapt it for your project. Need help customizing? Check out our [Configuration Guide](configuration/) or [Troubleshooting](troubleshooting/) section.
