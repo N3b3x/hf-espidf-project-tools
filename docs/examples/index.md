@@ -294,7 +294,7 @@ apps:
 - **[Getting Started](getting-started/)** - Basic setup guide
 - **[Configuration](configuration/)** - Configuration management
 - **[Troubleshooting](troubleshooting/)** - Common issues and solutions
-- **[GitHub Issues](https://github.com/N3b3x/nt-espidf-project-tools/issues)** - Report bugs or request features
+- **[GitHub Issues](https://github.com/n3b3x/hf-espidf-project-tools/issues)** - Report bugs or request features
 
 ---
 

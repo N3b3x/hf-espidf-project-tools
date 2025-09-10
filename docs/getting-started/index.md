@@ -33,10 +33,10 @@ Before you begin, ensure you have:
 
 ```bash
 # Add as submodule
-git submodule add https://github.com/N3b3x/nt-espidf-project-tools.git .github/ci-tools
+git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 
 # Copy workflows
-cp .github/ci-tools/.github/workflows/* .github/workflows/
+cp scripts/.github/workflows/* .github/workflows/
 ```
 
 ### 3. Configuration
@@ -73,7 +73,7 @@ Once you have the basic setup working:
 
 - **[Troubleshooting](troubleshooting/)** - Common issues and solutions
 - **[Examples](examples/)** - Real-world usage examples
-- **[GitHub Issues](https://github.com/N3b3x/nt-espidf-project-tools/issues)** - Report bugs or request features
+- **[GitHub Issues](https://github.com/n3b3x/hf-espidf-project-tools/issues)** - Report bugs or request features
 
 ## 🎯 What's Next?
 

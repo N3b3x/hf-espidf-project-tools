@@ -1,10 +1,9 @@
 ---
-# Jekyll configuration for nt-espidf-ci-tools documentation
-title: "nt-espidf-ci-tools"
+# Jekyll configuration for hf-espidf-project-tools documentation
+title: "HardFOC ESP32 Project Tools"
 description: >
-  Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows
-  for ESP-IDF development with matrix builds, security auditing, and automated documentation
-baseurl: "/nt-espidf-ci-tools"  # GitHub Pages subpath
+  Esp32 Projects Tools to support HardFOC projects and their CI/CD workflows.
+baseurl: "/hf-espidf-project-tools"  # GitHub Pages subpath
 url: "https://n3b3x.github.io"
 
 # Author and social information
@@ -93,17 +92,17 @@ toggle_auto_mode: true
 # Auxiliary links with better organization
 aux_links:
   "📚 GitHub Repository":
-    - "https://github.com/n3b3x/nt-espidf-ci-tools"
+    - "https://github.com/n3b3x/hf-espidf-project-tools"
   "🐛 Report Issues":
-    - "https://github.com/n3b3x/nt-espidf-ci-tools/issues"
+    - "https://github.com/n3b3x/hf-espidf-project-tools/issues"
   "⭐ Star on GitHub":
-    - "https://github.com/n3b3x/nt-espidf-ci-tools/stargazers"
+    - "https://github.com/n3b3x/hf-espidf-project-tools/stargazers"
 
 # Footer customization
 footer_content: >
   Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
-  <a href='https://github.com/n3b3x/nt-espidf-ci-tools/blob/main/LICENSE'>MIT License</a> •
-  <a href='https://github.com/n3b3x/nt-espidf-ci-tools'>View on GitHub</a>
+  <a href='https://github.com/n3b3x/hf-espidf-project-tools/blob/main/LICENSE'>MIT License</a> •
+  <a href='https://github.com/n3b3x/hf-espidf-project-tools'>View on GitHub</a>
 
 # Collections for better organization
 collections:
@@ -118,9 +117,9 @@ just_the_docs:
   nav_fold: true
   nav_external_links:
     - title: "📚 GitHub Repository"
-      url: https://github.com/n3b3x/nt-espidf-ci-tools
+      url: https://github.com/n3b3x/hf-espidf-project-tools
     - title: "🐛 Issues"
-      url: https://github.com/n3b3x/nt-espidf-ci-tools/issues
+      url: https://github.com/n3b3x/hf-espidf-project-tools/issues
 
   # Custom head content
   head_custom: _includes/head_custom.html
@@ -152,25 +151,13 @@ include:
   - ../LICENSE
   - docs/assets/
 
-# Set main README as the home page
-defaults:
-  - scope:
-      path: "../README.md"
-    values:
-      layout: default
-      title: "🔧 HardFOC ESP32 CI Tools"
-      description: "Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows for ESP-IDF development with matrix builds, security auditing, and automated documentation"
-      nav_order: 1
-      permalink: /
-
 # Enhanced SEO settings
 seo:
   type: "Organization"
-  name: "nt-espidf-ci-tools"
+  name: "HardFOC ESP32 Project Tools"
   description: >
-    Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows
-    for ESP-IDF development with matrix builds, security auditing, and automated documentation
-  url: "https://n3b3x.github.io/nt-espidf-ci-tools"
+    Esp32 Projects Tools to support HardFOC projects and their CI/CD workflows.
+  url: "https://n3b3x.github.io/hf-espidf-project-tools"
   twitter:
     card: "summary_large_image"
     site: "@n3b3x"
@@ -180,9 +167,9 @@ seo:
 
 # Social media and sharing
 social:
-  name: "nt-espidf-ci-tools"
+  name: "HardFOC ESP32 Project Tools"
   links:
-    - "https://github.com/n3b3x/nt-espidf-ci-tools"
+    - "https://github.com/n3b3x/hf-espidf-project-tools"
     - "https://github.com/n3b3x"
 
 # Analytics (uncomment and configure if needed)

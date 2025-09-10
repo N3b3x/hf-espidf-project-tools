@@ -34,8 +34,8 @@ This is the simplest method for most users:
 
 1. **Download the repository**:
    ```bash
-   git clone https://github.com/N3b3x/nt-espidf-project-tools.git
-   cd nt-espidf-project-tools
+   git clone https://github.com/n3b3x/hf-espidf-project-tools.git
+   cd hf-espidf-project-tools
    ```
 
 2. **Copy workflow files** to your project:
@@ -44,10 +44,10 @@ This is the simplest method for most users:
    cd /path/to/your/esp32-project
    
    # Copy workflow files
-   cp -r nt-espidf-project-tools/.github/workflows/* .github/workflows/
+   cp -r hf-espidf-project-tools/.github/workflows/* .github/workflows/
    
    # Copy configuration files (if needed)
-   cp nt-espidf-project-tools/examples/esp32/app_config.yml examples/esp32/
+   cp hf-espidf-project-tools/examples/esp32/app_config.yml examples/esp32/
    ```
 
 3. **Update configuration** for your project:
@@ -62,17 +62,12 @@ For projects that want to track updates:
 1. **Add as submodule**:
    ```bash
    cd /path/to/your/esp32-project
-   git submodule add https://github.com/N3b3x/nt-espidf-project-tools.git .github/ci-tools
+   git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
    ```
 
-2. **Copy workflows**:
+2.. **Update submodule** when needed:
    ```bash
-   cp .github/ci-tools/.github/workflows/* .github/workflows/
-   ```
-
-3. **Update submodule** when needed:
-   ```bash
-   git submodule update --remote .github/ci-tools
+   git submodule update --remote scripts
    ```
 
 ### Method 3: Manual Download
@@ -161,7 +156,7 @@ After successful installation:
 
 ## 📚 Additional Resources
 
-- **[GitHub Repository](https://github.com/N3b3x/nt-espidf-project-tools)** - Source code and issues
+- **[GitHub Repository](https://github.com/n3b3x/hf-espidf-project-tools)** - Source code and issues
 - **[Examples](examples/)** - Real-world usage examples
 - **[Troubleshooting](troubleshooting/)** - Common issues and solutions
 

@@ -67,6 +67,6 @@
   icon: "fas fa-hands-helping"
 
 - title: "GitHub Repository"
-  url: "https://github.com/N3b3x/nt-espidf-project-tools"
+  url: "https://github.com/n3b3x/hf-espidf-project-tools"
   icon: "fab fa-github"
   external: true
