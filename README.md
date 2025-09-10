@@ -17,10 +17,10 @@
 ## 📚 **Table of Contents**
 
 - [🎯 **Overview**](#-overview)
-- [🏗️ **Script Architecture**](#️-script-architecture)
+- [🏗️ **Script Architecture**](#-script-architecture)
 - [📁 **Script Reference**](#-script-reference)
 - [🔧 **Core Scripts**](#-core-scripts)
-- [⚙️ **Setup Scripts**](#️-setup-scripts)
+- [⚙️ **Setup Scripts**](#-setup-scripts)
 - [🔄 **Utility Scripts**](#-utility-scripts)
 - [📊 **Configuration Scripts**](#-configuration-scripts)
 - [🚀 **Usage Examples**](#-usage-examples)
@@ -1862,17 +1862,14 @@ cat build-*/.ninja_log
 
 ## 📄 **License**
 
-This project is licensed under the GPL-3.0 License - see the [LICENSE](../../LICENSE) file for
+This project is licensed under the GPL-3.0 License - see the [LICENSE](./LICENSE) file for
 details.
 
 ---
 
 ## 🔗 **Related Documentation**
 
-- [ESP32 Examples README](../README.md) - Examples overview and usage
-- [Main Project README](../../README.md) - Project overview and architecture
-- [CI/CD Workflows](../../.github/workflows/) - GitHub Actions workflows
-- [**CI Pipeline Documentation**](.github/README.md) - Detailed CI/CD workflow explanations
+- [CI/CD Workflows](https://github.com/N3b3x/hf-general-ci-tools) - GitHub Actions workflows
 - [ESP-IDF Documentation](https://docs.espressif.com/projects/esp-idf/) - ESP-IDF reference
 
 ---
