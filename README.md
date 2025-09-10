@@ -1,6 +1,12 @@
-# 🔧 ESP32 Scripts - Build System Documentation
+---
+layout: default
+title: "🔧 HardFOC ESP32 CI Tools"
+description: "Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows for ESP-IDF development with matrix builds, security auditing, and automated documentation"
+nav_order: 1
+permalink: /
+---
 
-<div align="center">
+# 🔧 ESP32 Scripts - Build System Documentation
 
 ![Scripts](https://img.shields.io/badge/Scripts-Build%20System-blue?style=for-the-badge&logo=bash)
 ![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Auto%20Management-green?style=for-the-badge&logo=espressif)
@@ -9,8 +15,6 @@
 **🎯 Build System Scripts for ESP32 Development**
 
 *Scripts providing automated ESP-IDF management, build automation, and CI/CD integration*
-
-</div>
 
 ---
 
@@ -1874,10 +1878,6 @@ details.
 
 ---
 
-<div align="center">
-
 **🚀 Built for ESP32 Development**
 
 *Build system with automated CI/CD integration*
-
-</div>
