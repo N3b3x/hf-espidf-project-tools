@@ -15,14 +15,6 @@ workflow.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [🔌 Cross-Platform Detection](#️-cross-platform-detection)
-- [🔍 Port Validation and Testing](#️-port-validation-and-testing)
-- [⚙️ Configuration and Customization](#️-configuration-and-customization)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔧 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -408,13 +400,13 @@ add_custom_target(detect_ports
 ## GitHub Actions integration
 - name: Detect ESP32 Ports
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/detect_ports.sh --verbose --test-connection
 
 ## GitLab CI integration
 detect_ports:
   script:
-    - cd examples/esp32
+    - cd /examples/esp32
     - ./scripts/detect_ports.sh --verbose
   artifacts:
     reports:
@@ -529,7 +521,7 @@ add_custom_target(build_with_port_check
 #### **3. Development Workflow Integration**
 ```bash
 ## Complete development workflow
-cd examples/esp32
+cd /examples/esp32
 
 ## Environment setup
 ./setup_repo.sh
@@ -775,12 +767,12 @@ add_custom_target(build_with_port_check
 ## GitHub Actions port detection integration
 - name: Detect ESP32 Ports
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/detect_ports.sh --verbose --test-connection
 
 - name: Validate Port Configuration
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/detect_ports.sh --ci-mode --verbose
 ```
 #### **Automation Scripts**
@@ -788,7 +780,7 @@ add_custom_target(build_with_port_check
 #!/bin/bash
 ## Automated port detection and validation
 
-cd examples/esp32
+cd /examples/esp32
 
 ## Detect available ports
 echo "Detecting ESP32 ports..."

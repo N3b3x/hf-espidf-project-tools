@@ -4,7 +4,7 @@ title: "Configuration"
 description: "Configuration guide for HardFOC ESP32 CI Tools"
 nav_order: 2
 parent: "Getting Started"
-permalink: /getting-started/configuration/
+permalink: //getting-started/configuration/
 ---
 
 # Configuration Guide
@@ -32,7 +32,7 @@ your-esp32-project/
 │   └── workflows/
 │       ├── build.yml
 │       └── security.yml
-├── examples/
+├── /examples/
 │   └── esp32/
 │       ├── app_config.yml
 │       └── esp32/
@@ -43,7 +43,7 @@ your-esp32-project/
 
 ### 2. Application Configuration
 
-Create or update `examples/esp32/app_config.yml`:
+Create or update `/examples/esp32/app_config.yml`:
 
 ```yaml
 # Global metadata and defaults
@@ -107,15 +107,15 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set Project Path
-      run: echo "ESP32_PROJECT_PATH=examples/esp32" >> $GITHUB_ENV
+      run: echo "ESP32_PROJECT_PATH=/examples/esp32" >> $GITHUB_ENV
     
     - name: Build Application
       uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: ${{ matrix.idf_version }}
         target: esp32c6
-        path: examples/esp32
-        app_path: examples/esp32
+        path: /examples/esp32
+        app_path: /examples/esp32
 ```
 
 ## 🔧 Advanced Configuration
@@ -193,10 +193,10 @@ Configure when workflows run:
 on:
   push:
     branches: [ main, develop ]
-    paths: ['examples/esp32/**', '.github/workflows/**']
+    paths: ['/examples/esp32/**', '.github/workflows/**']
   pull_request:
     branches: [ main ]
-    paths: ['examples/esp32/**']
+    paths: ['/examples/esp32/**']
   schedule:
     - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
 ```
@@ -225,10 +225,10 @@ Test your configuration:
 
 ```bash
 # Validate app_config.yml
-yq eval examples/esp32/app_config.yml
+yq eval /examples/esp32/app_config.yml
 
 # Test build configuration
-cd examples/esp32
+cd /examples/esp32
 ./scripts/build_app.sh validate your_app Release
 ```
 
@@ -250,7 +250,7 @@ After configuration:
 
 1. **[Build System](build-system/)** - Learn about build management
 2. **[CI Pipeline](ci-pipeline/)** - Optimize your workflows
-3. **[Advanced Topics](advanced/)** - Explore advanced features
+3. **[Advanced Topics](advanced/multi-version-idf/)** - Explore advanced features
 4. **[Troubleshooting](troubleshooting/)** - Common issues and solutions
 
 ## 🆘 Troubleshooting

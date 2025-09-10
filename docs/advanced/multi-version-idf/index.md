@@ -134,8 +134,8 @@ Standard build script with automatic ESP-IDF version handling:
 ### 1. Initial Setup
 
 ```bash
-## Navigate to examples/esp32/scripts
-cd examples/esp32/scripts
+## Navigate to /examples/esp32/scripts
+cd /examples/esp32/scripts
 
 ## Install all required ESP-IDF versions
 ./manage_idf.sh install
@@ -233,13 +233,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Setup ESP-IDF ${{ matrix.idf_version }}
         run: |
-          cd examples/esp32/scripts
+          cd /examples/esp32/scripts
           ./manage_idf.sh install
           ./manage_idf.sh export ${{ matrix.idf_version }}
       
       - name: Build ${{ matrix.app_type }}
         run: |
-          cd examples/esp32/scripts
+          cd /examples/esp32/scripts
           ./build_app.sh ${{ matrix.app_type }} ${{ matrix.build_type }} ${{ matrix.idf_version }}
 ```
 

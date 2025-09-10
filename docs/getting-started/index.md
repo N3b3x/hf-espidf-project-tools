@@ -67,7 +67,7 @@ Once you have the basic setup working:
 - **[Build System](build-system/)** - Learn about intelligent build management
 - **[CI Pipeline](ci-pipeline/)** - Optimize your workflows
 - **[Configuration](configuration/)** - Master centralized configuration
-- **[Advanced Topics](advanced/)** - Explore advanced features
+- **[Advanced Topics](advanced/multi-version-idf/)** - Explore advanced features
 
 ## 🆘 Need Help?
 
@@ -84,4 +84,4 @@ Once you have the basic setup working:
 
 ---
 
-**Ready to dive deeper?** Check out our [Build System Documentation](build-system/) or explore [Advanced Topics](advanced/) for power users.
+**Ready to dive deeper?** Check out our [Build System Documentation](build-system/) or explore [Advanced Topics](advanced/multi-version-idf/) for power users.

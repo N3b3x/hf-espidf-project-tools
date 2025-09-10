@@ -17,14 +17,6 @@ with the ESP32 development workflow.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [⚙️ Configuration File Structure](#️-configuration-file-structure)
-- [🔧 Configuration Loading and Validation](#️-configuration-loading-and-validation)
-- [🌍 Environment Variable Overrides](#️-environment-variable-overrides)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔍 Troubleshooting and Debugging](#️-usage-examples-and-patterns)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -74,7 +66,7 @@ Configuration System → YAML Parser → Validation Engine → Script Integratio
 ### **File Location and Naming**
 ```bash
 ## Configuration file location
-examples/esp32/app_config.yml
+/examples/esp32/app_config.yml
 
 ## Alternative locations (in order of precedence)
 ./app_config.yml                    # Current directory
@@ -418,7 +410,7 @@ validate_app_config() {
     # Validate source file existence
     local source_file=$(load_config "apps.$app_name.source_file" "" false)
     if [ -n "$source_file" ]; then
-        local full_path="examples/esp32/main/$source_file"
+        local full_path="/examples/esp32/main/$source_file"
         if [ ! -f "$full_path" ]; then
             echo "ERROR: App '$app_name' source file not found: $full_path" >&2
             ((errors++))
@@ -812,20 +804,20 @@ add_custom_target(validate_config
 ## GitHub Actions configuration integration
 - name: Validate Configuration
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     source scripts/config_loader.sh
     validate_config_integrity app_config.yml
 
 - name: Load Build Configuration
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     source scripts/config_loader.sh
     echo "BUILD_TYPE=$(load_config 'build_config.default_build_type' 'Release')" >> $GITHUB_ENV
     echo "TARGET=$(load_config 'build_config.default_target' 'esp32c6')" >> $GITHUB_ENV
 
 - name: Build Application
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     idf.py set-target ${{ env.TARGET }}
     idf.py build -b ${{ env.BUILD_TYPE }}
 ```
@@ -876,7 +868,7 @@ echo "  Debug Mode: $debug_mode"
 ```bash
 ## Check file existence
 ls -la app_config.yml
-ls -la examples/esp32/app_config.yml
+ls -la /examples/esp32/app_config.yml
 
 ## Check file permissions
 ls -la app_config.yml
@@ -887,7 +879,7 @@ pwd
 find . -name "app_config.yml" -type f
 
 ## Verify file location
-## Configuration file should be in examples/esp32/ directory
+## Configuration file should be in /examples/esp32/ directory
 ```
 
 #### **2. YAML Syntax Errors**
@@ -1337,6 +1329,5 @@ system_config:
 
 ---
 
-**Navigation**: [← Previous: Port Detection](README_PORT_DETECTION.md) | [Back to
-Scripts](../README.md) | [Next: Scripts Overview →](README_SCRIPTS_OVERVIEW.md)
+**Navigation**: [← Back to Configuration](configuration/) | [Home](/)
 

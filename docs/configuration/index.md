@@ -13,14 +13,6 @@ YAML configuration management, validation, and integration with all scripts.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [⚙️ Configuration File Structure](#️-configuration-file-structure)
-- [🔧 Configuration Loading and Validation](#️-configuration-loading-and-validation)
-- [🔄 Environment Variable Overrides](#️-environment-variable-overrides)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -183,7 +175,7 @@ fi
 ### **Configuration File Location**
 The configuration system reads from:
 ```
-examples/esp32/app_config.yml
+/examples/esp32/app_config.yml
 ```
 
 ### **Configuration Schema**
@@ -971,7 +963,7 @@ set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 ## GitHub Actions configuration integration
 - name: Validate Configuration
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     source ./scripts/config_loader.sh
     init_config
     if ! validate_current_config; then
@@ -981,7 +973,7 @@ set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 
 - name: Build All CI Apps
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     source ./scripts/config_loader.sh
     init_config
     

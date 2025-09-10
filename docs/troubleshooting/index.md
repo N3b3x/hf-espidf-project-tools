@@ -34,10 +34,10 @@ This guide helps you resolve common issues with the HardFOC ESP32 CI Tools.
 **Problem**: "Configuration file not found" or "Invalid configuration"
 
 **Solutions**:
-1. **Verify file exists**: Check `examples/esp32/app_config.yml`
+1. **Verify file exists**: Check `/examples/esp32/app_config.yml`
 2. **Validate YAML syntax**:
    ```bash
-   yq eval examples/esp32/app_config.yml
+   yq eval /examples/esp32/app_config.yml
    ```
 3. **Check file permissions** and location
 
@@ -121,7 +121,7 @@ Test configurations locally:
 
 ```bash
 # Test build configuration
-cd examples/esp32
+cd /examples/esp32
 ./scripts/build_app.sh validate your_app Release
 
 # Test port detection

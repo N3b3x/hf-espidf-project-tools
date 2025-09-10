@@ -47,7 +47,7 @@ This is the simplest method for most users:
    cp -r hf-espidf-project-tools/.github/workflows/* .github/workflows/
    
    # Copy configuration files (if needed)
-   cp hf-espidf-project-tools/examples/esp32/app_config.yml examples/esp32/
+   cp hf-espidf-project-tools/examples/esp32/app_config.yml /examples/esp32/
    ```
 
 3. **Update configuration** for your project:
@@ -87,7 +87,7 @@ For offline or restricted environments:
    ```yaml
    # In .github/workflows/build.yml
    - name: Set Project Path
-     run: echo "ESP32_PROJECT_PATH=examples/esp32" >> $GITHUB_ENV
+     run: echo "ESP32_PROJECT_PATH=/examples/esp32" >> $GITHUB_ENV
    ```
 
 2. **Configure ESP-IDF versions**:
@@ -100,7 +100,7 @@ For offline or restricted environments:
 
 3. **Set up build configurations**:
    ```yaml
-   # In examples/esp32/app_config.yml
+   # In /examples/esp32/app_config.yml
    apps:
      your_app:
        source_file: "YourApp.cpp"
@@ -149,10 +149,10 @@ If you encounter issues:
 
 After successful installation:
 
-1. **[Configuration](getting-started/configuration/)** - Configure for your project
+1. **[Configuration](//getting-started/configuration/)** - Configure for your project
 2. **[Build System](build-system/)** - Learn about build management
 3. **[CI Pipeline](ci-pipeline/)** - Optimize your workflows
-4. **[Advanced Topics](advanced/)** - Explore advanced features
+4. **[Advanced Topics](advanced/multi-version-idf/)** - Explore advanced features
 
 ## 📚 Additional Resources
 
@@ -162,4 +162,4 @@ After successful installation:
 
 ---
 
-**Installation complete?** Move on to [Configuration](getting-started/configuration/) to customize the tools for your project.
+**Installation complete?** Move on to [Configuration](//getting-started/configuration/) to customize the tools for your project.

@@ -13,14 +13,6 @@ detection, firmware flashing, monitoring, and troubleshooting.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [🔌 Port Detection and Management](#️-port-detection-and-management)
-- [⚡ Flash Operations and Workflows](#️-flash-operations-and-workflows)
-- [📺 Monitoring and Logging](#️-monitoring-and-logging)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -439,7 +431,7 @@ fi
 ## GitHub Actions flash workflow
 - name: Flash ESP32 Application
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Verify Flash
@@ -646,7 +638,7 @@ add_custom_target(flash
 ## GitHub Actions flash workflow
 - name: Flash ESP32 Application
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Verify Flash

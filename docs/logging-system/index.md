@@ -13,15 +13,6 @@ generation, management, analysis, and integration with all scripts.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [📝 Log Generation and Capture](#️-log-generation-and-capture)
-- [🗂️ Log Management and Organization](#️-log-management-and-organization)
-- [🔍 Log Analysis and Search](#️-log-analysis-and-search)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔧 Integration and Automation](#️-integration-and-automation)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -168,7 +159,7 @@ Logging integrates with all major systems:
 ### **Log Directory Structure**
 
 #### **Standard Organization**
-examples/esp32/logs/
+/examples/esp32/logs/
 ├── 2025-01-15/                    # Date-based organization
 │   ├── gpio_test_Release_143022.log
 │   ├── adc_test_Debug_150045.log
@@ -458,13 +449,13 @@ export LOG_COMPRESSION=1          # Enable compression
 ## GitHub Actions workflow
 - name: Build and Flash with Logging
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/build_app.sh gpio_test Release --log ci_build
     ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Analyze Logs
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/manage_logs.sh search "ERROR"
     ./scripts/manage_logs.sh stats
     ./scripts/manage_logs.sh latest
@@ -476,7 +467,7 @@ export LOG_COMPRESSION=1          # Enable compression
   uses: actions/upload-artifact@v3
   with:
     name: esp32-logs
-    path: examples/esp32/logs/
+    path: /examples/esp32/logs/
     retention-days: 30
 ```
 ### **Automation Scripts**
@@ -486,7 +477,7 @@ export LOG_COMPRESSION=1          # Enable compression
 #!/bin/bash
 ## Automated log analysis script
 
-cd examples/esp32
+cd /examples/esp32
 
 ## Generate daily log report
 echo "=== Daily Log Report $(date +%Y-%m-%d) ===" > daily_report.txt
@@ -511,7 +502,7 @@ mail -s "ESP32 Daily Log Report" admin@example.com < daily_report.txt
 #!/bin/bash
 ## Automated log cleanup script
 
-cd examples/esp32
+cd /examples/esp32
 
 ## Clean old logs
 ./scripts/manage_logs.sh clean 30
@@ -556,16 +547,16 @@ export LOG_ENABLED=1
 **Solutions**:
 ```bash
 ## Check directory existence
-ls -la examples/esp32/
+ls -la /examples/esp32/
 
 ## Create log directory
-mkdir -p examples/esp32/logs
+mkdir -p /examples/esp32/logs
 
 ## Check permissions
-ls -la examples/esp32/logs/
+ls -la /examples/esp32/logs/
 
 ## Fix permissions
-chmod 755 examples/esp32/logs/
+chmod 755 /examples/esp32/logs/
 ```
 #### **3. Log File Corruption**
 **Problem**: Log files are corrupted or incomplete
@@ -765,24 +756,24 @@ add_custom_target(clean_logs
 ## GitHub Actions logging workflow
 - name: Setup Logging
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     mkdir -p logs
     export LOG_ENABLED=1
     export LOG_LEVEL=DEBUG
 
 - name: Build with Logging
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/build_app.sh gpio_test Release --log ci_build
 
 - name: Flash with Logging
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/flash_app.sh flash gpio_test Release --log ci_deploy
 
 - name: Analyze Logs
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/manage_logs.sh stats
     ./scripts/manage_logs.sh search "ERROR"
     ./scripts/manage_logs.sh search "SUCCESS"
@@ -791,7 +782,7 @@ add_custom_target(clean_logs
   uses: actions/upload-artifact@v3
   with:
     name: esp32-logs
-    path: examples/esp32/logs/
+    path: /examples/esp32/logs/
     retention-days: 30
 ```
 ### **Best Practices**

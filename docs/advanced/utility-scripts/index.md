@@ -14,14 +14,6 @@ detection, setup automation, and helper tools for development workflow managemen
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [🔌 Port Detection and Troubleshooting](#️-port-detection-and-troubleshooting)
-- [⚙️ Environment Setup and Automation](#️-environment-setup-and-automation)
-- [🔧 Configuration and Information Tools](#️-configuration-and-information-tools)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -244,7 +236,7 @@ The system now provides two distinct setup approaches optimized for different us
 - ESP-IDF handled by ESP-IDF CI action
 
 ## NEW: Required environment variables
-- ESP32_PROJECT_PATH: Path to ESP32 project directory (e.g., 'examples/esp32')
+- ESP32_PROJECT_PATH: Path to ESP32 project directory (e.g., '/examples/esp32')
 ```
 
 ### **Environment-Specific Features**
@@ -717,7 +709,7 @@ export CLANG_VERSION="20"          # Set Clang version
 export PYTHON_VERSION="3.9"        # Set Python version
 
 ## Environment-specific variables
-export ESP32_PROJECT_PATH="examples/esp32"  # Project path
+export ESP32_PROJECT_PATH="/examples/esp32"  # Project path
 export IDF_TARGET="esp32c6"        # Target MCU
 export BUILD_TYPE="Release"        # Build type
 export APP_TYPE="gpio_test"        # Application type
@@ -812,17 +804,17 @@ add_custom_target(validate_config
 ## GitHub Actions utility integration
 - name: Setup ESP32 Environment
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     # CI builds use ESP-IDF CI action directly
 
 - name: Detect ESP32 Ports
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/detect_ports.sh --verbose
 
 - name: Validate Configuration
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     python3 ./scripts/get_app_info.py validate gpio_test
 ```
 
@@ -831,11 +823,11 @@ add_custom_target(validate_config
 ## GitLab CI utility integration
 setup_environment:
   script:
-    - cd examples/esp32
+    - cd /examples/esp32
     # CI builds use ESP-IDF CI action directly
   artifacts:
     paths:
-      - examples/esp32/build*/
+      - /examples/esp32/build*/
 ```
 
 #### **Jenkins Pipeline Integration**
@@ -847,14 +839,14 @@ pipeline {
     stage('Setup Environment') {
       steps {
         script {
-          sh 'cd examples/esp32 && echo "CI builds use ESP-IDF CI action directly"'
+          sh 'cd /examples/esp32 && echo "CI builds use ESP-IDF CI action directly"'
         }
       }
     }
     stage('Detect Ports') {
       steps {
         script {
-          sh 'cd examples/esp32 && ./scripts/detect_ports.sh --verbose'
+          sh 'cd /examples/esp32 && ./scripts/detect_ports.sh --verbose'
         }
       }
     }
@@ -867,7 +859,7 @@ pipeline {
 #!/bin/bash
 ## Automated development environment setup
 
-cd examples/esp32
+cd /examples/esp32
 
 ## Choose setup based on environment
 if [[ "$CI" == "true" ]]; then

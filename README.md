@@ -1464,15 +1464,15 @@ All workflows run automatically on every push and pull request.
 
 |----------|---------|---------------|------------|
 
-| **[Lint Check](.github/workflows/tools-ci.yml)** | Code formatting & style | Python, Shell, YAML, Markdown | `black`, `isort`, `flake8`, `shellcheck`, `yamllint`, `markdownlint` |
+| **[Lint Check](# (workflow file))** | Code formatting & style | Python, Shell, YAML, Markdown | `black`, `isort`, `flake8`, `shellcheck`, `yamllint`, `markdownlint` |
 
-| **[Security Scan](.github/workflows/tools-ci.yml)** | Vulnerability detection | Dependencies, secrets, code | `pip-audit`, `safety`, `bandit`, `gitleaks`, `CodeQL` |
+| **[Security Scan](# (workflow file))** | Vulnerability detection | Dependencies, secrets, code | `pip-audit`, `safety`, `bandit`, `gitleaks`, `CodeQL` |
 
-| **[Documentation](.github/workflows/tools-ci.yml)** | Docs validation | README, docs/, script headers | Custom validation, link checking |
+| **[Documentation](# (workflow file))** | Docs validation | README, docs/, script headers | Custom validation, link checking |
 
-| **[Static Analysis](.github/workflows/tools-ci.yml)** | Code quality | Python files | `pylint`, `pydocstyle`, `radon`, `xenon` |
+| **[Static Analysis](# (workflow file))** | Code quality | Python files | `pylint`, `pydocstyle`, `radon`, `xenon` |
 
-| **[Link Check](.github/workflows/tools-ci.yml)** | Link validation | All markdown files | `markdown-link-check` |
+| **[Link Check](# (workflow file))** | Link validation | All markdown files | `markdown-link-check` |
 
 ### **📊 CI Pipeline Overview**
 
@@ -1590,7 +1590,7 @@ markdown-link-check README.md
 
 | `markdown-link-check: 404` | Fix or remove broken links |
 
-For detailed CI documentation, see [`.github/README.md`](.github/README.md).
+For detailed CI documentation, see [`# (workflow documentation)`](# (workflow documentation)).
 
 ### **Advanced Configuration**
 

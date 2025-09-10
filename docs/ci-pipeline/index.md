@@ -13,14 +13,6 @@ architecture, performance improvements, and configuration details.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ CI Architecture](#️-ci-architecture)
-- [⚡ Performance Optimizations](#️-performance-optimizations)
-- [🔧 Configuration and Setup](#️-configuration-and-setup)
-- [🚀 Job Execution and Workflow](#️-job-execution-and-workflow)
-- [💾 Caching Strategy](#️-caching-strategy)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📊 Performance Metrics](#️-performance-metrics)
 
 ## 📋 **Overview**
 
@@ -171,7 +163,7 @@ docker run --rm cppcheck \
 
 ```bash
 ## Required for CI setup
-export ESP32_PROJECT_PATH="examples/esp32"  # Path to ESP32 project directory
+export ESP32_PROJECT_PATH="/examples/esp32"  # Path to ESP32 project directory
 ```
 ### **Environment Variable Validation**
 
@@ -181,7 +173,7 @@ The CI workflow validates required environment variables:
 ## Validate required environment variables
 if [[ -z "${ESP32_PROJECT_PATH:-}" ]]; then
     print_error "ESP32_PROJECT_PATH environment variable is required but not set"
-    print_error "This should point to the ESP32 project directory (e.g., 'examples/esp32')"
+    print_error "This should point to the ESP32 project directory (e.g., '/examples/esp32')"
     exit 1
 fi
 
@@ -292,7 +284,7 @@ static-analysis:
       uses: actions/cache@v4
       with:
         path: ~/.cache/apt
-        key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**', 'examples/**') }}
+        key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**', '/examples/**') }}
         
     - name: Run cppcheck with Docker
       run: |
@@ -378,7 +370,7 @@ key: esp32-ci-essential-tools-${{ runner.os }}-${{ hashFiles('${{ env.ESP32_PROJ
 }}/scripts/setup_common.sh') }}
 
 ## Static analysis cache (analysis jobs)
-key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**', 'examples/**') }}
+key: esp32-ci-static-analysis-${{ runner.os }}-${{ hashFiles('src/**', 'inc/**', '/examples/**') }}
 
 ## Workflow lint - no caching (tools installed fresh each run)
 
@@ -389,7 +381,7 @@ env.ESP32_PROJECT_PATH }}/scripts/setup_common.sh', '${{ env.ESP32_PROJECT_PATH
 
 ## ccache (build jobs)
 key: esp32-ci-ccache-${{ matrix.idf_version_docker }}-${{ matrix.build_type }}-${{
-hashFiles('src/**', 'inc/**', 'examples/**') }}
+hashFiles('src/**', 'inc/**', '/examples/**') }}
 ```
 ### **Cache Paths**
 
@@ -422,12 +414,12 @@ path: ~/.ccache
 **Problem**: `ESP32_PROJECT_PATH` not set or invalid
 **Symptoms**: 
 ERROR: ESP32_PROJECT_PATH environment variable is required but not set
-ERROR: This should point to the ESP32 project directory (e.g., 'examples/esp32')
+ERROR: This should point to the ESP32 project directory (e.g., '/examples/esp32')
 **Solutions**:
 ```yaml
 ## In GitHub workflow
 env:
-  ESP32_PROJECT_PATH: examples/esp32
+  ESP32_PROJECT_PATH: /examples/esp32
 ```
 #### **2. Matrix Generation Failures**
 
@@ -437,7 +429,7 @@ env:
 **Solutions**:
 ```bash
 ## Test matrix generation locally
-cd examples/esp32/scripts
+cd /examples/esp32/scripts
 python3 generate_matrix.py
 
 ## Check script permissions
@@ -470,7 +462,7 @@ path: |
 **Solutions**:
 ```bash
 ## Verify source files exist
-ls -la src/ inc/ examples/
+ls -la src/ inc/ /examples/
 
 ## Check ESP32_PROJECT_PATH is correct
 echo $ESP32_PROJECT_PATH
@@ -479,10 +471,10 @@ echo $ESP32_PROJECT_PATH
 
 ```bash
 ## Test CI setup locally
-export ESP32_PROJECT_PATH="examples/esp32"
+export ESP32_PROJECT_PATH="/examples/esp32"
 
 ## Verify matrix generation
-python3 examples/esp32/scripts/generate_matrix.py
+python3 /examples/esp32/scripts/generate_matrix.py
 
 ## Check cache status
 ls -la ~/.cache/apt

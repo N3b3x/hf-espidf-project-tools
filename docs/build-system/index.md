@@ -13,14 +13,6 @@ architecture, configuration, usage patterns, and troubleshooting.
 
 ## 📋 **Table of Contents**
 
-- [📋 Overview](#-overview)
-- [🏗️ Architecture and Design](#️-architecture-and-design)
-- [⚙️ Configuration System](#️-configuration-system)
-- [🔧 Build Process and Workflow](#️-build-process-and-workflow)
-- [🚀 Usage Examples and Patterns](#️-usage-examples-and-patterns)
-- [⚡ Performance and Optimization](#️-performance-and-optimization)
-- [🔍 Troubleshooting and Debugging](#️-troubleshooting-and-debugging)
-- [📚 Reference and Examples](#️-reference-and-examples)
 
 ## 📋 **Overview**
 
@@ -179,7 +171,7 @@ The build system now includes several new commands for better user experience:
 ## ⚙️ **Configuration System**
 
 ### **Configuration File Structure**
-The build system reads from `examples/esp32/app_config.yml`:
+The build system reads from `/examples/esp32/app_config.yml`:
 
 ```yaml
 ## Global metadata and defaults
@@ -443,7 +435,7 @@ with result reuse       gets fresh runner        runs in parallel
 ### **CI Environment Variables**
 ```bash
 ## Required for CI builds
-export ESP32_PROJECT_PATH="examples/esp32"
+export ESP32_PROJECT_PATH="/examples/esp32"
 
 ## Optional optimizations
 export IDF_CCACHE_ENABLE=1
@@ -742,12 +734,12 @@ target_compile_definitions(${COMPONENT_LIB} PRIVATE
 ## GitHub Actions workflow
 - name: Build ESP32 Application
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/build_app.sh gpio_test Release
 
 - name: Build with Debug
   run: |
-    cd examples/esp32
+    cd /examples/esp32
     ./scripts/build_app.sh gpio_test Debug
 ```
 ### **Best Practices**

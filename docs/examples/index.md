@@ -268,26 +268,13 @@ apps:
 
 ## 📚 More Examples
 
-### Complete Project Templates
+### Project Templates
 
-- **[Basic ESP32 Project](examples/basic-project/)** - Simple GPIO project
-- **[IoT Sensor Node](examples/iot-sensor/)** - WiFi and MQTT enabled
-- **[Industrial Controller](examples/industrial/)** - Modbus and Ethernet
-- **[Educational Kit](examples/educational/)** - Learning-focused project
-
-### Configuration Templates
-
-- **[Minimal Configuration](examples/minimal-config/)** - Basic setup
-- **[Advanced Configuration](examples/advanced-config/)** - Full features
-- **[Multi-Version Setup](examples/multi-version/)** - Multiple ESP-IDF versions
-- **[Security-Focused](examples/security-config/)** - Enhanced security
+*Note: Example project templates will be added in future releases. For now, use the configuration examples above to set up your own projects.*
 
 ### Workflow Templates
 
-- **[Basic Build](examples/workflows/basic-build.yml)** - Simple build workflow
-- **[Advanced CI/CD](examples/workflows/advanced-cicd.yml)** - Full pipeline
-- **[Security Audit](examples/workflows/security-audit.yml)** - Security scanning
-- **[Documentation](examples/workflows/documentation.yml)** - Auto-generated docs
+*Note: Example workflow templates will be added in future releases. Use the workflow examples in the code blocks above as starting points.*
 
 ## 🆘 Need Help?
 
