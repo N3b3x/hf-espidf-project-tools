@@ -56,11 +56,11 @@ jobs:
           echo "Generating CI pipeline summary..."
           cat > ci-summary.md << 'EOF'
           # CI Pipeline Summary
-          
+
           Generated on: $(date)
-          
+
           ## Pipeline Status
-          
+
           | Job | Status |
           |-----|--------|
           | Lint | ${{ needs.lint.result }} |
@@ -68,23 +68,23 @@ jobs:
           | Documentation | ${{ needs.docs.result }} |
           | Static Analysis | ${{ needs.static-analysis.result }} |
           | Link Check | ${{ needs.link-check.result }} |
-          
+
           ## Overall Status
-          
-          ${{ (needs.lint.result == 'success' && needs.security.result == 'success' && 
-               needs.docs.result == 'success' && needs.static-analysis.result == 'success' && 
-               needs.link-check.result == 'success') && '✅ All checks passed!' || 
+
+          ${{ (needs.lint.result == 'success' && needs.security.result == 'success' &&
+               needs.docs.result == 'success' && needs.static-analysis.result == 'success' &&
+               needs.link-check.result == 'success') && '✅ All checks passed!' ||
                '❌ Some checks failed. Please review the individual job outputs.' }}
-          
+
           ## Next Steps
-          
-          ${{ (needs.lint.result == 'success' && needs.security.result == 'success' && 
-               needs.docs.result == 'success' && needs.static-analysis.result == 'success' && 
-               needs.link-check.result == 'success') && 'Ready for merge/deployment!' || 
+
+          ${{ (needs.lint.result == 'success' && needs.security.result == 'success' &&
+               needs.docs.result == 'success' && needs.static-analysis.result == 'success' &&
+               needs.link-check.result == 'success') && 'Ready for merge/deployment!' ||
                'Please fix the failing checks before proceeding.' }}
-          
+
           EOF
-          
+
           echo "CI summary generated"
 
       - name: Upload CI summary
@@ -101,7 +101,7 @@ jobs:
           script: |
             const fs = require('fs');
             const summary = fs.readFileSync('ci-summary.md', 'utf8');
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
