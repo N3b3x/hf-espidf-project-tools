@@ -2,7 +2,7 @@
 layout: default
 title: "Examples"
 description: "Real-world examples and usage patterns for HardFOC ESP32 CI Tools"
-nav_order: 6
+nav_order: 10
 permalink: /examples/
 ---
 

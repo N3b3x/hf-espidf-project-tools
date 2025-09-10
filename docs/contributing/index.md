@@ -2,7 +2,7 @@
 layout: default
 title: "Contributing"
 description: "How to contribute to the HardFOC ESP32 CI Tools project"
-nav_order: 8
+nav_order: 9
 permalink: /contributing/
 ---
 

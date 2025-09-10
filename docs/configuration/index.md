@@ -2,8 +2,7 @@
 layout: default
 title: "Configuration System"
 description: "ESP32 configuration system with YAML management, validation, and smart defaults"
-nav_order: 6
-parent: "Documentation"
+nav_order: 5
 permalink: /configuration/
 ---
 

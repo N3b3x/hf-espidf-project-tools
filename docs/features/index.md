@@ -2,7 +2,7 @@
 layout: page
 title: "Features"
 description: "Key features and capabilities of the HardFOC ESP32 CI Tools"
-nav_order: 6
+nav_order: 11
 permalink: /features/
 ---
 

@@ -2,7 +2,7 @@
 layout: default
 title: "Configuration"
 description: "Configuration guide for HardFOC ESP32 CI Tools"
-nav_order: 3
+nav_order: 2
 parent: "Getting Started"
 permalink: /getting-started/configuration/
 ---

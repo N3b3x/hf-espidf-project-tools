@@ -3,7 +3,6 @@ layout: default
 title: "CI Pipeline"
 description: "Optimized ESP32 CI pipeline with parallel execution, intelligent caching, and performance monitoring"
 nav_order: 4
-parent: "Documentation"
 permalink: /ci-pipeline/
 ---
 

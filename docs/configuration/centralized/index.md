@@ -1,13 +1,17 @@
-# ESP32 HardFOC Interface Wrapper - Centralized Configuration Guide
+---
+layout: default
+title: "Centralized Configuration"
+description: "Centralized configuration system with YAML management, validation, and smart defaults"
+nav_order: 1
+parent: "Configuration"
+permalink: /configuration/centralized/
+---
+
+# Centralized Configuration Guide
 
 This document provides comprehensive documentation for the centralized configuration system,
 including the `app_config.yml` file structure, configuration loading mechanisms, and integration
 with the ESP32 development workflow.
-
----
-
-**Navigation**: [← Previous: Port Detection](README_PORT_DETECTION.md) | [Back to
-Scripts](../README.md) | [Next: Scripts Overview →](README_SCRIPTS_OVERVIEW.md)
 
 ---
 

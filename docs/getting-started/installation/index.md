@@ -2,7 +2,7 @@
 layout: default
 title: "Installation"
 description: "Detailed installation guide for HardFOC ESP32 CI Tools"
-nav_order: 2
+nav_order: 1
 parent: "Getting Started"
 permalink: /getting-started/installation/
 ---

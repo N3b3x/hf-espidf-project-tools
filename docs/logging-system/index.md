@@ -2,8 +2,7 @@
 layout: default
 title: "Logging System"
 description: "ESP32 logging system with comprehensive log capture, management, and analysis"
-nav_order: 8
-parent: "Documentation"
+nav_order: 7
 permalink: /logging-system/
 ---
 

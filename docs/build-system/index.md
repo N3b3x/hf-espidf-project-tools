@@ -3,7 +3,6 @@ layout: default
 title: "Build System"
 description: "ESP32 build system with intelligent configuration management, validation, and optimization"
 nav_order: 3
-parent: "Documentation"
 permalink: /build-system/
 ---
 

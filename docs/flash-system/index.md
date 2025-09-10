@@ -2,8 +2,7 @@
 layout: default
 title: "Flash System"
 description: "ESP32 flash system with intelligent port detection, firmware flashing, and monitoring"
-nav_order: 7
-parent: "Documentation"
+nav_order: 6
 permalink: /flash-system/
 ---
 
