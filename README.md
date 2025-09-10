@@ -41,6 +41,9 @@ flexible ways.
 The scripts feature automated ESP-IDF management, build processes,
 and CI/CD integration while maintaining complete portability.
 
+**🌐 [Live Documentation Site](https://n3b3x.github.io/hf-espidf-ci-tools/)**  
+*Published documentation with enhanced navigation and search*
+
 ### 🏆 **Key Features**
 
 - **🚀 Dual Usage Modes** - Works both as project-integrated scripts and as portable tools
