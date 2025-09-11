@@ -15,6 +15,7 @@ permalink: /
 **🎯 Build System Scripts for ESP32 Development**
 
 *Scripts providing automated ESP-IDF management, build automation, and CI/CD integration*
+
 ---
 
 **🌐 [Live Documentation Site](https://n3b3x.github.io/hf-espidf-project-tools/)**  
