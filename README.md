@@ -138,224 +138,74 @@ Both modes automatically discover the `app_config.yml` configuration file:
 2. `PROJECT_PATH` environment variable
 3. Default: parent directory of script location
 
-## 📥 **Getting Started - Project Integration**
+## 📥 **Quick Start**
 
-### **Method 1: Automated Project Setup (Recommended)** 🚀
+### **Setup Options**
 
-Create a complete ESP-IDF project with all tools pre-configured:
+1. **Automated Project Setup** (Recommended)
+   ```bash
+   git clone https://github.com/n3b3x/hf-espidf-project-tools.git
+   cd hf-espidf-project-tools
+   ./setup_basic.sh my-awesome-project
+   cd my-awesome-project
+   ./scripts/build_app.sh main_app Release
+   ```
 
+2. **Add to Existing Project**
+   ```bash
+   cd ~/my-esp-idf-project
+   git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+   ./scripts/build_app.sh gpio_test Release
+   ```
+
+3. **Git Submodule**
+   ```bash
+   cd ~/my-esp-idf-project
+   git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+   git submodule update --init --recursive
+   ./scripts/build_app.sh gpio_test Release
+   ```
+
+### **Verification**
 ```bash
-## Clone the tools repository
-git clone https://github.com/n3b3x/hf-espidf-project-tools.git
-cd hf-espidf-project-tools
-
-## Create a new ESP-IDF project
-./setup_basic.sh my-awesome-project
-
-## Navigate to your new project
-cd my-awesome-project
-
-## Build and flash
-./scripts/build_app.sh main_app Release
-./scripts/flash_app.sh flash main_app Release
-```
-
-**What you get:**
-- ✅ Complete ESP-IDF project structure
-- ✅ ESP-IDF installed and configured
-- ✅ `app_config.yml` with basic app
-- ✅ CMakeLists.txt files set up
-- ✅ Basic `main.cpp` template
-- ✅ All development scripts ready to use
-
-### **Method 2: Add to Existing Project** 🔧
-
-If you already have an ESP-IDF project:
-
-```bash
-## Navigate to your ESP-IDF project
-cd ~/my-esp-idf-project
-
-## Clone the repository as scripts directory
-git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
-
-## Your ESP-IDF project structure will be:
-## my-esp-idf-project/
-## ├── CMakeLists.txt
-## ├── app_config.yml
-## ├── main/
-## ├── components/
-## └── scripts/                # Development scripts (this repo)
-##     ├── build_app.sh
-##     ├── flash_app.sh
-##     └── ...
-
-## Usage (from ESP-IDF project root)
-./scripts/build_app.sh gpio_test Release
-./scripts/flash_app.sh flash_monitor adc_test
-```
-**Benefits:**
-- ✅ Simple one-command setup
-- ✅ Full control over scripts
-- ✅ Easy to update with `git pull`
-- ✅ Can modify scripts if needed
-
-### **Method 3: Git Submodule** 🔗
-
-Keep the scripts as a separate repository while integrating them:
-
-```bash
-## Navigate to your ESP-IDF project
-cd ~/my-esp-idf-project
-
-## Add as submodule
-git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
-
-## Initialize and update the submodule
-git submodule update --init --recursive
-
-## Your ESP-IDF project structure will be:
-## my-esp-idf-project/
-## ├── CMakeLists.txt
-## ├── app_config.yml
-## ├── main/
-## ├── components/
-## └── scripts/                # Development scripts (submodule)
-##     ├── build_app.sh
-##     ├── flash_app.sh
-##     └── ...
-
-## Usage (from ESP-IDF project root)
-./scripts/build_app.sh gpio_test Release
-```
-**Benefits:**
-- ✅ Keeps scripts as separate repository
-- ✅ Easy to update with `git submodule update`
-- ✅ Maintains version control
-- ✅ No file duplication
-
-### **Method 3: Custom `scripts/` Directory** (Advanced) ⚙️
-
-If you prefer the scripts to be in a `scripts/` directory, you can achieve this with special setup:
-
-```bash
-## Navigate to your ESP32 project
-cd ~/my-esp32-project
-
-## Clone with custom directory name
-git clone https://github.com/N3b3x/hf-espidf-project-tools.git scripts
-
-## OR add as submodule with custom name
-git submodule add --name scripts https://github.com/N3b3x/hf-espidf-project-tools.git scripts
-
-## Your project structure will be:
-## my-esp32-project/
-## ├── app_config.yml
-## ├── main/
-## ├── components/
-## └── scripts/                    # ← Custom directory name
-##     ├── build_app.sh
-##     ├── flash_app.sh
-##     └── ...
-
-## Usage (from project root)
-./scripts/build_app.sh gpio_test Release
-./scripts/flash_app.sh flash_monitor adc_test
-```
-**Note:** This method requires special setup and is not the default behavior.
-The scripts will work the same way,
-but you'll need to use `./scripts/` instead of `./hf-espidf-project-tools/` in all commands.
-
-### **Verification** ✅
-
-After setup, verify the integration works:
-
-```bash
-## Navigate to your ESP-IDF project root
-cd ~/my-esp-idf-project
-
-## Test script discovery
 ./scripts/build_app.sh --help
-
-## Test configuration loading
 ./scripts/build_app.sh combinations
-
-## Should show available apps and build combinations
 ```
 ---
 
 ## 🚀 **Usage Examples**
 
-### **Mode 1: Project-Integrated Usage** 📁
+### **Basic Usage**
 
-When scripts are part of your ESP-IDF project:
-
+**Mode 1: Project-Integrated**
 ```bash
-## ESP-IDF project structure (recommended)
-my-esp-idf-project/
-├── CMakeLists.txt
-├── app_config.yml
-├── main/
-├── components/
-└── scripts/                # Development scripts (this repo)
-    ├── build_app.sh
-    ├── flash_app.sh
-    └── config_loader.sh
-
-## Usage (from ESP-IDF project root)
+# From ESP-IDF project root
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor adc_test
-./scripts/manage_idf.sh list
-
-## Python scripts
-python3 scripts/get_app_info.py list
 python3 scripts/generate_matrix.py
 ```
-### **Mode 2: Portable Tools Usage** 🚀
 
-When scripts are shared tools or in CI systems:
-
+**Mode 2: Portable Tools**
 ```bash
-## Shared tools structure
-/opt/esp-idf-tools/
-├── build_app.sh
-├── flash_app.sh
-└── config_loader.sh
-
-## Usage with --project-path flag
+# From anywhere
 /opt/esp-idf-tools/build_app.sh --project-path ~/my-esp-idf-project gpio_test Release
-/opt/esp-idf-tools/flash_app.sh --project-path ~/my-esp-idf-project flash_monitor adc_test
-
-## Usage with environment variable
 export PROJECT_PATH=~/my-esp-idf-project
 /opt/esp-idf-tools/build_app.sh gpio_test Release
-/opt/esp-idf-tools/flash_app.sh flash_monitor adc_test
-
-## Python scripts
-python3 /opt/esp-idf-tools/get_app_info.py list --project-path ~/my-esp-idf-project
-python3 /opt/esp-idf-tools/generate_matrix.py --project-path ~/my-esp-idf-project
 ```
-### **Real-World Scenarios**
+
+### **Common Workflows**
 
 ```bash
-## Scenario 1: Multiple ESP-IDF projects with shared tools
-/opt/esp-idf-tools/build_app.sh --project-path ~/projects/robot-controller gpio_test Release
-/opt/esp-idf-tools/build_app.sh --project-path ~/projects/sensor-node adc_test Debug
-
-## Scenario 2: CI/CD with portable scripts
-./ci-scripts/build_app.sh --project-path $GITHUB_WORKSPACE/esp-idf-project gpio_test Release
-
-## Scenario 3: Development with project-integrated scripts
-cd ~/my-esp-idf-project
+# Development workflow
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor gpio_test
 
-## Scenario 4: Mixed usage (some projects integrated, some portable)
-cd ~/project-with-tools
-./scripts/build_app.sh gpio_test Release
+# CI/CD workflow
+./scripts/build_app.sh "${{ matrix.app_name }}" "${{ matrix.build_type }}"
 
-cd ~/project-without-tools
-/opt/esp-idf-tools/build_app.sh --project-path . gpio_test Release
+# Multiple projects
+/opt/esp-idf-tools/build_app.sh --project-path ~/project1 gpio_test Release
+/opt/esp-idf-tools/build_app.sh --project-path ~/project2 adc_test Debug
 ```
 ---
 
@@ -424,14 +274,17 @@ Both modes automatically discover `app_config.yml`:
 
 ### **Data Flow**
 
+```
 Configuration Discovery:
 ├── Mode 1 (recommended): scripts/ → parent directory → app_config.yml
 └── Mode 2: --project-path → specified directory → app_config.yml
 
 Build Process:
 app_config.yml → config_loader.sh → build_app.sh → flash_app.sh
+```
 ### **🆕 New Environment Setup Architecture**
 
+```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           SETUP COMMON FUNCTIONS                            │
 │                    (setup_common.sh - shared utilities)                     │
@@ -466,6 +319,7 @@ app_config.yml → config_loader.sh → build_app.sh → flash_app.sh
 │  • CI workflows use ESP-IDF CI action directly                              │
 │  • Local development uses setup_repo.sh for environment                     │
 └─────────────────────────────────────────────────────────────────────────────┘
+```
 
 ### **Script Categories**
 
@@ -491,6 +345,7 @@ combinations and provides clear guidance to users.
 
 ### **Validation Flow**
 
+```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           BUILD REQUEST                                     │
 │  app: gpio_test, build_type: Release, idf_version: (unspecified)            │
@@ -532,6 +387,7 @@ combinations and provides clear guidance to users.
 │  → Show error with valid combinations                                       │
 │  → Provide helpful next steps                                               │
 └─────────────────────────────────────────────────────────────────────────────┘
+```
 
 **Key Optimization Points:**
 - **Early Exit**: Basic validation happens first, failing fast on invalid inputs
@@ -594,18 +450,15 @@ The primary build script that orchestrates the entire build process.
 
 #### **Usage**
 
-**Mode 1: Project-Integrated (default)**
-```bash
-./hf-espidf-project-tools/build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
-```
-**Mode 1: Project-Integrated (alternative)**
+**Mode 1: Project-Integrated**
 ```bash
 ./scripts/build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
 ```
+
 **Mode 2: Portable Tools**
 ```bash
 ./build_app.sh [OPTIONS] --project-path <path> <app_name> <build_type> [idf_version]
-## OR
+# OR
 export PROJECT_PATH=<path>
 ./build_app.sh [OPTIONS] <app_name> <build_type> [idf_version]
 ```
@@ -622,42 +475,16 @@ export PROJECT_PATH=<path>
 - `idf_version` - ESP-IDF version (optional, uses default if not specified)
 
 **Examples:**
-
-**Mode 1: Project-Integrated (default)**
 ```bash
-./hf-espidf-project-tools/build_app.sh gpio_test Release
-./hf-espidf-project-tools/build_app.sh adc_test Debug release/v5.4
-./hf-espidf-project-tools/build_app.sh --clean wifi_test Release
-```
-**Mode 1: Project-Integrated (alternative)**
-```bash
+# Basic usage
 ./scripts/build_app.sh gpio_test Release
 ./scripts/build_app.sh adc_test Debug release/v5.4
 ./scripts/build_app.sh --clean wifi_test Release
-```
-**Mode 2: Portable Tools**
-```bash
-./build_app.sh --project-path ~/my-esp32-project gpio_test Release
-./build_app.sh --project-path ~/my-esp32-project adc_test Debug release/v5.4
-export PROJECT_PATH=~/my-esp32-project
-./build_app.sh --clean wifi_test Release
-```
-**Enhanced Commands:**
-```bash
-## Show app information
-./hf-espidf-project-tools/build_app.sh info <app_name>                    # Mode 1 (default)
-./scripts/build_app.sh info <app_name>                                    # Mode 1 (alternative)
-./build_app.sh --project-path <path> info <app_name>                      # Mode 2
 
-## Show all valid combinations
-./hf-espidf-project-tools/build_app.sh combinations                       # Mode 1 (default)
-./scripts/build_app.sh combinations                                       # Mode 1 (alternative)
-./build_app.sh --project-path <path> combinations                         # Mode 2
-
-## Validate combination
-./hf-espidf-project-tools/build_app.sh validate <app> <type> [idf]        # Mode 1 (default)
-./scripts/build_app.sh validate <app> <type> [idf]                        # Mode 1 (alternative)
-./build_app.sh --project-path <path> validate <app> <type> [idf]          # Mode 2
+# Enhanced commands
+./scripts/build_app.sh info gpio_test
+./scripts/build_app.sh combinations
+./scripts/build_app.sh validate gpio_test Release
 ```
 #### **Environment Variables**
 ```bash
@@ -691,12 +518,7 @@ Handles device flashing, monitoring, and related operations.
 
 #### **Usage**
 
-**Mode 1: Project-Integrated (default)**
-```bash
-./hf-espidf-project-tools/flash_app.sh <action> [app_name] [build_type]
-```
-
-**Mode 1: Project-Integrated (alternative)**
+**Mode 1: Project-Integrated**
 ```bash
 ./scripts/flash_app.sh <action> [app_name] [build_type]
 ```
@@ -704,7 +526,7 @@ Handles device flashing, monitoring, and related operations.
 **Mode 2: Portable Tools**
 ```bash
 ./flash_app.sh --project-path <path> <action> [app_name] [build_type]
-## OR
+# OR
 export PROJECT_PATH=<path>
 ./flash_app.sh <action> [app_name] [build_type]
 ```
@@ -716,27 +538,11 @@ export PROJECT_PATH=<path>
 - `flash_erase` - Erase flash and flash firmware
 
 **Examples:**
-
-**Mode 1: Project-Integrated (default)**
 ```bash
-./hf-espidf-project-tools/flash_app.sh flash_monitor gpio_test Release
-./hf-espidf-project-tools/flash_app.sh monitor
-./hf-espidf-project-tools/flash_app.sh flash_erase adc_test Debug
-```
-
-**Mode 1: Project-Integrated (alternative)**
-```bash
+# Basic usage
 ./scripts/flash_app.sh flash_monitor gpio_test Release
 ./scripts/flash_app.sh monitor
 ./scripts/flash_app.sh flash_erase adc_test Debug
-```
-
-**Mode 2: Portable Tools**
-```bash
-./flash_app.sh --project-path ~/my-esp32-project flash_monitor gpio_test Release
-./flash_app.sh --project-path ~/my-esp32-project monitor
-export PROJECT_PATH=~/my-esp32-project
-./flash_app.sh flash_erase adc_test Debug
 ```
 
 ---
@@ -1333,68 +1139,44 @@ ci_config:
 
 ## 🚀 **Usage Examples**
 
-### **Environment Setup Workflows**
+### **Enhanced Commands**
 
-#### **Local Development Setup**
-```bash
-## Complete local development environment
-./setup_repo.sh
-
-## What it provides:
-## • Full development toolchain (clang, clang-format, clang-tidy)
-## • ESP-IDF auto-installation and configuration
-## • Development aliases and environment variables
-## • Interactive setup with user guidance
-## • Complete dependency installation
-```
-#### **CI/CD Environment Setup**
-```bash
-## CI builds use ESP-IDF CI action directly
-## No setup needed - ESP-IDF CI action handles everything
-
-## What it provides:
-## • Minimal CI dependencies (clang-20, yq, PyYAML)
-## • Build directory structure preparation
-## • Cache-aware installation
-## • Non-interactive operation
-## • ESP-IDF handled by ESP-IDF CI action
-### **New Enhanced Commands**
-
-```
-The build system now includes several new commands for better user experience and validation:
+The build system includes several new commands for better user experience and validation:
 
 #### **📋 Information Commands**
 ```bash
-## Show detailed information for a specific app
+# Show detailed information for a specific app
 ./scripts/build_app.sh info gpio_test
 
-## Show all valid build combinations across all apps
+# Show all valid build combinations across all apps
 ./scripts/build_app.sh combinations
 
-## Validate a specific build combination
+# Validate a specific build combination
 ./scripts/build_app.sh validate gpio_test Release
-./scripts/build_app.sh validate gpio_test Release release/v5.4
+```
+
 #### **🛡️ Validation Examples**
-```
 ```bash
-## Valid combination - proceeds with build
+# Valid combination - proceeds with build
 ./scripts/build_app.sh validate gpio_test Release
-## Output: ✅ VALID: This combination is allowed
-## Invalid combination - shows error with guidance
+# Output: ✅ VALID: This combination is allowed
+
+# Invalid combination - shows error with guidance
 ./scripts/build_app.sh validate gpio_test Release release/v5.4
-## Output: ❌ INVALID: This combination is not allowed
-##        Valid combinations for 'gpio_test':
-##        • release/v5.5: Debug Release
+# Output: ❌ INVALID: This combination is not allowed
+#        Valid combinations for 'gpio_test':
+#        • release/v5.5: Debug Release
 ```
+
 #### **🧠 Smart Default Examples**
 ```bash
-## No IDF version specified - uses smart default
+# No IDF version specified - uses smart default
 ./scripts/build_app.sh gpio_test Release
-## Output: No IDF version specified, using smart default: release/v5.5
+# Output: No IDF version specified, using smart default: release/v5.5
 
-## IDF version explicitly specified
+# IDF version explicitly specified
 ./scripts/build_app.sh gpio_test Release release/v5.5
-## Output: Uses specified version directly
+# Output: Uses specified version directly
 ```
 
 ### **Local Development Workflow**
@@ -1473,6 +1255,7 @@ All workflows run automatically on every push and pull request.
 
 ### **📊 CI Pipeline Overview**
 
+```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    🚀 Push/PR Trigger                          │
 └─────────────────────┬───────────────────────────────────────────┘
@@ -1510,6 +1293,7 @@ All workflows run automatically on every push and pull request.
     │ 💬 PR       │ │ 📦 Artifact │
     │ Comment     │ │ Upload      │
     └─────────────┘ └─────────────┘
+```
 
 All jobs run in PARALLEL for maximum speed! ⚡
 
