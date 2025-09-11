@@ -1,20 +1,20 @@
 ---
 layout: default
-title: "🔧 HardFOC ESP32 CI Tools"
-description: "Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows for ESP-IDF development with matrix builds, security auditing, and automated documentation"
+title: "README"
+description: "Development Scripts for HardFOC ESP-IDF Projects - Multi-application build system with intelligent configuration management for ESP-IDF development"
 nav_order: 1
 permalink: /
 ---
 
-# 🔧 ESP32 Scripts - Build System Documentation
+# 🔧 HardFOC ESP-IDF Project Tools
 
-![Scripts](https://img.shields.io/badge/Scripts-Build%20System-blue?style=for-the-badge&logo=bash)
-![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Auto%20Management-green?style=for-the-badge&logo=espressif)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-orange?style=for-the-badge&logo=github)
+![Scripts](https://img.shields.io/badge/Scripts-Development%20Tools-blue?style=for-the-badge&logo=bash)
+![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Multi%20App%20Builds-green?style=for-the-badge&logo=espressif)
+![Configuration](https://img.shields.io/badge/Config-YAML%20Based-purple?style=for-the-badge&logo=yaml)
 
-**🎯 Build System Scripts for ESP32 Development**
+**🎯 Development Scripts for Multi-Application ESP-IDF Projects**
 
-*Scripts providing automated ESP-IDF management, build automation, and CI/CD integration*
+*Scripts providing multi-application build management, intelligent configuration, and development workflow automation*
 
 ---
 
@@ -41,65 +41,63 @@ permalink: /
 
 ## 🎯 **Overview**
 
-This repository contains a **decoupled build system** for ESP32 development that can be used in two
-flexible ways.
-The scripts feature automated ESP-IDF management, build processes,
-and CI/CD integration while maintaining complete portability.
+This repository contains **development scripts** for ESP-IDF projects with multiple applications.
+The scripts provide intelligent configuration management, multi-application build support,
+and development workflow automation while maintaining complete portability.
 
 ### 🏆 **Key Features**
 
-- **🚀 Dual Usage Modes** - Works both as project-integrated scripts and as portable tools
-- **🔧 Automated ESP-IDF Management** - Auto-detection, installation, and environment setup
-- **📊 Dynamic Configuration Loading** - YAML-based configuration with hierarchical overrides
-- **🔄 Intelligent Build System** - Incremental builds with caching and optimization
+- **🚀 Multi-Application Builds** - Build multiple applications from a single ESP-IDF project
+- **🔧 Intelligent Configuration** - YAML-based configuration management with `app_config.yml`
+- **📊 Dynamic Configuration Loading** - Hierarchical overrides and smart defaults
+- **🔄 Development Workflow** - Streamlined build, flash, and development processes
 - **🛡️ Enhanced Validation System** - Smart combination validation and error prevention
 - **🧠 Smart Defaults** - Automatic ESP-IDF version selection based on app and build type
-- **🌐 CI/CD Integration** - Seamless GitHub Actions integration
 - **📁 Structured Output** - Parseable build directories and artifact management
 - **🔍 Comprehensive Logging** - Detailed build logs and error reporting
 - **🆕 Environment Separation** - Clear separation between local development and CI environments
-- **🚀 CI Pipeline Optimization** - Optimized CI pipeline with parallel execution, smart
-  caching, and reliable tool installation
+- **🌐 CI Integration** - Works with separate CI tools repository for automated builds
 
 ## 🔄 **Two Usage Modes**
 
 ### **Mode 1: Project-Integrated Scripts** 📁
-**When**: Scripts are cloned/copied into your ESP32 project
-**Location**: `your-project/hf-espidf-project-tools/` (default) or `your-project/scripts/` (with
-special setup)
-**Configuration**: Automatically finds `app_config.yml` in project root
-**Usage**: `./hf-espidf-project-tools/build_app.sh app_name build_type`
+**When**: Scripts are cloned/copied into your ESP-IDF project directory
+**Location**: `your-esp-idf-project/scripts/` (recommended) or `your-esp-idf-project/hf-espidf-project-tools/`
+**Configuration**: Automatically finds `app_config.yml` in the same directory as scripts
+**Usage**: `./scripts/build_app.sh app_name build_type`
 
 ```bash
-## Project structure (default)
-your-esp32-project/
+## ESP-IDF project structure (recommended)
+your-esp-idf-project/
+├── CMakeLists.txt
 ├── app_config.yml          # ← Scripts find this automatically
 ├── main/
 ├── components/
-└── hf-espidf-project-tools/  # ← Scripts live here (default)
+└── scripts/                # Development scripts (this repo)
     ├── build_app.sh
     ├── flash_app.sh
     └── config_loader.sh
 
-## Usage (from project root)
-./hf-espidf-project-tools/build_app.sh gpio_test Release
-./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
-```
-**Alternative: `scripts/` Directory** (requires special setup)
-```bash
-## Project structure (alternative)
-your-esp32-project/
-├── app_config.yml          # ← Scripts find this automatically
-├── main/
-├── components/
-└── scripts/                # ← Scripts live here (alternative)
-    ├── build_app.sh
-    ├── flash_app.sh
-    └── config_loader.sh
-
-## Usage (from project root)
+## Usage (from ESP-IDF project root)
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor adc_test
+```
+**Alternative: Custom Directory Name**
+```bash
+## ESP-IDF project structure (alternative)
+your-esp-idf-project/
+├── CMakeLists.txt
+├── app_config.yml          # ← Scripts find this automatically
+├── main/
+├── components/
+└── hf-espidf-project-tools/ # Development scripts (custom name)
+    ├── build_app.sh
+    ├── flash_app.sh
+    └── config_loader.sh
+
+## Usage (from ESP-IDF project root)
+./hf-espidf-project-tools/build_app.sh gpio_test Release
+./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
 ```
 ### **Mode 2: Portable Tools** 🚀
 **When**: Scripts are placed anywhere (shared tools, CI systems, etc.)
@@ -144,28 +142,29 @@ Both modes automatically discover the `app_config.yml` configuration file:
 
 ### **Method 1: Default Setup (Recommended)** 🚀
 
-Clone the repository directly into your ESP32 project:
+Clone the repository into your ESP-IDF project:
 
 ```bash
-## Navigate to your ESP32 project
-cd ~/my-esp32-project
+## Navigate to your ESP-IDF project
+cd ~/my-esp-idf-project
 
-## Clone the repository
-git clone https://github.com/N3b3x/hf-espidf-project-tools.git
+## Clone the repository as scripts directory
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 
-## Your project structure will be:
-## my-esp32-project/
+## Your ESP-IDF project structure will be:
+## my-esp-idf-project/
+## ├── CMakeLists.txt
 ## ├── app_config.yml
 ## ├── main/
 ## ├── components/
-## └── hf-espidf-project-tools/    # ← Repository cloned here
+## └── scripts/                # Development scripts (this repo)
 ##     ├── build_app.sh
 ##     ├── flash_app.sh
 ##     └── ...
 
-## Usage (from project root)
-./hf-espidf-project-tools/build_app.sh gpio_test Release
-./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
+## Usage (from ESP-IDF project root)
+./scripts/build_app.sh gpio_test Release
+./scripts/flash_app.sh flash_monitor adc_test
 ```
 **Benefits:**
 - ✅ Simple one-command setup
@@ -178,27 +177,28 @@ git clone https://github.com/N3b3x/hf-espidf-project-tools.git
 Keep the scripts as a separate repository while integrating them:
 
 ```bash
-## Navigate to your ESP32 project
-cd ~/my-esp32-project
+## Navigate to your ESP-IDF project
+cd ~/my-esp-idf-project
 
 ## Add as submodule
-git submodule add https://github.com/N3b3x/hf-espidf-project-tools.git
+git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 
 ## Initialize and update the submodule
 git submodule update --init --recursive
 
-## Your project structure will be:
-## my-esp32-project/
+## Your ESP-IDF project structure will be:
+## my-esp-idf-project/
+## ├── CMakeLists.txt
 ## ├── app_config.yml
 ## ├── main/
 ## ├── components/
-## └── hf-espidf-project-tools/    # ← Submodule here
+## └── scripts/                # Development scripts (submodule)
 ##     ├── build_app.sh
 ##     ├── flash_app.sh
 ##     └── ...
 
-## Usage (from project root)
-./hf-espidf-project-tools/build_app.sh gpio_test Release
+## Usage (from ESP-IDF project root)
+./scripts/build_app.sh gpio_test Release
 ```
 **Benefits:**
 - ✅ Keeps scripts as separate repository
@@ -243,18 +243,13 @@ but you'll need to use `./scripts/` instead of `./hf-espidf-project-tools/` in a
 After setup, verify the integration works:
 
 ```bash
-## Navigate to your project root
-cd ~/my-esp32-project
+## Navigate to your ESP-IDF project root
+cd ~/my-esp-idf-project
 
-## Test script discovery (default setup)
-./hf-espidf-project-tools/build_app.sh --help
-
-## OR test script discovery (custom scripts/ setup)
+## Test script discovery
 ./scripts/build_app.sh --help
 
 ## Test configuration loading
-./hf-espidf-project-tools/build_app.sh combinations
-## OR
 ./scripts/build_app.sh combinations
 
 ## Should show available apps and build combinations
@@ -265,41 +260,21 @@ cd ~/my-esp32-project
 
 ### **Mode 1: Project-Integrated Usage** 📁
 
-When scripts are part of your ESP32 project:
+When scripts are part of your ESP-IDF project:
 
 ```bash
-## Project structure (default)
-my-esp32-project/
+## ESP-IDF project structure (recommended)
+my-esp-idf-project/
+├── CMakeLists.txt
 ├── app_config.yml
 ├── main/
 ├── components/
-└── hf-espidf-project-tools/    # ← Scripts are here (default)
+└── scripts/                # Development scripts (this repo)
     ├── build_app.sh
     ├── flash_app.sh
     └── config_loader.sh
 
-## Usage (from project root)
-./hf-espidf-project-tools/build_app.sh gpio_test Release
-./hf-espidf-project-tools/flash_app.sh flash_monitor adc_test
-./hf-espidf-project-tools/manage_idf.sh list
-
-## Python scripts
-python3 hf-espidf-project-tools/get_app_info.py list
-python3 hf-espidf-project-tools/generate_matrix.py
-```
-**Alternative: Custom `scripts/` Directory**
-```bash
-## Project structure (alternative)
-my-esp32-project/
-├── app_config.yml
-├── main/
-├── components/
-└── scripts/                    # ← Scripts are here (alternative)
-    ├── build_app.sh
-    ├── flash_app.sh
-    └── config_loader.sh
-
-## Usage (from project root)
+## Usage (from ESP-IDF project root)
 ./scripts/build_app.sh gpio_test Release
 ./scripts/flash_app.sh flash_monitor adc_test
 ./scripts/manage_idf.sh list
@@ -314,45 +289,45 @@ When scripts are shared tools or in CI systems:
 
 ```bash
 ## Shared tools structure
-/opt/esp32-tools/
+/opt/esp-idf-tools/
 ├── build_app.sh
 ├── flash_app.sh
 └── config_loader.sh
 
 ## Usage with --project-path flag
-/opt/esp32-tools/build_app.sh --project-path ~/my-esp32-project gpio_test Release
-/opt/esp32-tools/flash_app.sh --project-path ~/my-esp32-project flash_monitor adc_test
+/opt/esp-idf-tools/build_app.sh --project-path ~/my-esp-idf-project gpio_test Release
+/opt/esp-idf-tools/flash_app.sh --project-path ~/my-esp-idf-project flash_monitor adc_test
 
 ## Usage with environment variable
-export PROJECT_PATH=~/my-esp32-project
-/opt/esp32-tools/build_app.sh gpio_test Release
-/opt/esp32-tools/flash_app.sh flash_monitor adc_test
+export PROJECT_PATH=~/my-esp-idf-project
+/opt/esp-idf-tools/build_app.sh gpio_test Release
+/opt/esp-idf-tools/flash_app.sh flash_monitor adc_test
 
 ## Python scripts
-python3 /opt/esp32-tools/get_app_info.py list --project-path ~/my-esp32-project
-python3 /opt/esp32-tools/generate_matrix.py --project-path ~/my-esp32-project
+python3 /opt/esp-idf-tools/get_app_info.py list --project-path ~/my-esp-idf-project
+python3 /opt/esp-idf-tools/generate_matrix.py --project-path ~/my-esp-idf-project
 ```
 ### **Real-World Scenarios**
 
 ```bash
-## Scenario 1: Multiple ESP32 projects with shared tools
-/opt/esp32-tools/build_app.sh --project-path ~/projects/robot-controller gpio_test Release
-/opt/esp32-tools/build_app.sh --project-path ~/projects/sensor-node adc_test Debug
+## Scenario 1: Multiple ESP-IDF projects with shared tools
+/opt/esp-idf-tools/build_app.sh --project-path ~/projects/robot-controller gpio_test Release
+/opt/esp-idf-tools/build_app.sh --project-path ~/projects/sensor-node adc_test Debug
 
 ## Scenario 2: CI/CD with portable scripts
-./ci-scripts/build_app.sh --project-path $GITHUB_WORKSPACE/examples/esp32 gpio_test Release
+./ci-scripts/build_app.sh --project-path $GITHUB_WORKSPACE/esp-idf-project gpio_test Release
 
 ## Scenario 3: Development with project-integrated scripts
-cd ~/my-esp32-project
-./hf-espidf-project-tools/build_app.sh gpio_test Release
-./hf-espidf-project-tools/flash_app.sh flash_monitor gpio_test
+cd ~/my-esp-idf-project
+./scripts/build_app.sh gpio_test Release
+./scripts/flash_app.sh flash_monitor gpio_test
 
 ## Scenario 4: Mixed usage (some projects integrated, some portable)
 cd ~/project-with-tools
-./hf-espidf-project-tools/build_app.sh gpio_test Release
+./scripts/build_app.sh gpio_test Release
 
 cd ~/project-without-tools
-/opt/esp32-tools/build_app.sh --project-path . gpio_test Release
+/opt/esp-idf-tools/build_app.sh --project-path . gpio_test Release
 ```
 ---
 
@@ -363,37 +338,27 @@ cd ~/project-without-tools
 The scripts are designed to work in **two flexible modes** while maintaining the same core
 functionality:
 
-## Mode 1: Project-Integrated (default)
-your-esp32-project/
+## Mode 1: Project-Integrated (recommended)
+your-esp-idf-project/
+├── CMakeLists.txt
 ├── app_config.yml              # ← Configuration file
 ├── main/
 ├── components/
-└── hf-espidf-project-tools/    # ← Scripts directory (default)
-    ├── build_app.sh
-    ├── flash_app.sh
-    ├── config_loader.sh
-    └── ...
-
-## Mode 1: Project-Integrated (alternative)
-your-esp32-project/
-├── app_config.yml              # ← Configuration file
-├── main/
-├── components/
-└── scripts/                    # ← Scripts directory (alternative)
+└── scripts/                    # Development scripts (this repo)
     ├── build_app.sh
     ├── flash_app.sh
     ├── config_loader.sh
     └── ...
 
 ## Mode 2: Portable Tools
-/opt/esp32-tools/               # ← Any location
+/opt/esp-idf-tools/             # ← Any location
 ├── build_app.sh
 ├── flash_app.sh
 ├── config_loader.sh
 └── ...
 
 ## Usage with --project-path
-/opt/esp32-tools/build_app.sh --project-path /path/to/project app_name build_type
+/opt/esp-idf-tools/build_app.sh --project-path /path/to/esp-idf-project app_name build_type
 
 ### **Core Scripts**
 
@@ -425,15 +390,14 @@ Both modes automatically discover `app_config.yml`:
 
 |------|------------------|-----------------|
 
-| **Project-Integrated** | Parent directory of scripts | `project/app_config.yml` |
+| **Project-Integrated** | Parent directory of scripts | `esp-idf-project/app_config.yml` |
 
 | **Portable** | `--project-path` or `PROJECT_PATH` | `specified-path/app_config.yml` |
 
 ### **Data Flow**
 
 Configuration Discovery:
-├── Mode 1 (default): hf-espidf-project-tools/ → parent directory → app_config.yml
-├── Mode 1 (alternative): scripts/ → parent directory → app_config.yml
+├── Mode 1 (recommended): scripts/ → parent directory → app_config.yml
 └── Mode 2: --project-path → specified directory → app_config.yml
 
 Build Process:
@@ -462,7 +426,7 @@ app_config.yml → config_loader.sh → build_app.sh → flash_app.sh
 │  • Complete tool installation                • Cache-aware installation     │
 │  • Environment variables setup               • Build directory preparation  │
 │  • Development aliases                       • CI-specific optimizations    │
-│  • ESP-IDF auto-installation                • ESP-IDF handled by CI action  │
+│  • ESP-IDF auto-installation                 • ESP-IDF handled by CI action  │
 └─────────────────────┬───────────────────────────────────────────────────────┘
                       │
                       ▼
