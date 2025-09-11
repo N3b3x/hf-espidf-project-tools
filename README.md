@@ -140,9 +140,37 @@ Both modes automatically discover the `app_config.yml` configuration file:
 
 ## 📥 **Getting Started - Project Integration**
 
-### **Method 1: Default Setup (Recommended)** 🚀
+### **Method 1: Automated Project Setup (Recommended)** 🚀
 
-Clone the repository into your ESP-IDF project:
+Create a complete ESP-IDF project with all tools pre-configured:
+
+```bash
+## Clone the tools repository
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git
+cd hf-espidf-project-tools
+
+## Create a new ESP-IDF project
+./setup_basic.sh my-awesome-project
+
+## Navigate to your new project
+cd my-awesome-project
+
+## Build and flash
+./scripts/build_app.sh main_app Release
+./scripts/flash_app.sh flash main_app Release
+```
+
+**What you get:**
+- ✅ Complete ESP-IDF project structure
+- ✅ ESP-IDF installed and configured
+- ✅ `app_config.yml` with basic app
+- ✅ CMakeLists.txt files set up
+- ✅ Basic `main.cpp` template
+- ✅ All development scripts ready to use
+
+### **Method 2: Add to Existing Project** 🔧
+
+If you already have an ESP-IDF project:
 
 ```bash
 ## Navigate to your ESP-IDF project
@@ -172,7 +200,7 @@ git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 - ✅ Easy to update with `git pull`
 - ✅ Can modify scripts if needed
 
-### **Method 2: Git Submodule** 🔗
+### **Method 3: Git Submodule** 🔗
 
 Keep the scripts as a separate repository while integrating them:
 

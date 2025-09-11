@@ -2,7 +2,7 @@
 layout: default
 title: "HardFOC ESP-IDF Project Tools"
 description: "Development Scripts for HardFOC ESP-IDF Projects - Multi-application build system with intelligent configuration management for ESP-IDF development"
-nav_order: 2
+nav_order: 1
 permalink: /
 ---
 
@@ -14,12 +14,30 @@ Welcome to the **HardFOC ESP-IDF Project Tools** - a comprehensive suite of deve
 
 Get up and running in minutes:
 
+### Option 1: Automated Setup (Recommended)
 ```bash
+# Clone the tools repository
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git
+cd hf-espidf-project-tools
+
+# Create a complete ESP-IDF project
+./setup_basic.sh my-awesome-project
+
+# Navigate to your new project
+cd my-awesome-project
+
+# Build and flash
+./scripts/build_app.sh main_app Release
+./scripts/flash_app.sh flash main_app Release
+```
+
+### Option 2: Add to Existing Project
+```bash
+# Go into your ESP-IDF project
+cd your/esp-idf-project
+
 # Add as submodule to your ESP-IDF project
 git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
-
-# Copy workflows
-cp scripts/.github/workflows/* .github/workflows/
 
 # Start building
 ./scripts/build_app.sh your_app Release

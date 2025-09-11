@@ -11,6 +11,8 @@
       url: "/getting-started/"
     - title: "Installation"
       url: "/getting-started/installation/"
+    - title: "Project Setup"
+      url: "/getting-started/project-setup/"
     - title: "Configuration"
       url: "/getting-started/configuration/"
 

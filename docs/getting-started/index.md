@@ -12,62 +12,91 @@ Welcome to the HardFOC ESP-IDF Project Tools! This guide will help you get up an
 
 ## 🚀 Quick Start
 
-### 1. Prerequisites
+### Option 1: Automated Project Setup (Recommended)
+
+Create a complete ESP-IDF project with all tools pre-configured:
+
+```bash
+# Clone the tools repository
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git
+cd hf-espidf-project-tools
+
+# Create a new ESP-IDF project
+./setup_basic.sh my-awesome-project
+
+# Navigate to your new project
+cd my-awesome-project
+
+# Build and flash
+./scripts/build_app.sh main_app Release
+./scripts/flash_app.sh flash main_app Release
+```
+
+**That's it!** You now have a complete ESP-IDF project with:
+- ✅ ESP-IDF installed and configured
+- ✅ Build system set up
+- ✅ `app_config.yml` with basic app
+- ✅ CMakeLists.txt files
+- ✅ Basic `main.cpp` template
+- ✅ All development scripts ready to use
+
+### Option 2: Add to Existing Project
+
+If you already have an ESP-IDF project:
+
+```bash
+# Navigate to your ESP-IDF project
+cd your-esp-idf-project
+
+# Add tools as submodule
+git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+
+# Create app_config.yml (see Configuration guide)
+# Set up CMakeLists.txt files
+# Start building!
+```
+
+## 📋 Prerequisites
 
 Before you begin, ensure you have:
 
 - **Git** installed on your system
-- **GitHub account** with repository access
-- **ESP-IDF project** with multiple applications
-- **Basic understanding** of ESP-IDF development
+- **Internet connection** for downloading ESP-IDF
+- **Write permissions** in your working directory
+- **Basic understanding** of ESP-IDF development (for existing projects)
 
-### 2. Installation
+## 🛠️ What You Get
 
-#### Option A: Copy Scripts (Recommended)
-
-1. **Clone or download** the HardFOC ESP-IDF Project Tools repository
-2. **Copy scripts** from the repository to your project's `scripts/` directory
-3. **Copy configuration files** as needed for your project
-
-#### Option B: Use as Submodule
-
-```bash
-# Add as submodule
-git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
-
-# Copy workflows
-cp scripts/.github/workflows/* .github/workflows/
+### Complete Project Structure
+```
+my-esp-idf-project/
+├── main/
+│   ├── main.cpp              # Your application code
+│   └── CMakeLists.txt        # Build configuration
+├── scripts/                  # Development tools
+│   ├── build_app.sh          # Build applications
+│   ├── flash_app.sh          # Flash to ESP32
+│   └── ...                   # Other utilities
+├── app_config.yml           # App configuration
+├── CMakeLists.txt           # Project configuration
+└── README.md                # Project documentation
 ```
 
-### 3. Configuration
+### Ready-to-Use Commands
+- **Build apps:** `./scripts/build_app.sh <app_type> <build_type>`
+- **Flash to ESP32:** `./scripts/flash_app.sh flash <app_type> <build_type>`
+- **Monitor output:** `./scripts/flash_app.sh monitor`
+- **List apps:** `./scripts/build_app.sh list`
 
-#### Basic Configuration
+## 🎯 Next Steps
 
-1. **Update project paths** in workflow files to match your project structure
-2. **Configure ESP-IDF versions** you want to test against
-3. **Set up build configurations** for your applications
+Once you have a project set up:
 
-#### Advanced Configuration
-
-- **[Configuration System](configuration/)** - Centralized YAML configuration
-- **[Build System](build-system/)** - ESP-IDF build management
-- **[CI Pipeline](ci-pipeline/)** - Workflow optimization
-
-### 4. First Run
-
-1. **Commit and push** your changes to GitHub
-2. **Navigate to Actions** tab in your GitHub repository
-3. **Monitor the workflow** execution in real-time
-4. **Review results** and artifacts
-
-## 📚 Next Steps
-
-Once you have the basic setup working:
-
-- **[Build System](build-system/)** - Learn about intelligent build management
-- **[CI Pipeline](ci-pipeline/)** - Optimize your workflows
-- **[Configuration](configuration/)** - Master centralized configuration
-- **[Advanced Topics](advanced/multi-version-idf/)** - Explore advanced features
+1. **[Project Setup](project-setup/)** - Learn about automated project creation
+2. **[Build System](build-system/)** - Master the build system
+3. **[Configuration](configuration/)** - Configure your applications
+4. **[CI Pipeline](ci-pipeline/)** - Set up automated builds
+5. **[Advanced Topics](advanced/multi-version-idf/)** - Explore advanced features
 
 ## 🆘 Need Help?
 

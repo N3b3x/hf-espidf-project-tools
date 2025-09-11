@@ -112,7 +112,7 @@ Set a maximum firmware size to fail builds that exceed limits:
 
 ```yaml
 jobs:
-  build:
+build:
     uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
     with:
       project_dir: "."
@@ -128,7 +128,7 @@ If your project has a different structure:
 jobs:
   build:
     uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
-    with:
+      with:
       project_dir: "firmware"  # ESP-IDF project in subdirectory
       project_tools_dir: "tools/scripts"  # Scripts in different location
       auto_clone_tools: false  # Don't auto-clone if tools are already present
