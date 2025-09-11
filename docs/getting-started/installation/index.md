@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Installation"
-description: "Detailed installation guide for HardFOC ESP32 CI Tools"
+description: "Detailed installation guide for HardFOC ESP-IDF Project Tools"
 nav_order: 1
 parent: "Getting Started"
 permalink: /getting-started/installation/
@@ -9,7 +9,7 @@ permalink: /getting-started/installation/
 
 # Installation Guide
 
-This guide provides detailed instructions for installing and setting up the HardFOC ESP32 CI Tools in your project.
+This guide provides detailed instructions for installing and setting up the HardFOC ESP-IDF Project Tools in your ESP-IDF project.
 
 ## 📋 Prerequisites
 
@@ -18,11 +18,27 @@ This guide provides detailed instructions for installing and setting up the Hard
 - **Operating System**: Linux, macOS, or Windows (WSL2)
 - **Git**: Version 2.0 or later
 - **GitHub Account**: For repository access and Actions
-- **ESP32 Project**: Existing ESP32 project with ESP-IDF
+- **ESP-IDF Project**: Existing ESP-IDF project with ESP-IDF framework
+
+### Repository Structure
+
+**Important:** This repository contains development scripts that should be added to your repository root, not inside your ESP-IDF project. The typical structure is:
+
+```
+your-repository/
+├── .github/workflows/      # CI workflows (at repo root)
+├── scripts/                # Development scripts (this repo)
+├── your-esp-idf-project/   # Your ESP-IDF project
+│   ├── CMakeLists.txt
+│   ├── app_config.yml
+│   ├── main/
+│   └── components/
+└── README.md
+```
 
 ### ESP-IDF Requirements
 
-- **ESP-IDF Version**: v4.4 or later (v5.5 recommended)
+- **ESP-IDF Version**: v4.4 or later (v5.5 or later recommended)
 - **Python**: 3.8 or later
 - **CMake**: 3.16 or later
 
@@ -38,22 +54,26 @@ This is the simplest method for most users:
    cd hf-espidf-project-tools
    ```
 
-2. **Copy workflow files** to your project:
+2. **Copy scripts** to your repository:
    ```bash
-   # Navigate to your ESP32 project
-   cd /path/to/your/esp32-project
+   # Navigate to your repository root
+   cd /path/to/your/repository
    
-   # Copy workflow files
-   cp -r hf-espidf-project-tools/.github/workflows/* .github/workflows/
+   # Create scripts directory
+   mkdir -p scripts
    
-   # Copy configuration files (if needed)
-   cp hf-espidf-project-tools/examples/esp32/app_config.yml /examples/esp32/
+   # Copy all scripts
+   cp hf-espidf-project-tools/*.sh scripts/
+   cp hf-espidf-project-tools/*.py scripts/
+   
+   # Copy configuration files to your ESP-IDF project
+   cp hf-espidf-project-tools/examples/esp32/app_config.yml your-esp-idf-project/
    ```
 
 3. **Update configuration** for your project:
-   - Edit `.github/workflows/build.yml` to match your project structure
-   - Update `app_config.yml` with your applications
+   - Update `your-esp-idf-project/app_config.yml` with your applications
    - Configure ESP-IDF versions as needed
+   - Modify your `your-esp-idf-project/CMakeLists.txt` to support multi-application builds
 
 ### Method 2: Git Submodule
 
@@ -61,7 +81,7 @@ For projects that want to track updates:
 
 1. **Add as submodule**:
    ```bash
-   cd /path/to/your/esp32-project
+   cd /path/to/your/repository
    git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
    ```
 
@@ -122,7 +142,7 @@ For more complex setups, see:
 1. **Commit changes** to your repository:
    ```bash
    git add .github/workflows/
-   git commit -m "Add HardFOC ESP32 CI Tools"
+   git commit -m "Add HardFOC ESP-IDF CI Tools"
    git push
    ```
 

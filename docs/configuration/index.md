@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Configuration System"
-description: "ESP32 configuration system with YAML management, validation, and smart defaults"
+description: "ESP-IDF configuration system with YAML management, validation, and smart defaults"
 nav_order: 5
 permalink: /configuration/
 ---
 
-# ESP32 Configuration System Guide
+# ESP-IDF Configuration System Guide
 
-This document provides comprehensive documentation for the ESP32 configuration system, including
+This document provides comprehensive documentation for the ESP-IDF configuration system, including
 YAML configuration management, validation, and integration with all scripts.
 
 ## 📋 **Table of Contents**
@@ -16,7 +16,7 @@ YAML configuration management, validation, and integration with all scripts.
 
 ## 📋 **Overview**
 
-The ESP32 configuration system provides centralized,
+The ESP-IDF configuration system provides centralized,
 intelligent configuration management for all scripts in the HardFOC Interface Wrapper project.
 It features YAML-based configuration, automatic validation, intelligent fallbacks,
 and cross-platform compatibility.

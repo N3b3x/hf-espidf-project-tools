@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Logging System"
-description: "ESP32 logging system with comprehensive log capture, management, and analysis"
+description: "ESP-IDF logging system with comprehensive log capture, management, and analysis"
 nav_order: 7
 permalink: /logging-system/
 ---
 
-# ESP32 Logging System Guide
+# ESP-IDF Logging System Guide
 
-This document provides comprehensive documentation for the ESP32 logging system, including log
+This document provides comprehensive documentation for the ESP-IDF logging system, including log
 generation, management, analysis, and integration with all scripts.
 
 ## 📋 **Table of Contents**
@@ -16,7 +16,7 @@ generation, management, analysis, and integration with all scripts.
 
 ## 📋 **Overview**
 
-The ESP32 logging system provides comprehensive log capture, management,
+The ESP-IDF logging system provides comprehensive log capture, management,
 and analysis capabilities for all development operations.
 It features automatic log generation, intelligent organization, powerful search capabilities,
 and seamless integration with the build and flash systems.

@@ -1,9 +1,9 @@
 ---
-# Features data for the HardFOC ESP32 CI Tools
-- title: "Matrix-based ESP-IDF builds"
+# Features data for the HardFOC ESP-IDF CI Tools
+- title: "Multi-application ESP-IDF builds"
   description: >
-    Parallel builds across multiple ESP-IDF versions, build types, and applications with intelligent
-    caching and artifact management
+    Build multiple applications from a single ESP-IDF project with intelligent configuration
+    management and automated build processes
   icon: "fas fa-cogs"
   badges:
     - text: "Core Feature"
@@ -31,8 +31,8 @@
     - text: "CI/CD"
       type: "info"
 
-- title: "HardFOC project support"
-  description: "ESP32-C6 optimized for HardFOC interface projects with multi-application support and parallel execution"
+- title: "Multi-application project support"
+  description: "ESP-IDF projects with multiple applications for library testing and development workflows"
   icon: "fas fa-microchip"
   badges:
     - text: "HardFOC"

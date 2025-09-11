@@ -1,4 +1,4 @@
-# Navigation data for the HardFOC ESP32 CI Tools
+# Navigation data for the HardFOC ESP-IDF CI Tools
 - title: "Home"
   url: "/"
   icon: "fas fa-home"

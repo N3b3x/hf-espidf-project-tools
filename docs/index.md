@@ -1,21 +1,21 @@
 ---
 layout: default
-title: "HardFOC ESP32 Project Tools"
-description: "Advanced CI/CD Tools for HardFOC ESP32 Projects - Comprehensive GitHub Actions workflows for ESP-IDF development with matrix builds, security auditing, and automated documentation"
+title: "HardFOC ESP-IDF Project Tools"
+description: "Development Scripts for HardFOC ESP-IDF Projects - Multi-application build system with intelligent configuration management for ESP-IDF development"
 nav_order: 1
 permalink: /
 ---
 
-# HardFOC ESP32 Project Tools
+# HardFOC ESP-IDF Project Tools
 
-Welcome to the **HardFOC ESP32 Project Tools** - a comprehensive suite of CI/CD tools designed specifically for HardFOC ESP32 projects. This toolkit provides everything you need to set up robust, automated development workflows for your ESP32 applications.
+Welcome to the **HardFOC ESP-IDF Project Tools** - a comprehensive suite of development scripts designed specifically for ESP-IDF projects with multiple applications. This toolkit provides everything you need to manage multi-application builds, configuration, and development workflows for your ESP-IDF projects.
 
 ## 🚀 Quick Start
 
 Get up and running in minutes:
 
 ```bash
-# Add as submodule to your ESP32 project
+# Add as submodule to your ESP-IDF project
 git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 
 # Copy workflows
@@ -27,21 +27,20 @@ cp scripts/.github/workflows/* .github/workflows/
 
 ## ✨ Key Features
 
-- **🔧 Intelligent Build System** - Smart configuration management and validation
-- **⚡ Advanced CI Pipeline** - Parallel execution with intelligent caching
+- **🔧 Multi-Application Build System** - Build multiple applications from a single ESP-IDF project
+- **📋 Intelligent Configuration** - YAML-based configuration management with `app_config.yml`
 - **📱 ESP32 Flash System** - Automated port detection and firmware flashing
-- **📊 Comprehensive Logging** - Detailed build and deployment logs
+- **📊 Comprehensive Logging** - Detailed build and development logs
 - **🔍 Port Detection** - Cross-platform ESP32 device identification
 - **📚 Multi-Version ESP-IDF** - Support for multiple ESP-IDF versions
-- **🛠️ Utility Scripts** - Automation and workflow management tools
+- **🛠️ Development Scripts** - Build, flash, and utility management tools
 
 ## 📖 Documentation
 
 Explore our comprehensive documentation:
 
 - **[Getting Started](getting-started/)** - Quick start guide and installation
-- **[Build System](build-system/)** - Configuration and build management
-- **[CI Pipeline](ci-pipeline/)** - GitHub Actions workflows and automation
+- **[Build System](build-system/)** - Multi-application build management
 - **[Configuration](configuration/)** - YAML-based configuration system
 - **[Flash System](flash-system/)** - ESP32 flashing and monitoring
 - **[Logging System](logging-system/)** - Log management and analysis
@@ -49,10 +48,10 @@ Explore our comprehensive documentation:
 
 ## 🎯 Perfect For
 
-- **HardFOC ESP32 Projects** - Optimized for HardFOC development workflows
-- **CI/CD Automation** - GitHub Actions integration with matrix builds
-- **Team Development** - Consistent build environments across teams
-- **Production Deployment** - Reliable, automated deployment pipelines
+- **Multi-Application ESP-IDF Projects** - Build multiple test applications from a single project
+- **Library Testing** - Test different aspects of your library with separate applications
+- **Development Workflows** - Streamlined build and flash processes for development
+- **Team Development** - Consistent development environments across teams
 
 ## 🤝 Contributing
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Utility Scripts"
-description: "ESP32 utility scripts for port detection, setup automation, and workflow management"
+description: "ESP-IDF utility scripts for port detection, setup automation, and workflow management"
 nav_order: 3
 parent: "Advanced Topics"
 permalink: /advanced/utility-scripts/
@@ -17,7 +17,7 @@ detection, setup automation, and helper tools for development workflow managemen
 
 ## 📋 **Overview**
 
-The ESP32 utility scripts provide essential tools for development environment setup,
+The ESP-IDF utility scripts provide essential tools for development environment setup,
 port detection, troubleshooting, and workflow automation.
 These scripts ensure consistent development environments across different platforms and provide
 intelligent automation for common development tasks.

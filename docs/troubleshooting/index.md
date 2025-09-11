@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Troubleshooting"
-description: "Common issues and solutions for HardFOC ESP32 CI Tools"
+description: "Common issues and solutions for HardFOC ESP-IDF CI Tools"
 nav_order: 8
 permalink: /troubleshooting/
 ---
 
 # Troubleshooting Guide
 
-This guide helps you resolve common issues with the HardFOC ESP32 CI Tools.
+This guide helps you resolve common issues with the HardFOC ESP-IDF CI Tools.
 
 ## 🔍 Common Issues
 

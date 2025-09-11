@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "Features"
-description: "Key features and capabilities of the HardFOC ESP32 CI Tools"
+description: "Key features and capabilities of the HardFOC ESP-IDF CI Tools"
 nav_order: 11
 permalink: /features/
 ---
 
 # Features
 
-The HardFOC ESP32 CI Tools provide comprehensive CI/CD capabilities specifically designed for ESP32 development workflows.
+The HardFOC ESP-IDF CI Tools provide comprehensive CI/CD capabilities specifically designed for ESP-IDF development workflows.
 
 ## Key Features
 

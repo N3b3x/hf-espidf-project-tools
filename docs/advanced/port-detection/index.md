@@ -1,15 +1,15 @@
 ---
 layout: default
 title: "Port Detection"
-description: "ESP32 port detection system with cross-platform device identification and troubleshooting"
+description: "ESP-IDF port detection system with cross-platform device identification and troubleshooting"
 nav_order: 2
 parent: "Advanced Topics"
 permalink: /advanced/port-detection/
 ---
 
-# ESP32 Port Detection Guide
+# ESP-IDF Port Detection Guide
 
-This document provides comprehensive documentation for the ESP32 port detection system, including
+This document provides comprehensive documentation for the ESP-IDF port detection system, including
 cross-platform device identification, troubleshooting, and integration with the development
 workflow.
 
@@ -18,7 +18,7 @@ workflow.
 
 ## 📋 **Overview**
 
-The ESP32 port detection system provides intelligent,
+The ESP-IDF port detection system provides intelligent,
 cross-platform device identification and troubleshooting capabilities.
 It automatically detects ESP32 devices across different operating systems,
 validates port accessibility,

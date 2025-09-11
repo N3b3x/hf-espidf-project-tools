@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Flash System"
-description: "ESP32 flash system with intelligent port detection, firmware flashing, and monitoring"
+description: "ESP-IDF flash system with intelligent port detection, firmware flashing, and monitoring"
 nav_order: 6
 permalink: /flash-system/
 ---
 
-# ESP32 Flash System Guide
+# ESP-IDF Flash System Guide
 
-This document provides comprehensive documentation for the ESP32 flash system, including port
+This document provides comprehensive documentation for the ESP-IDF flash system, including port
 detection, firmware flashing, monitoring, and troubleshooting.
 
 ## 📋 **Table of Contents**
@@ -16,10 +16,10 @@ detection, firmware flashing, monitoring, and troubleshooting.
 
 ## 📋 **Overview**
 
-The ESP32 flash system is a comprehensive solution for firmware deployment, device monitoring,
+The ESP-IDF flash system is a comprehensive solution for firmware deployment, device monitoring,
 and development workflow management.
 It provides intelligent port detection, robust flashing operations,
-and integrated logging for professional ESP32 development.
+and integrated logging for professional ESP-IDF development.
 
 ### **Core Features**
 - **Intelligent Port Detection**: Automatic ESP32 device identification across platforms

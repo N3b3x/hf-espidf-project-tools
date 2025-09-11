@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Getting Started"
-description: "Quick start guide for the HardFOC ESP32 CI Tools"
+description: "Quick start guide for the HardFOC ESP-IDF Project Tools"
 nav_order: 2
 permalink: /getting-started/
 ---
 
-# Getting Started with HardFOC ESP32 CI Tools
+# Getting Started with HardFOC ESP-IDF Project Tools
 
-Welcome to the HardFOC ESP32 CI Tools! This guide will help you get up and running quickly with our comprehensive CI/CD solution for ESP32 development.
+Welcome to the HardFOC ESP-IDF Project Tools! This guide will help you get up and running quickly with our development scripts for multi-application ESP-IDF projects.
 
 ## 🚀 Quick Start
 
@@ -18,15 +18,15 @@ Before you begin, ensure you have:
 
 - **Git** installed on your system
 - **GitHub account** with repository access
-- **ESP32 project** ready for CI/CD integration
-- **Basic understanding** of GitHub Actions
+- **ESP-IDF project** with multiple applications
+- **Basic understanding** of ESP-IDF development
 
 ### 2. Installation
 
-#### Option A: Copy Workflow Files (Recommended)
+#### Option A: Copy Scripts (Recommended)
 
-1. **Clone or download** the HardFOC ESP32 CI Tools repository
-2. **Copy workflow files** from `.github/workflows/` to your project's `.github/workflows/` directory
+1. **Clone or download** the HardFOC ESP-IDF Project Tools repository
+2. **Copy scripts** from the repository to your project's `scripts/` directory
 3. **Copy configuration files** as needed for your project
 
 #### Option B: Use as Submodule

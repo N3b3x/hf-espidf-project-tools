@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Build System"
-description: "ESP32 build system with intelligent configuration management, validation, and optimization"
+description: "ESP-IDF build system with intelligent configuration management, validation, and optimization"
 nav_order: 3
 permalink: /build-system/
 ---
 
-# ESP32 Build System Guide
+# ESP-IDF Build System Guide
 
-This document provides comprehensive documentation for the ESP32 build system, including
+This document provides comprehensive documentation for the ESP-IDF build system, including
 architecture, configuration, usage patterns, and troubleshooting.
 
 ## 📋 **Table of Contents**
@@ -16,10 +16,10 @@ architecture, configuration, usage patterns, and troubleshooting.
 
 ## 📋 **Overview**
 
-The ESP32 build system is a configuration-driven,
-intelligent build management solution that integrates seamlessly with the ESP-IDF framework.
+The ESP-IDF build system is a configuration-driven,
+intelligent build management solution designed for ESP-IDF projects with multiple applications.
 It provides automatic validation, cross-platform compatibility,
-and optimized build processes for ESP32 applications.
+and optimized build processes for building different applications from a single ESP-IDF project.
 
 ### **Core Features**
 - **Configuration-Driven**: All build parameters extracted from centralized YAML configuration

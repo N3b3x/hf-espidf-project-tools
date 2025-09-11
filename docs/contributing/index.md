@@ -1,14 +1,14 @@
 ---
 layout: default
 title: "Contributing"
-description: "How to contribute to the HardFOC ESP32 CI Tools project"
+description: "How to contribute to the HardFOC ESP-IDF CI Tools project"
 nav_order: 9
 permalink: /contributing/
 ---
 
-# Contributing to HardFOC ESP32 CI Tools
+# Contributing to HardFOC ESP-IDF CI Tools
 
-We welcome contributions to the HardFOC ESP32 CI Tools project! This guide explains how you can help improve the project.
+We welcome contributions to the HardFOC ESP-IDF CI Tools project! This guide explains how you can help improve the project.
 
 ## 🤝 How to Contribute
 

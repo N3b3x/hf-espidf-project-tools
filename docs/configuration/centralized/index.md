@@ -11,7 +11,7 @@ permalink: /configuration/centralized/
 
 This document provides comprehensive documentation for the centralized configuration system,
 including the `app_config.yml` file structure, configuration loading mechanisms, and integration
-with the ESP32 development workflow.
+with the ESP-IDF development workflow.
 
 ---
 
@@ -20,7 +20,7 @@ with the ESP32 development workflow.
 
 ## 📋 **Overview**
 
-The centralized configuration system provides a unified approach to managing ESP32 project settings,
+The centralized configuration system provides a unified approach to managing ESP-IDF project settings,
 application configurations, and build parameters.
 The system uses a single `app_config.yml` file to define all project aspects,
 enabling consistent configuration management across different scripts and development environments.

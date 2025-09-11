@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Configuration"
-description: "Configuration guide for HardFOC ESP32 CI Tools"
+description: "Configuration guide for HardFOC ESP-IDF CI Tools"
 nav_order: 2
 parent: "Getting Started"
 permalink: //getting-started/configuration/
@@ -9,11 +9,11 @@ permalink: //getting-started/configuration/
 
 # Configuration Guide
 
-This guide explains how to configure the HardFOC ESP32 CI Tools for your specific project needs.
+This guide explains how to configure the HardFOC ESP-IDF CI Tools for your specific project needs.
 
 ## 📋 Overview
 
-The HardFOC ESP32 CI Tools use a centralized configuration system that allows you to:
+The HardFOC ESP-IDF CI Tools use a centralized configuration system that allows you to:
 
 - **Define applications** and their build requirements
 - **Specify ESP-IDF versions** for testing

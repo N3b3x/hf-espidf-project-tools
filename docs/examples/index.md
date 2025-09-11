@@ -1,20 +1,20 @@
 ---
 layout: default
 title: "Examples"
-description: "Real-world examples and usage patterns for HardFOC ESP32 CI Tools"
+description: "Real-world examples and usage patterns for HardFOC ESP-IDF CI Tools"
 nav_order: 10
 permalink: /examples/
 ---
 
 # Examples
 
-This section provides real-world examples and usage patterns for the HardFOC ESP32 CI Tools.
+This section provides real-world examples and usage patterns for the HardFOC ESP-IDF CI Tools.
 
 ## 🚀 Quick Examples
 
-### Basic ESP32 Project
+### Basic ESP-IDF Project
 
-A simple ESP32 project with GPIO testing:
+A simple ESP-IDF project with GPIO testing:
 
 ```yaml
 # examples/esp32/app_config.yml
@@ -224,7 +224,7 @@ apps:
 ```yaml
 apps:
   learning_project:
-    description: "Educational ESP32 project for students"
+    description: "Educational ESP-IDF project for students"
     source_file: "LearningProject.cpp"
     category: "education"
     build_types: ["Debug"]
