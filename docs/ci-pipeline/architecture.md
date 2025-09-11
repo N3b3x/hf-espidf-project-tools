@@ -8,25 +8,95 @@ nav_order: 1
 
 ## Overview
 
-The HardFOC ESP32 CI Pipeline is designed for optimal performance and reliability, providing comprehensive build automation, testing, and quality assurance for ESP32 projects.
+The HardFOC ESP32 CI Pipeline is now implemented as reusable workflows hosted in a separate repository. This architecture provides better separation of concerns, easier maintenance, and consistent CI/CD across multiple projects.
 
-## Pipeline Architecture
+## Repository Structure
 
-### High-Level Architecture
+### CI Pipeline Repository
+**Location**: https://github.com/N3b3x/hf-espidf-ci-tools
+
+**Contents**:
+- **Reusable Workflows**: `build.yml` and `security.yml`
+- **GitHub Actions**: Helper actions for tool management
+- **Documentation**: Complete CI pipeline documentation
+
+### Project Repository Integration
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Matrix        │    │   Build Jobs    │    │   Analysis      │
-│   Generation    │───▶│   (Parallel)    │───▶│   Jobs          │
-│                 │    │                 │    │   (Parallel)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Single        │    │   Independent   │    │   Static        │
-│   Execution     │    │   Runners       │    │   Analysis      │
-│   (50% faster)  │    │   (Fresh)       │    │   (Independent) │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    PROJECT REPOSITORY                           │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────┐  │
+│  │   .github/      │    │   examples/     │    │   scripts/  │  │
+│  │   workflows/    │    │   esp32/        │    │             │  │
+│  │   ├─ build.yml  │    │   ├─ CMakeLists │    │   ├─ build_ │  │
+│  │   └─ security.  │    │   │   .txt      │    │   │   app.  │  │
+│  │      yml        │    │   ├─ app_config │    │   │   sh    │  │
+│  │                 │    │   │   .yml      │    │   ├─ flash_ │  │
+│  │                 │    │   └─ main/      │    │   │   app.  │  │
+│  │                 │    │                 │    │   │   sh    │  │
+│  │                 │    │                 │    │   └─ ...    │  │
+│  └─────────────────┘    └─────────────────┘    └─────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                CI PIPELINE REPOSITORY                          │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────┐  │
+│  │   .github/      │    │   .github/      │    │   docs/     │  │
+│  │   workflows/    │    │   actions/      │    │             │  │
+│  │   ├─ build.yml  │    │   ├─ ensure-    │    │   ├─ README │  │
+│  │   └─ security.  │    │   │   tools-    │    │   │   .md   │  │
+│  │      yml        │    │   │   directory │    │   └─ ...    │  │
+│  │                 │    │   └─ ...        │    │             │  │
+│  └─────────────────┘    └─────────────────┘    └─────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Workflow Architecture
+
+### Build Workflow Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    BUILD WORKFLOW                              │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────┐  │
+│  │   generate-     │    │   build         │    │   size-     │  │
+│  │   matrix        │    │   (matrix)      │    │   report    │  │
+│  │                 │    │                 │    │             │  │
+│  │   • Validate    │    │   • Matrix      │    │   • Download│  │
+│  │     tools dir   │    │     execution   │    │     artifacts│  │
+│  │   • Generate    │    │   • ESP-IDF     │    │   • Size    │  │
+│  │     matrix      │    │     build       │    │     analysis│  │
+│  │   • Output      │    │   • Artifact    │    │   • PR      │  │
+│  │     matrix      │    │     upload      │    │     comment │  │
+│  └─────────────────┘    └─────────────────┘    └─────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Security Workflow Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  SECURITY WORKFLOW                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────┐  │
+│  │   generate-     │    │   dependencies  │    │   secrets   │  │
+│  │   matrix        │    │                 │    │             │  │
+│  │                 │    │   • pip-audit   │    │   • gitleaks│  │
+│  │   • Validate    │    │   • safety      │    │   • Secret  │  │
+│  │     tools dir   │    │   • bandit      │    │     detection│  │
+│  │   • Generate    │    │   • Python      │    │   • Report  │  │
+│  │     matrix      │    │     analysis    │    │     upload  │  │
+│  └─────────────────┘    └─────────────────┘    └─────────────┘  │
+│                                │                                │
+│                                ▼                                │
+│  ┌─────────────────────────────────────────────────────────────┐ │
+│  │                    codeql                                  │ │
+│  │                                                             │ │
+│  │   • Matrix execution                                       │ │
+│  │   • CodeQL analysis                                        │ │
+│  │   • Security scanning                                      │ │
+│  └─────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Component Interaction

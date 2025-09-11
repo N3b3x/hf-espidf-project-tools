@@ -7,47 +7,81 @@ nav_order: 4
 permalink: /ci-pipeline/
 ---
 
-# ESP32 CI Pipeline Guide
+# ESP32 CI Pipeline Integration
 
-The ESP32 CI pipeline is a highly optimized, parallel execution system designed for maximum efficiency and reliability. It provides intelligent caching, parallel job execution, and minimal resource usage while maintaining comprehensive build coverage.
+The ESP32 CI pipeline has been moved to a separate repository and is now available as reusable workflows. This allows for better separation of concerns and easier maintenance across multiple projects.
+
+## CI Pipeline Repository
+
+The CI pipeline is now hosted at: **https://github.com/N3b3x/hf-espidf-ci-tools**
+
+This repository contains:
+- **Reusable Workflows**: `build.yml` and `security.yml`
+- **GitHub Actions**: Helper actions for tool management
+- **Documentation**: Complete CI pipeline documentation
 
 ## Core Features
 
-- **🚀 Parallel Execution**: Independent jobs run simultaneously for maximum efficiency
-- **🎯 Smart Caching**: Job-specific cache keys with targeted invalidation
-- **📦 Lightweight Setup**: Analysis jobs use minimal setup (no file copying)
-- **🔧 Environment Validation**: Comprehensive environment variable validation
-- **📊 Performance Monitoring**: Detailed cache hit rates and execution metrics
-- **🔄 Matrix Optimization**: Single matrix generation with result reuse
-
-## Performance Improvements
-
-- **Overall CI Time**: **25-35% reduction** from original pipeline
-- **Matrix Generation**: **~50% faster** (single execution)
-- **Static Analysis**: **Runs in parallel** (no blocking)
-- **Cache Efficiency**: **Significantly improved** hit rates
-- **Resource Usage**: **Cleaner, more focused** execution
+- **🔄 Reusable Workflows**: Use the same CI pipeline across multiple projects
+- **🎯 Smart Matrix Generation**: Automatic build matrix generation from project configuration
+- **📦 Tool Management**: Automatic tool directory detection and cloning
+- **🔧 Flexible Configuration**: Customizable build parameters and security scanning
+- **📊 Size Reporting**: Automatic firmware size analysis and PR comments
+- **🛡️ Security Scanning**: Comprehensive security audit capabilities
 
 ## Quick Start
 
-### Basic CI Setup
+### Using the Reusable Build Workflow
+
+Create a `.github/workflows/build.yml` file in your project:
+
 ```yaml
-env:
-  ESP32_PROJECT_PATH: /examples/esp32
+name: ESP32 Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build ESP32 Application
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          command: |
-            cd ${{ env.ESP32_PROJECT_PATH }}
-            ./scripts/build_app.sh ${{ matrix.app }} ${{ matrix.build_type }} ${{ matrix.target }}
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
+    with:
+      project_dir: "examples/esp32"  # Path to your ESP-IDF project
+      project_tools_dir: "scripts"   # Path to your scripts directory
+      clean_build: false
+      auto_clone_tools: true
+      max_dec_total: "0"  # Disable size budget (0) or set max size in bytes
+    secrets: inherit
+```
+
+### Using the Reusable Security Workflow
+
+Create a `.github/workflows/security.yml` file in your project:
+
+```yaml
+name: Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+
+jobs:
+  security:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      scan_type: "all"  # all | dependencies | secrets | codeql
+      run_codeql: true
+      codeql_languages: "cpp"
+      auto_clone_tools: true
+    secrets: inherit
 ```
 
 ## Documentation Sections

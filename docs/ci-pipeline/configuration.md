@@ -8,11 +8,11 @@ nav_order: 2
 
 ## Overview
 
-The CI pipeline configuration system provides flexible and comprehensive configuration options for ESP32 projects, enabling efficient build automation and quality assurance.
+The CI pipeline configuration system is now based on reusable workflows that can be easily integrated into any ESP32 project. The configuration is handled through workflow inputs and the project's `app_config.yml` file.
 
 ## Configuration Files
 
-### Primary Configuration
+### Project Configuration
 
 #### `app_config.yml`
 **Purpose**: Centralized application and build configuration
@@ -26,7 +26,164 @@ The CI pipeline configuration system provides flexible and comprehensive configu
 - **Flash Config**: Flash operation configurations
 - **System Config**: System-level configurations
 
-#### Example Configuration
+### Workflow Configuration
+
+#### `.github/workflows/build.yml`
+**Purpose**: Build workflow configuration
+**Location**: Project's `.github/workflows/` directory
+**Format**: YAML
+
+**Key Configuration**:
+- **Project Directory**: Path to ESP-IDF project
+- **Tools Directory**: Path to scripts directory
+- **Build Parameters**: Clean build, size budgets, etc.
+- **Tool Management**: Auto-clone tools if missing
+
+## Reusable Workflow Usage
+
+### Build Workflow
+
+#### Basic Usage
+```yaml
+name: ESP32 Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      clean_build: false
+      auto_clone_tools: true
+      max_dec_total: "0"
+    secrets: inherit
+```
+
+#### Advanced Configuration
+```yaml
+name: ESP32 Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      clean_build: false
+      auto_clone_tools: true
+      max_dec_total: "1048576"  # 1MB size budget
+    secrets: inherit
+```
+
+### Security Workflow
+
+#### Basic Usage
+```yaml
+name: Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+
+jobs:
+  security:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      scan_type: "all"
+      run_codeql: true
+      codeql_languages: "cpp"
+      auto_clone_tools: true
+    secrets: inherit
+```
+
+#### Selective Security Scanning
+```yaml
+name: Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Dependencies only
+  dependencies:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      scan_type: "dependencies"
+      auto_clone_tools: true
+    secrets: inherit
+
+  # Secrets only
+  secrets:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      scan_type: "secrets"
+      auto_clone_tools: true
+    secrets: inherit
+
+  # CodeQL only
+  codeql:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@main
+    with:
+      project_dir: "examples/esp32"
+      project_tools_dir: "scripts"
+      scan_type: "codeql"
+      run_codeql: true
+      codeql_languages: "cpp,python"
+      auto_clone_tools: true
+    secrets: inherit
+```
+
+## Workflow Inputs
+
+### Build Workflow Inputs
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `project_dir` | string | Yes | - | Path to the ESP-IDF project (contains CMakeLists.txt) |
+| `project_tools_dir` | string | No | - | Path to project tools directory (contains scripts directly) |
+| `clean_build` | boolean | No | false | Skip caches for a clean build |
+| `auto_clone_tools` | boolean | No | true | Auto-clone tools repo if project_tools_dir is missing |
+| `max_dec_total` | string | No | "0" | Maximum total dec size in bytes for size budget enforcement (0 to disable) |
+
+### Security Workflow Inputs
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `project_dir` | string | Yes | - | Path to the ESP-IDF project (contains CMakeLists.txt) |
+| `project_tools_dir` | string | No | - | Path to project tools directory (contains scripts directly) |
+| `scan_type` | string | No | "all" | all \| dependencies \| secrets \| codeql |
+| `run_codeql` | boolean | No | true | Enable CodeQL job |
+| `codeql_languages` | string | No | "cpp" | Comma-separated (e.g., cpp,python) |
+| `auto_clone_tools` | boolean | No | true | Auto-clone tools repo if project_tools_dir is missing |
+
+## Project Configuration
+
+### Example Configuration
 ```yaml
 metadata:
   name: "ESP32 Project"

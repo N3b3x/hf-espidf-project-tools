@@ -8,28 +8,55 @@ nav_order: 4
 
 ## Overview
 
-This guide helps resolve common issues with the HardFOC ESP32 CI Pipeline, including build failures, configuration problems, and performance issues.
+This guide helps resolve common issues with the HardFOC ESP32 CI Pipeline when using the reusable workflows from the separate CI repository.
 
 ## Common Issues
 
+### Workflow Integration Issues
+
+#### Workflow Not Found
+**Symptoms**: "Workflow not found" or "Action not found" errors
+**Solutions**:
+```yaml
+# Ensure correct workflow reference
+uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@main
+
+# Check if the repository exists and is accessible
+# Verify the workflow file exists at the specified path
+```
+
+#### Permission Issues
+**Symptoms**: "Permission denied" or "Insufficient permissions" errors
+**Solutions**:
+```yaml
+# Add required permissions to your workflow
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write   # needed for PR comment in size-report
+  security-events: write # needed for security workflow
+```
+
 ### Build Failures
 
-#### ESP-IDF Not Found
-**Symptoms**: Build fails with "ESP-IDF not found" errors
+#### Project Directory Not Found
+**Symptoms**: "Project directory not found" or "CMakeLists.txt not found" errors
 **Solutions**:
-```bash
-# Check ESP-IDF installation
-./manage_idf.sh list
+```yaml
+# Verify project_dir path is correct
+with:
+  project_dir: "examples/esp32"  # Should contain CMakeLists.txt
+  project_tools_dir: "scripts"   # Should contain build scripts
+```
 
-# Install ESP-IDF
-./manage_idf.sh install v4.4.2
-
-# Set ESP-IDF path
-export IDF_PATH=/path/to/esp-idf
-export PATH=$IDF_PATH/tools:$PATH
-
-# Verify ESP-IDF installation
-idf.py --version
+#### Tools Directory Issues
+**Symptoms**: "Scripts not found" or "build_app.sh not found" errors
+**Solutions**:
+```yaml
+# Enable auto-clone tools if scripts are missing
+with:
+  auto_clone_tools: true
+  project_tools_dir: "scripts"  # Leave empty to auto-detect
 ```
 
 #### Configuration Errors
