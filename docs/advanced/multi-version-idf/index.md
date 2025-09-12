@@ -4,7 +4,7 @@ title: "Multi-Version ESP-IDF Support"
 description: "Support for multiple ESP-IDF versions with intelligent version management"
 nav_order: 1
 parent: "Advanced Topics"
-permalink: /advanced/multi-version-idf/
+permalink: /docs/advanced/multi-version-idf/
 ---
 
 # Multi-Version ESP-IDF Support

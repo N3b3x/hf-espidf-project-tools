@@ -3,7 +3,7 @@ layout: default
 title: "Getting Started"
 description: "Quick start guide for the HardFOC ESP-IDF Project Tools"
 nav_order: 2
-permalink: /getting-started/
+permalink: /docs/getting-started/
 ---
 
 # Getting Started with HardFOC ESP-IDF Project Tools

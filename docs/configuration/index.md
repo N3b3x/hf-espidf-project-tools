@@ -3,7 +3,7 @@ layout: default
 title: "Configuration System"
 description: "ESP-IDF configuration system with YAML management, validation, and smart defaults"
 nav_order: 5
-permalink: /configuration/
+permalink: /docs/configuration/
 ---
 
 # ESP-IDF Configuration System Guide

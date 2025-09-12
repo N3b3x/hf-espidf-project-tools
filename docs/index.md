@@ -3,7 +3,7 @@ layout: default
 title: "HardFOC ESP-IDF Project Tools"
 description: "Development Scripts for HardFOC ESP-IDF Projects - Multi-application build system with intelligent configuration management for ESP-IDF development"
 nav_order: 1
-permalink: /
+permalink: /docs/
 ---
 
 # HardFOC ESP-IDF Project Tools

@@ -3,7 +3,7 @@ layout: default
 title: "Build System"
 description: "ESP-IDF build system with intelligent configuration management, validation, and optimization"
 nav_order: 3
-permalink: /build-system/
+permalink: /docs/build-system/
 ---
 
 # ESP-IDF Build System Guide

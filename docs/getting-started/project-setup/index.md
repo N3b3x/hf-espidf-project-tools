@@ -4,7 +4,7 @@ title: "Project Setup"
 description: "Automated ESP-IDF project setup with hf-espidf-project-tools"
 nav_order: 3
 parent: "Getting Started"
-permalink: /getting-started/project-setup/
+permalink: /docs/getting-started/project-setup/
 ---
 
 # 🚀 Project Setup

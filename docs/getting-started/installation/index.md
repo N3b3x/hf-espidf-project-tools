@@ -4,7 +4,7 @@ title: "Installation"
 description: "Detailed installation guide for HardFOC ESP-IDF Project Tools"
 nav_order: 1
 parent: "Getting Started"
-permalink: /getting-started/installation/
+permalink: /docs/getting-started/installation/
 ---
 
 # Installation Guide

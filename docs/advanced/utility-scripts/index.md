@@ -4,7 +4,7 @@ title: "Utility Scripts"
 description: "ESP-IDF utility scripts for port detection, setup automation, and workflow management"
 nav_order: 3
 parent: "Advanced Topics"
-permalink: /advanced/utility-scripts/
+permalink: /docs/advanced/utility-scripts/
 ---
 
 # ESP32 Utility Scripts Guide

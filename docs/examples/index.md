@@ -3,7 +3,7 @@ layout: default
 title: "Examples"
 description: "Real-world examples and usage patterns for HardFOC ESP-IDF CI Tools"
 nav_order: 10
-permalink: /examples/
+permalink: /docs/examples/
 ---
 
 # Examples

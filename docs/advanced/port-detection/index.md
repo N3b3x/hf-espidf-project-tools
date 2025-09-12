@@ -4,7 +4,7 @@ title: "Port Detection"
 description: "ESP-IDF port detection system with cross-platform device identification and troubleshooting"
 nav_order: 2
 parent: "Advanced Topics"
-permalink: /advanced/port-detection/
+permalink: /docs/advanced/port-detection/
 ---
 
 # ESP-IDF Port Detection Guide

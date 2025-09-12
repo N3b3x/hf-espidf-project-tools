@@ -4,7 +4,7 @@ title: "Configuration"
 description: "Configuration guide for HardFOC ESP-IDF CI Tools"
 nav_order: 2
 parent: "Getting Started"
-permalink: //getting-started/configuration/
+permalink: /docs/getting-started/configuration/
 ---
 
 # Configuration Guide

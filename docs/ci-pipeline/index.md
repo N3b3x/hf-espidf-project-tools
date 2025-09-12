@@ -3,7 +3,7 @@ layout: default
 title: "CI Pipeline"
 description: "Using the ESP-IDF CI pipeline from the separate CI tools repository"
 nav_order: 4
-permalink: /ci-pipeline/
+permalink: /docs/ci-pipeline/
 ---
 
 # ESP-IDF CI Pipeline Usage

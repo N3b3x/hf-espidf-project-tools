@@ -3,7 +3,7 @@ layout: default
 title: "Logging System"
 description: "ESP-IDF logging system with comprehensive log capture, management, and analysis"
 nav_order: 7
-permalink: /logging-system/
+permalink: /docs/logging-system/
 ---
 
 # ESP-IDF Logging System Guide
