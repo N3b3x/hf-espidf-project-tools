@@ -2,7 +2,8 @@
 layout: page
 title: "Features"
 description: "Key features and capabilities of the HardFOC ESP-IDF CI Tools"
-nav_order: 11
+nav_order: 1
+parent: "Reference"
 permalink: /docs/features/
 ---
 

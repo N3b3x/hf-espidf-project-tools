@@ -2,7 +2,8 @@
 layout: default
 title: "Troubleshooting"
 description: "Common issues and solutions for HardFOC ESP-IDF CI Tools"
-nav_order: 8
+nav_order: 3
+parent: "Reference"
 permalink: /docs/troubleshooting/
 ---
 

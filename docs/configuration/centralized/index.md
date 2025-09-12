@@ -3,7 +3,7 @@ layout: default
 title: "Centralized Configuration"
 description: "Centralized configuration system with YAML management, validation, and smart defaults"
 nav_order: 1
-parent: "Configuration"
+parent: "Configuration System"
 permalink: /docs/configuration/centralized/
 ---
 

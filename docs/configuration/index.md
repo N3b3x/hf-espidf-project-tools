@@ -2,7 +2,8 @@
 layout: default
 title: "Configuration System"
 description: "ESP-IDF configuration system with YAML management, validation, and smart defaults"
-nav_order: 5
+nav_order: 2
+parent: "Core Systems"
 permalink: /docs/configuration/
 ---
 

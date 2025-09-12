@@ -2,7 +2,8 @@
 layout: default
 title: "Contributing"
 description: "How to contribute to the HardFOC ESP-IDF CI Tools project"
-nav_order: 9
+nav_order: 4
+parent: "Reference"
 permalink: /docs/contributing/
 ---
 
