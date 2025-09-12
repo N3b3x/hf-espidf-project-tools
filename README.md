@@ -8,9 +8,11 @@ permalink: /
 
 # 🔧 HardFOC ESP-IDF Project Tools
 
-![Scripts](https://img.shields.io/badge/Scripts-Development%20Tools-blue?style=for-the-badge&logo=bash)
-![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Multi%20App%20Builds-green?style=for-the-badge&logo=espressif)
-![Configuration](https://img.shields.io/badge/Config-YAML%20Based-purple?style=for-the-badge&logo=yaml)
+---
+
+![Scripts](https://img.shields.io/badge/Scripts-Development%20Tools-blue?logo=bash)
+[![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Multi%20App%20Builds-green?logo=espressif&logoColor=white)](https://docs.espressif.com/projects/esp-idf/en/latest/)
+![Configuration](https://img.shields.io/badge/Config-YAML%20Based-purple?logo=yaml)
 
 **🎯 Development Scripts for Multi-Application ESP-IDF Projects**
 

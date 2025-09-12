@@ -8,20 +8,78 @@ permalink: /docs/getting-started/
 
 # Getting Started with HardFOC ESP-IDF Project Tools
 
-Welcome to the HardFOC ESP-IDF Project Tools! This guide will help you get up and running quickly with our development scripts for multi-application ESP-IDF projects.
+Welcome to the HardFOC ESP-IDF Project Tools! This guide will help you **integrate these development scripts into your existing ESP-IDF project** for enhanced multi-application build management and development workflows.
 
-## 🚀 Quick Start
+> **📋 Important**: These tools are designed to be **integrated into your ESP-IDF project**, not used as standalone applications.
 
-### Option 1: Automated Project Setup (Recommended)
+## 🚀 Integration Methods
 
-Create a complete ESP-IDF project with all tools pre-configured:
+Choose the best method to integrate these tools into your ESP-IDF project:
+
+### Method 1: Submodule Integration (Recommended)
+
+**Best for**: Version-controlled projects with team collaboration
+
+```bash
+# Navigate to your ESP-IDF project
+cd your-esp-idf-project
+
+# Add tools as submodule
+git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+
+# Your project structure:
+# your-esp-idf-project/
+# ├── CMakeLists.txt
+# ├── app_config.yml
+# ├── main/
+# └── scripts/                    # Project tools
+#     ├── build_app.sh
+#     └── flash_app.sh
+
+# Start building
+./scripts/build_app.sh your_app Release
+```
+
+### Method 2: Direct Clone Integration
+
+**Best for**: Quick setup and experimentation
+
+```bash
+# Navigate to your ESP-IDF project
+cd your-esp-idf-project
+
+# Clone tools directly
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+
+# Start building
+./scripts/build_app.sh your_app Release
+```
+
+### Method 3: Shared Tools Directory
+
+**Best for**: Multiple projects using the same tools
+
+```bash
+# Create shared tools directory
+mkdir -p ~/shared-esp32-tools
+cd ~/shared-esp32-tools
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git .
+
+# In each ESP-IDF project, use --project-path
+cd your-esp-idf-project
+~/shared-esp32-tools/build_app.sh --project-path . your_app Release
+```
+
+### Method 4: Automated Project Setup
+
+**Best for**: Creating new ESP-IDF projects with tools pre-integrated
 
 ```bash
 # Clone the tools repository
 git clone https://github.com/n3b3x/hf-espidf-project-tools.git
 cd hf-espidf-project-tools
 
-# Create a new ESP-IDF project
+# Create a complete ESP-IDF project with tools
 ./setup_basic.sh my-awesome-project
 
 # Navigate to your new project

@@ -9,39 +9,66 @@ permalink: /docs/
 
 # HardFOC ESP-IDF Project Tools
 
-Welcome to the **HardFOC ESP-IDF Project Tools** - a comprehensive suite of development scripts designed specifically for ESP-IDF projects with multiple applications. This toolkit provides everything you need to manage multi-application builds, configuration, and development workflows for your ESP-IDF projects.
+Welcome to the **HardFOC ESP-IDF Project Tools** - a comprehensive suite of development scripts designed to be **integrated into your existing ESP-IDF projects**. These tools enhance your ESP-IDF development workflow with multi-application build management, intelligent configuration, and automated development processes.
 
-## 🚀 Quick Start
+> **📋 Important**: These tools are meant to be **integrated into your ESP-IDF project**, not used as standalone applications. They work alongside your existing ESP-IDF project structure.
 
-Get up and running in minutes:
+## 🚀 Integration Methods
 
-### Option 1: Automated Setup (Recommended)
+Choose the best integration method for your ESP-IDF project:
+
+### Method 1: Submodule Integration (Recommended)
 ```bash
-# Clone the tools repository
-git clone https://github.com/n3b3x/hf-espidf-project-tools.git
-cd hf-espidf-project-tools
+# Navigate to your ESP-IDF project
+cd your-esp-idf-project
 
-# Create a complete ESP-IDF project
-./setup_basic.sh my-awesome-project
-
-# Navigate to your new project
-cd my-awesome-project
-
-# Build and flash
-./scripts/build_app.sh main_app Release
-./scripts/flash_app.sh flash main_app Release
-```
-
-### Option 2: Add to Existing Project
-```bash
-# Go into your ESP-IDF project
-cd your/esp-idf-project
-
-# Add as submodule to your ESP-IDF project
+# Add tools as submodule
 git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+
+# Your project structure:
+# your-esp-idf-project/
+# ├── CMakeLists.txt
+# ├── app_config.yml
+# ├── main/
+# └── scripts/                    # Project tools
+#     ├── build_app.sh
+#     └── flash_app.sh
 
 # Start building
 ./scripts/build_app.sh your_app Release
+```
+
+### Method 2: Direct Clone Integration
+```bash
+# Navigate to your ESP-IDF project
+cd your-esp-idf-project
+
+# Clone tools directly
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+
+# Your project structure:
+# your-esp-idf-project/
+# ├── CMakeLists.txt
+# ├── app_config.yml
+# ├── main/
+# └── scripts/                    # Project tools
+#     ├── build_app.sh
+#     └── flash_app.sh
+
+# Start building
+./scripts/build_app.sh your_app Release
+```
+
+### Method 3: Shared Tools Directory
+```bash
+# For multiple projects, use shared tools
+mkdir -p ~/shared-esp32-tools
+cd ~/shared-esp32-tools
+git clone https://github.com/n3b3x/hf-espidf-project-tools.git .
+
+# In each ESP-IDF project, use --project-path
+cd your-esp-idf-project
+~/shared-esp32-tools/build_app.sh --project-path . your_app Release
 ```
 
 ## ✨ Key Features
@@ -63,7 +90,51 @@ Explore our comprehensive documentation:
 - **[Configuration](/docs/configuration/)** - YAML-based configuration system
 - **[Flash System](/docs/flash-system/)** - ESP32 flashing and monitoring
 - **[Logging System](/docs/logging-system/)** - Log management and analysis
+- **[CI Integration Patterns](/docs/ci-integration-patterns/)** - CI/CD integration patterns
 - **[Advanced Topics](/docs/advanced/multi-version-idf/)** - Advanced features and utilities
+
+## 📁 Project Structure
+
+### Typical ESP-IDF Project with Tools
+```
+your-esp-idf-project/
+├── CMakeLists.txt              # ESP-IDF project root
+├── app_config.yml              # Multi-app configuration
+├── main/                       # Your main application
+│   ├── main.cpp
+│   └── CMakeLists.txt
+├── components/                 # Your components
+│   └── your-component/
+└── scripts/                    # Project tools (integrated)
+    ├── build_app.sh
+    ├── flash_app.sh
+    ├── generate_matrix.py
+    └── config_loader.sh
+```
+
+### CI/CD Integration Patterns
+
+#### Pattern 1: Submodule Setup (Recommended)
+```yaml
+# .github/workflows/build.yml
+jobs:
+  build:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@v1
+    with:
+      project_dir: examples/esp32
+      project_tools_dir: examples/esp32/scripts  # Submodule path
+```
+
+#### Pattern 2: Shared Tools
+```yaml
+# .github/workflows/build.yml
+jobs:
+  build:
+    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@v1
+    with:
+      project_dir: firmware/esp32
+      project_tools_dir: build-tools  # Shared tools directory
+```
 
 ## 🎯 Perfect For
 
@@ -71,6 +142,7 @@ Explore our comprehensive documentation:
 - **Library Testing** - Test different aspects of your library with separate applications
 - **Development Workflows** - Streamlined build and flash processes for development
 - **Team Development** - Consistent development environments across teams
+- **CI/CD Integration** - Automated builds and testing in GitHub Actions
 
 ## 🤝 Contributing
 
