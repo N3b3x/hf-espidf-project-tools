@@ -3,7 +3,7 @@ layout: default
 title: "Port Detection"
 description: "ESP-IDF port detection system with cross-platform device identification and troubleshooting"
 nav_order: 2
-parent: "Advanced Topics"
+parent: "🔬 Advanced Topics"
 permalink: /docs/advanced/port-detection/
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: "Flash System"
 description: "ESP-IDF flash system with intelligent port detection, firmware flashing, and monitoring"
 nav_order: 3
-parent: "Core Systems"
+parent: "🔧 Core Systems"
 permalink: /docs/flash-system/
 ---
 

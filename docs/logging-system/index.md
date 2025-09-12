@@ -3,7 +3,7 @@ layout: default
 title: "Logging System"
 description: "ESP-IDF logging system with comprehensive log capture, management, and analysis"
 nav_order: 4
-parent: "Core Systems"
+parent: "🔧 Core Systems"
 permalink: /docs/logging-system/
 ---
 

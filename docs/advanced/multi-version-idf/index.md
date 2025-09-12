@@ -3,7 +3,7 @@ layout: default
 title: "Multi-Version ESP-IDF Support"
 description: "Support for multiple ESP-IDF versions with intelligent version management"
 nav_order: 1
-parent: "Advanced Topics"
+parent: "🔬 Advanced Topics"
 permalink: /docs/advanced/multi-version-idf/
 ---
 

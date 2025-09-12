@@ -1,68 +1,17 @@
-# Navigation data for the HardFOC ESP-IDF Project Tools
-- title: "📚 Documentation"
-  url: "/docs/"
-  icon: "fas fa-home"
-
-- title: "🚀 Getting Started"
-  url: "/docs/getting-started/"
-  icon: "fas fa-rocket"
-  children:
-    - title: "Quick Start"
-      url: "/docs/getting-started/"
-    - title: "Installation"
-      url: "/docs/getting-started/installation/"
-    - title: "Configuration"
-      url: "/docs/getting-started/configuration/"
-    - title: "Project Setup"
-      url: "/docs/getting-started/project-setup/"
-
-- title: "🔧 Core Systems"
-  url: "/docs/build-system/"
-  icon: "fas fa-cogs"
-  children:
-    - title: "Build System"
-      url: "/docs/build-system/"
-    - title: "Configuration System"
-      url: "/docs/configuration/"
-      children:
-        - title: "Configuration System"
-          url: "/docs/configuration/"
-        - title: "Centralized Config"
-          url: "/docs/configuration/centralized/"
-    - title: "Flash System"
-      url: "/docs/flash-system/"
-    - title: "Logging System"
-      url: "/docs/logging-system/"
-
-- title: "⚡ CI/CD Pipeline"
-  url: "/docs/ci-pipeline/"
-  icon: "fas fa-rocket"
-
-- title: "🔬 Advanced Topics"
-  url: "/docs/advanced/multi-version-idf/"
-  icon: "fas fa-microscope"
-  children:
-    - title: "Multi-Version ESP-IDF"
-      url: "/docs/advanced/multi-version-idf/"
-    - title: "Port Detection"
-      url: "/docs/advanced/port-detection/"
-    - title: "Utility Scripts"
-      url: "/docs/advanced/utility-scripts/"
-
-- title: "📚 Reference"
-  url: "/docs/features/"
-  icon: "fas fa-book"
-  children:
-    - title: "Features"
-      url: "/docs/features/"
-    - title: "Examples"
-      url: "/docs/examples/"
-    - title: "Troubleshooting"
-      url: "/docs/troubleshooting/"
-    - title: "Contributing"
-      url: "/docs/contributing/"
+# Additional navigation items for HardFOC ESP-IDF Project Tools
+# Main navigation is automatically generated from page front matter
 
 - title: "GitHub Repository"
   url: "https://github.com/n3b3x/hf-espidf-project-tools"
   icon: "fab fa-github"
+  external: true
+
+- title: "Report Issues"
+  url: "https://github.com/n3b3x/hf-espidf-project-tools/issues"
+  icon: "fas fa-bug"
+  external: true
+
+- title: "Star on GitHub"
+  url: "https://github.com/n3b3x/hf-espidf-project-tools/stargazers"
+  icon: "fas fa-star"
   external: true
