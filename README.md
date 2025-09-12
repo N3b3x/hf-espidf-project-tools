@@ -1,3 +1,11 @@
+---
+layout: default
+title: "HardFOC ESP-IDF Project Tools"
+description: "Development scripts for ESP-IDF projects with multiple applications - Multi-application build system with intelligent configuration management for ESP-IDF development"
+nav_order: 1
+permalink: /
+---
+
 # 🔧 HardFOC ESP-IDF Project Tools
 
 ![Scripts](https://img.shields.io/badge/Scripts-Development%20Tools-blue?logo=bash)
@@ -8,7 +16,7 @@
 
 > **📋 Important**: These tools are designed to be **integrated into your ESP-IDF project**, not used as standalone applications.
 
-**🌐 [Live Documentation](https://n3b3x.github.io/hf-espidf-project-tools/)** | **📚 [Getting Started Guide](https://n3b3x.github.io/hf-espidf-project-tools/docs/getting-started/)**
+**🌐 [Live Documentation](https://n3b3x.github.io/hf-espidf-project-tools/)** 
 
 ---
 
