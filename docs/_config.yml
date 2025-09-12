@@ -67,7 +67,7 @@ heading_anchors: true
 breadcrumbs: true
 toc:
   min_level: 2
-  max_level: 4
+  max_level: 6
 
 # Callouts for better content presentation
 callouts:
