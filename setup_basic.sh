@@ -41,6 +41,7 @@ show_help() {
     echo ""
     echo "ARGUMENTS:"
     echo "  project_name    - Name for the new ESP-IDF project (default: $DEFAULT_PROJECT_NAME)"
+    echo "                   - Use '../' to setup in existing ESP32 directory (parent directory)"
     echo "  espidf_version  - ESP-IDF version to install (default: $DEFAULT_ESPIDF_VERSION)"
     echo ""
     echo "EXAMPLES:"
@@ -48,16 +49,19 @@ show_help() {
     echo "  ./setup_basic.sh my-project                        # Custom project name"
     echo "  ./setup_basic.sh my-project release/v5.4           # Custom name and ESP-IDF version"
     echo "  ./setup_basic.sh my-project v5.5                   # Custom name and ESP-IDF version"
+    echo "  ./setup_basic.sh ../                               # Setup in existing ESP32 directory"
+    echo "  ./setup_basic.sh ../ release/v5.4                  # Setup in existing directory with specific version"
     echo ""
     echo "WHAT THIS SCRIPT DOES:"
-    echo "  1. Creates a new ESP-IDF project directory"
-    echo "  2. Initializes git repository"
-    echo "  3. Adds hf-espidf-project-tools as submodule"
+    echo "  1. Creates a new ESP-IDF project directory (or uses existing with '../')"
+    echo "  2. Initializes git repository (or uses existing)"
+    echo "  3. Adds hf-espidf-project-tools as submodule (or updates existing)"
     echo "  4. Installs specified ESP-IDF version"
     echo "  5. Creates basic project structure (main/, CMakeLists.txt, etc.)"
     echo "  6. Generates app_config.yml with basic main.cpp app"
     echo "  7. Creates basic main.cpp template"
     echo "  8. Sets up CMakeLists.txt files"
+    echo "  9. Skips existing files to avoid overwriting user content"
     echo ""
     echo "REQUIREMENTS:"
     echo "  • Git installed and configured"
@@ -73,15 +77,15 @@ show_help() {
     echo "For detailed information, see: docs/getting-started/installation/"
 }
 
-# Parse arguments
-PROJECT_NAME="${1:-$DEFAULT_PROJECT_NAME}"
-ESPIDF_VERSION="${2:-$DEFAULT_ESPIDF_VERSION}"
-
-# Show help if requested
+# Show help if requested (check this first)
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     show_help
     exit 0
 fi
+
+# Parse arguments
+PROJECT_NAME="${1:-$DEFAULT_PROJECT_NAME}"
+ESPIDF_VERSION="${2:-$DEFAULT_ESPIDF_VERSION}"
 
 # Normalize ESP-IDF version (convert short form to full form)
 if [[ "$ESPIDF_VERSION" =~ ^v[0-9]+\.[0-9]+$ ]]; then
@@ -92,25 +96,56 @@ print_status "Starting ESP-IDF project setup..."
 print_status "Project name: $PROJECT_NAME"
 print_status "ESP-IDF version: $ESPIDF_VERSION"
 
-# Check if project directory already exists
-if [ -d "$PROJECT_NAME" ]; then
-    print_error "Project directory '$PROJECT_NAME' already exists!"
-    print_status "Please choose a different name or remove the existing directory."
-    exit 1
+# Handle special case where user wants to setup in existing directory (../)
+if [ "$PROJECT_NAME" = "../" ] || [ "$PROJECT_NAME" = ".." ]; then
+    print_status "Setting up in existing ESP32 directory (parent directory)"
+    PROJECT_NAME=".."
+    TARGET_DIR="$(cd .. && pwd)"
+    print_status "Target directory: $TARGET_DIR"
+    
+    # Check if we're already in an ESP32 project directory
+    if [ -f "CMakeLists.txt" ] || [ -d "main" ] || [ -f "app_config.yml" ]; then
+        print_warning "Current directory appears to already be an ESP32 project"
+        print_status "Continuing with setup in current directory..."
+        TARGET_DIR="$(pwd)"
+    else
+        print_status "Moving to parent directory for setup..."
+        cd ..
+        TARGET_DIR="$(pwd)"
+    fi
+else
+    # Check if project directory already exists
+    if [ -d "$PROJECT_NAME" ]; then
+        print_error "Project directory '$PROJECT_NAME' already exists!"
+        print_status "Please choose a different name or remove the existing directory."
+        print_status "Alternatively, use '../' to setup in an existing ESP32 directory."
+        exit 1
+    fi
+
+    # Create project directory
+    print_status "Creating project directory: $PROJECT_NAME"
+    mkdir -p "$PROJECT_NAME"
+    cd "$PROJECT_NAME"
+    TARGET_DIR="$(pwd)"
 fi
 
-# Create project directory
-print_status "Creating project directory: $PROJECT_NAME"
-mkdir -p "$PROJECT_NAME"
-cd "$PROJECT_NAME"
+# Initialize git repository (only if not already initialized)
+if [ ! -d ".git" ]; then
+    print_status "Initializing git repository..."
+    git init
+else
+    print_status "Git repository already exists, skipping initialization..."
+fi
 
-# Initialize git repository
-print_status "Initializing git repository..."
-git init
-
-# Add hf-espidf-project-tools as submodule
-print_status "Adding hf-espidf-project-tools as submodule..."
-git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+# Add hf-espidf-project-tools as submodule (only if not already added)
+if [ ! -d "scripts" ] || [ ! -f "scripts/.git" ]; then
+    print_status "Adding hf-espidf-project-tools as submodule..."
+    git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
+else
+    print_status "hf-espidf-project-tools submodule already exists, skipping..."
+    print_status "Updating submodule to latest version..."
+    git submodule update --init --recursive scripts
+fi
 
 # Install ESP-IDF version
 print_status "Installing ESP-IDF version: $ESPIDF_VERSION"
@@ -133,9 +168,10 @@ fi
 print_status "Creating main directory structure..."
 mkdir -p main
 
-# Create basic main.cpp
-print_status "Creating basic main.cpp template..."
-cat > main/main.cpp << 'EOF'
+# Create basic main.cpp (only if it doesn't exist)
+if [ ! -f "main/main.cpp" ]; then
+    print_status "Creating basic main.cpp template..."
+    cat > main/main.cpp << 'EOF'
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -158,10 +194,14 @@ extern "C" void app_main(void)
     }
 }
 EOF
+else
+    print_status "main.cpp already exists, skipping creation..."
+fi
 
-# Create project root CMakeLists.txt
-print_status "Creating project CMakeLists.txt..."
-cat > CMakeLists.txt << 'EOF'
+# Create project root CMakeLists.txt (only if it doesn't exist)
+if [ ! -f "CMakeLists.txt" ]; then
+    print_status "Creating project CMakeLists.txt..."
+    cat > CMakeLists.txt << 'EOF'
 # =============================================================================
 # ESP-IDF Project - Project Root CMakeLists.txt
 # =============================================================================
@@ -231,10 +271,14 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 # Set project name based on app type for unique identification
 project(esp32_${APP_TYPE}_app)
 EOF
+else
+    print_status "CMakeLists.txt already exists, skipping creation..."
+fi
 
-# Create main component CMakeLists.txt
-print_status "Creating main component CMakeLists.txt..."
-cat > main/CMakeLists.txt << 'EOF'
+# Create main component CMakeLists.txt (only if it doesn't exist)
+if [ ! -f "main/CMakeLists.txt" ]; then
+    print_status "Creating main component CMakeLists.txt..."
+    cat > main/CMakeLists.txt << 'EOF'
 # =============================================================================
 # ESP-IDF Project - Main Component CMakeLists.txt
 # =============================================================================
@@ -346,10 +390,14 @@ target_compile_definitions(${COMPONENT_LIB} PRIVATE
     "APP_TYPE_${APP_TYPE}=1"               # Enable specific app type features
 )
 EOF
+else
+    print_status "main/CMakeLists.txt already exists, skipping creation..."
+fi
 
-# Create app_config.yml
-print_status "Creating app_config.yml..."
-cat > app_config.yml << EOF
+# Create app_config.yml (only if it doesn't exist)
+if [ ! -f "app_config.yml" ]; then
+    print_status "Creating app_config.yml..."
+    cat > app_config.yml << EOF
 ---
 # ESP-IDF Project - Apps Configuration
 # This file centralizes all app definitions, their source files, and metadata
@@ -403,10 +451,14 @@ ci_config:
   special_apps: []
 ---
 EOF
+else
+    print_status "app_config.yml already exists, skipping creation..."
+fi
 
-# Create .gitignore
-print_status "Creating .gitignore..."
-cat > .gitignore << 'EOF'
+# Create .gitignore (only if it doesn't exist)
+if [ ! -f ".gitignore" ]; then
+    print_status "Creating .gitignore..."
+    cat > .gitignore << 'EOF'
 # Build directories
 build*/
 build-*/
@@ -437,10 +489,14 @@ __pycache__/
 *.tmp
 *.temp
 EOF
+else
+    print_status ".gitignore already exists, skipping creation..."
+fi
 
-# Create README.md for the project
-print_status "Creating project README.md..."
-cat > README.md << EOF
+# Create README.md for the project (only if it doesn't exist)
+if [ ! -f "README.md" ]; then
+    print_status "Creating project README.md..."
+    cat > README.md << EOF
 # $PROJECT_NAME
 
 A basic ESP-IDF project created with hf-espidf-project-tools.
@@ -490,30 +546,48 @@ This project uses ESP-IDF version: **$ESPIDF_VERSION**
 
 For detailed documentation, see: [hf-espidf-project-tools](https://github.com/n3b3x/hf-espidf-project-tools)
 EOF
+else
+    print_status "README.md already exists, skipping creation..."
+fi
 
-# Make scripts executable
-print_status "Making scripts executable..."
-chmod +x scripts/*.sh
+# Make scripts executable (if scripts directory exists)
+if [ -d "scripts" ]; then
+    print_status "Making scripts executable..."
+    chmod +x scripts/*.sh
+else
+    print_warning "Scripts directory not found, skipping script permissions..."
+fi
 
-# Initial commit
-print_status "Creating initial git commit..."
-git add .
-git commit -m "Initial commit: ESP-IDF project with hf-espidf-project-tools
+# Initial commit (only if there are changes to commit)
+print_status "Checking for changes to commit..."
+if git diff --quiet && git diff --cached --quiet; then
+    print_status "No changes to commit (all files already exist and are up to date)"
+else
+    print_status "Creating git commit with new/changed files..."
+    git add .
+    git commit -m "ESP-IDF project setup with hf-espidf-project-tools
 
 - Added hf-espidf-project-tools as submodule
 - Created basic main.cpp template
 - Set up CMakeLists.txt files
 - Generated app_config.yml with main_app
 - ESP-IDF version: $ESPIDF_VERSION"
+fi
 
 print_success "Project setup completed successfully!"
 echo ""
 print_status "Next steps:"
-print_status "1. cd $PROJECT_NAME"
-print_status "2. ./scripts/build_app.sh main_app Release"
-print_status "3. ./scripts/flash_app.sh flash main_app Release"
+if [ "$PROJECT_NAME" = ".." ]; then
+    print_status "1. You are already in the project directory"
+    print_status "2. ./scripts/build_app.sh main_app Release"
+    print_status "3. ./scripts/flash_app.sh flash main_app Release"
+else
+    print_status "1. cd $PROJECT_NAME"
+    print_status "2. ./scripts/build_app.sh main_app Release"
+    print_status "3. ./scripts/flash_app.sh flash main_app Release"
+fi
 echo ""
-print_status "Project created in: $(pwd)"
+print_status "Project directory: $(pwd)"
 print_status "ESP-IDF version: $ESPIDF_VERSION"
 print_status "Default app: main_app"
 echo ""
