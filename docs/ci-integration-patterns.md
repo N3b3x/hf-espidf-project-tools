@@ -2,8 +2,8 @@
 layout: default
 title: "CI/CD Integration Patterns"
 description: "Common patterns for integrating ESP-IDF project tools in CI/CD workflows"
-nav_order: 6
-parent: "📚 Documentation"
+nav_order: 2
+parent: "⚡ CI Pipeline"
 permalink: /docs/ci-integration-patterns/
 ---
 
