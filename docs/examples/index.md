@@ -279,11 +279,11 @@ apps:
 
 ## 🆘 Need Help?
 
-- **[Getting Started](getting-started/)** - Basic setup guide
-- **[Configuration](configuration/)** - Configuration management
-- **[Troubleshooting](troubleshooting/)** - Common issues and solutions
+- **[Getting Started](/docs/getting-started/)** - Basic setup guide
+- **[Configuration](/docs/configuration/)** - Configuration management
+- **[Troubleshooting](/docs/troubleshooting/)** - Common issues and solutions
 - **[GitHub Issues](https://github.com/n3b3x/hf-espidf-project-tools/issues)** - Report bugs or request features
 
 ---
 
-**Found an example you like?** Copy the configuration and adapt it for your project. Need help customizing? Check out our [Configuration Guide](configuration/) or [Troubleshooting](troubleshooting/) section.
+**Found an example you like?** Copy the configuration and adapt it for your project. Need help customizing? Check out our [Configuration Guide](/docs/configuration/) or [Troubleshooting](/docs/troubleshooting/) section.

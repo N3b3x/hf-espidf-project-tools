@@ -13,10 +13,10 @@ Reference materials, examples, and troubleshooting guides for the HardFOC ESP-ID
 
 ## Available Resources
 
-- **[Features](features/)** - Complete feature overview and capabilities
-- **[Examples](examples/)** - Real-world usage examples and patterns
-- **[Troubleshooting](troubleshooting/)** - Common issues and solutions
-- **[Contributing](contributing/)** - How to contribute to the project
+- **[Features](/docs/features/)** - Complete feature overview and capabilities
+- **[Examples](/docs/examples/)** - Real-world usage examples and patterns
+- **[Troubleshooting](/docs/troubleshooting/)** - Common issues and solutions
+- **[Contributing](/docs/contributing/)** - How to contribute to the project
 
 ## Quick Reference
 
@@ -40,12 +40,12 @@ Reference materials, examples, and troubleshooting guides for the HardFOC ESP-ID
 ## Getting Help
 
 - **Issues**: [GitHub Issues](https://github.com/n3b3x/hf-espidf-project-tools/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/n3b3x/hf-espidf-project-tools/discussions)
+- **Discussions**: [GitHub Issues](https://github.com/n3b3x/hf-espidf-project-tools/issues) (Discussions not enabled)
 - **Documentation**: This reference section
 
 ## Examples by Use Case
 
-- **Basic ESP32 Project**: See [Examples](examples/) for simple setups
-- **Multi-Application Build**: Check [Build System](build-system/) documentation
-- **CI/CD Integration**: Review [CI Pipeline](ci-pipeline/) guide
-- **Advanced Configuration**: Explore [Advanced Topics](advanced-topics/)
+- **Basic ESP32 Project**: See [Examples](/docs/examples/) for simple setups
+- **Multi-Application Build**: Check [Build System](/docs/build-system/) documentation
+- **CI/CD Integration**: Review [CI Pipeline](/docs/ci-pipeline/) guide
+- **Advanced Configuration**: Explore [Advanced Topics](/docs/advanced-topics/)

@@ -182,10 +182,10 @@ For enterprise or complex issues:
 
 ## 📚 Additional Resources
 
-- **[Build System](build-system/)** - Detailed build documentation
-- **[CI Pipeline](ci-pipeline/)** - Workflow optimization
-- **[Configuration](configuration/)** - Configuration management
-- **[Examples](examples/)** - Real-world usage examples
+- **[Build System](/docs/build-system/)** - Detailed build documentation
+- **[CI Pipeline](/docs/ci-pipeline/)** - Workflow optimization
+- **[Configuration](/docs/configuration/)** - Configuration management
+- **[Examples](/docs/examples/)** - Real-world usage examples
 
 ---
 

@@ -139,9 +139,9 @@ jobs:
 
 ## 🔗 **Related Documentation**
 
-- **[Build System](build-system/)** - Understanding the multi-application build system
-- **[Configuration](configuration/)** - Configuring your `app_config.yml`
-- **[Getting Started](getting-started/)** - Setting up your development environment
+- **[Build System](/docs/build-system/)** - Understanding the multi-application build system
+- **[Configuration](/docs/configuration/)** - Configuring your `app_config.yml`
+- **[Getting Started](/docs/getting-started/)** - Setting up your development environment
 
 ## 🤝 **Support**
 

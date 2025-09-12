@@ -58,12 +58,12 @@ git submodule add https://github.com/n3b3x/hf-espidf-project-tools.git scripts
 
 Explore our comprehensive documentation:
 
-- **[Getting Started](getting-started/)** - Quick start guide and installation
-- **[Build System](build-system/)** - Multi-application build management
-- **[Configuration](configuration/)** - YAML-based configuration system
-- **[Flash System](flash-system/)** - ESP32 flashing and monitoring
-- **[Logging System](logging-system/)** - Log management and analysis
-- **[Advanced Topics](advanced/multi-version-idf/)** - Advanced features and utilities
+- **[Getting Started](/docs/getting-started/)** - Quick start guide and installation
+- **[Build System](/docs/build-system/)** - Multi-application build management
+- **[Configuration](/docs/configuration/)** - YAML-based configuration system
+- **[Flash System](/docs/flash-system/)** - ESP32 flashing and monitoring
+- **[Logging System](/docs/logging-system/)** - Log management and analysis
+- **[Advanced Topics](/docs/advanced/multi-version-idf/)** - Advanced features and utilities
 
 ## 🎯 Perfect For
 
@@ -74,7 +74,7 @@ Explore our comprehensive documentation:
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](contributing/) for details.
+We welcome contributions! See our [Contributing Guide](/docs/contributing/) for details.
 
 ## 📄 License
 
@@ -82,4 +82,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 
-**Ready to get started?** Check out our [Quick Start Guide](getting-started/) or browse the [Examples](examples/) to see the tools in action!
+**Ready to get started?** Check out our [Quick Start Guide](/docs/getting-started/) or browse the [Examples](/docs/examples/) to see the tools in action!
