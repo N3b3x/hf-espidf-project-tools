@@ -1,0 +1,3 @@
+[submodule "scripts"]
+	path = scripts
+	url = https://github.com/n3b3x/hf-espidf-project-tools.git
