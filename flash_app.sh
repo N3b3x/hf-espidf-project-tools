@@ -134,21 +134,36 @@ show_help() {
 }
 
 # Configuration
-APP_TYPE=${1:-$CONFIG_DEFAULT_APP}
-BUILD_TYPE=${2:-$CONFIG_DEFAULT_BUILD_TYPE}
-IDF_VERSION=${3:-$CONFIG_DEFAULT_IDF_VERSION}  # NEW: ESP-IDF version parameter
-OPERATION=${4:-flash_monitor}
-
-# Parse arguments with operation-first approach
-OPERATION=""
-APP_TYPE=""
-BUILD_TYPE=""
-IDF_VERSION=""
-ENABLE_LOGGING=false
-CUSTOM_LOG_NAME=""
 LOG_DIR="$PROJECT_DIR/logs"
 
-# Parse arguments
+# Parse logging flags first and filter them out
+ENABLE_LOGGING=false
+CUSTOM_LOG_NAME=""
+FILTERED_ARGS=()
+
+i=1
+while [[ $i -le $# ]]; do
+    arg="${!i}"
+    case "$arg" in
+        --log)
+            ENABLE_LOGGING=true
+            # Check if next argument exists and is not another flag (custom log name)
+            if [[ $((i+1)) -le $# ]] && [[ "${!((i+1))}" != -* ]]; then
+                CUSTOM_LOG_NAME="${!((i+1))}"
+                ((i++))  # Skip the next argument since we consumed it
+            fi
+            ;;
+        *)
+            FILTERED_ARGS+=("$arg")
+            ;;
+    esac
+    ((i++))
+done
+
+# Replace $@ with filtered arguments for the rest of the script
+set -- "${FILTERED_ARGS[@]}"
+
+# Parse arguments (now without --log flags)
 case $# in
 0)
     # No arguments - use defaults
@@ -222,7 +237,7 @@ case $# in
     fi
     ;;
 4)
-    # Four arguments - check for logging flag
+    # Four arguments
     if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
         # Operation-first format: operation app build_type idf_version
         OPERATION="$1"
@@ -239,59 +254,9 @@ case $# in
         IDF_VERSION="$3"
     fi
     ;;
-5)
-    # Five arguments - check for logging flag
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
-        # Operation-first format: operation app build_type idf_version --log
-        OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
-            APP_TYPE="$2"
-            BUILD_TYPE="$3"
-            IDF_VERSION="$4"
-        fi
-        if [ "$5" = "--log" ]; then
-            ENABLE_LOGGING=true
-        fi
-    else
-        # App-first format: app build_type idf_version operation --log
-        OPERATION="$4"
-        APP_TYPE="$1"
-        BUILD_TYPE="$2"
-        IDF_VERSION="$3"
-        if [ "$5" = "--log" ]; then
-            ENABLE_LOGGING=true
-        fi
-    fi
-    ;;
-6)
-    # Six arguments - check for logging flag and custom name
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
-        # Operation-first format: operation app build_type idf_version --log name
-        OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
-            APP_TYPE="$2"
-            BUILD_TYPE="$3"
-            IDF_VERSION="$4"
-        fi
-        if [ "$5" = "--log" ]; then
-            ENABLE_LOGGING=true
-            CUSTOM_LOG_NAME="$6"
-        fi
-    else
-        # App-first format: app build_type idf_version operation --log name
-        OPERATION="$4"
-        APP_TYPE="$1"
-        BUILD_TYPE="$2"
-        IDF_VERSION="$3"
-        if [ "$5" = "--log" ]; then
-            ENABLE_LOGGING=true
-            CUSTOM_LOG_NAME="$6"
-        fi
-    fi
-    ;;
 *)
-    echo "ERROR: Too many arguments"
-    print_usage
+    echo "ERROR: Too many arguments (after filtering --log flags)"
+    echo "Usage: ./flash_app.sh [operation] [app] [build_type] [idf_version] [--log [name]]"
     exit 1
     ;;
 esac
