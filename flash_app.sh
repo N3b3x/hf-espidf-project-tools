@@ -405,7 +405,7 @@ cd "$PROJECT_DIR"
 
 # Set build directory using configuration (same logic as build_app.sh)
 if [ "$OPERATION" != "monitor" ]; then
-    BUILD_DIR=$(get_build_directory "$APP_TYPE" "$BUILD_TYPE")
+    BUILD_DIR=$(get_build_directory "$APP_TYPE" "$BUILD_TYPE" "$IDF_TARGET" "$IDF_VERSION")
     echo "Build directory: $BUILD_DIR"
 
     # Get project information using configuration

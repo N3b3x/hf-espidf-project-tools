@@ -220,7 +220,7 @@ build_config:
       defines: ["NDEBUG"]
       assertions: false
   
-  build_directory_pattern: "build*{app_type}*{build_type}"
+  build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
   project_name_pattern: "esp32_project*{app_type}*app"
 ```
 
@@ -328,7 +328,7 @@ The build system automatically validates:
 ## - Debug symbols included
 ## - Verbose logging enabled
 ## - Assertions active
-## - Build artifacts in build_gpio_test_Debug/
+## - Build artifacts in builds/build-app-gpio_test-type-Debug-target-esp32c6-idf-release_v5_5/
 ```
 #### **2. Production Build**
 ```bash
@@ -339,7 +339,7 @@ The build system automatically validates:
 ## - Optimized binary size
 ## - Performance optimized
 ## - Minimal debug information
-## - Build artifacts in build_gpio_test_Release/
+## - Build artifacts in builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/
 ```
 #### **3. Portable Build Usage**
 ```bash
@@ -393,7 +393,7 @@ export PROJECT_PATH=/path/to/project
 
 #### **Build Directory Structure**
 ```
-build_gpio_test_Release/
+builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/
 ├── bootloader/           # Bootloader binary
 ├── partition-table/      # Partition table binary
 ├── gpio_test.bin        # Main application binary
@@ -537,7 +537,7 @@ idf.py --version
 ./build_app.sh gpio_test Release --clean
 
 ## Check build logs
-cat build_gpio_test_Release/build.log
+cat builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/build.log
 
 ## Verify toolchain
 idf.py set-target esp32c6
@@ -580,13 +580,13 @@ export IDF_VERBOSE=1
 #### **Log File Locations**
 ```bash
 ## Main build log
-cat build_gpio_test_Release/build.log
+cat builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/build.log
 
 ## ESP-IDF build log
-cat build_gpio_test_Release/log/build.log
+cat builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/log/build.log
 
 ## CMake configuration log
-cat build_gpio_test_Release/log/cmake.log
+cat builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/log/cmake.log
 ```
 #### **Common Log Patterns**
 - **Configuration Errors**: Look for "ERROR:" or "FATAL:" messages

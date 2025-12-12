@@ -675,8 +675,8 @@ get_build_directory() {
         build_dir_name="build-app-${app_type}-type-${build_type}-target-${target}-idf-${sanitized_idf_version}"
     fi
     
-    # Always return absolute path relative to project directory
-    echo "$PROJECT_DIR/$build_dir_name"
+    # Always return absolute path relative to project directory, placing builds in builds/ subdirectory
+    echo "$PROJECT_DIR/builds/$build_dir_name"
 }
 
 # Get project name pattern
@@ -926,6 +926,7 @@ parse_build_directory() {
     
     # Extract all components using hyphen-prefix format
     # Handle the format: build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}
+    # Note: basename() strips any path prefix, so we parse the directory name itself
     
     # Extract app_type from app-{value}-type format
     # Handle hyphenated app names by capturing everything between app- and -type
@@ -983,7 +984,12 @@ list_build_directories() {
     local project_dir="${1:-.}"
     
     echo "=== Build Directory Analysis ==="
-    for dir in "$project_dir"/build-*; do
+    # Look in builds/ directory if it exists, otherwise fall back to root for backward compatibility
+    local search_path="$project_dir/builds"
+    if [[ ! -d "$search_path" ]]; then
+        search_path="$project_dir"
+    fi
+    for dir in "$search_path"/build-*; do
         if [[ -d "$dir" ]]; then
             local dirname=$(basename "$dir")
             echo ""

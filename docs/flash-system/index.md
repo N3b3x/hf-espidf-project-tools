@@ -400,7 +400,7 @@ done
 #### **2. Conditional Flash Operations**
 ```bash
 ## Flash only if build is newer
-if [ "build_gpio_test_Release/gpio_test.bin" -nt "last_flash" ]; then
+if [ "builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/gpio_test.bin" -nt "last_flash" ]; then
     ./flash_app.sh flash gpio_test Release --log
     touch last_flash
 fi
@@ -483,7 +483,7 @@ sudo nano /etc/udev/rules.d/99-esp32.rules
 ./detect_ports.sh --test-connection
 
 ## Verify firmware file
-ls -la build_gpio_test_Release/*.bin
+ls -la builds/build-app-gpio_test-type-Release-target-esp32c6-idf-release_v5_5/*.bin
 
 ## Check device mode
 ./flash_app.sh monitor --log flash_debug

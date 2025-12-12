@@ -277,7 +277,7 @@ build_config:
       stack_usage: false
 
   # Build system patterns
-  build_directory_pattern: "build*{app_type}*{build_type}"
+  build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
   project_name_pattern: "esp32_project*{app_type}*app"
   
   # Build optimization
@@ -619,12 +619,12 @@ get_project_name() {
 ## Get build directory pattern
 get_build_directory_pattern() {
     if check_yq; then
-        run_yq '.build_config.build_directory_pattern' -r 2>/dev/null || echo "build*{app_type}*{build_type}"
+        run_yq '.build_config.build_directory_pattern' -r 2>/dev/null || echo "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
     else
         # Fallback: extract pattern
         grep -A 20 "build_config:" "$CONFIG_FILE" | \
             grep "build_directory_pattern:" | \
-            sed 's/.*build_directory_pattern: *"*\([^"]*\)"*.*/\1/' || echo "build*{app_type}*{build_type}"
+            sed 's/.*build_directory_pattern: *"*\([^"]*\)"*.*/\1/' || echo "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
     fi
 }
 ```
@@ -1326,7 +1326,7 @@ build_config:
       stack_usage: false
       sanitizers: []
 
-  build_directory_pattern: "build*{app_type}*{build_type}*{idf_version}"
+  build_directory_pattern: "build-app-{app_type}-type-{build_type}-target-{target}-idf-{idf_version}"
   project_name_pattern: "esp32*{app_type}*app"
   
   ccache_enabled: true

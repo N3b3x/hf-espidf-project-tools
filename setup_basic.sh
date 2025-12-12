@@ -408,6 +408,7 @@ EOF
 print_status "Creating .gitignore..."
 cat > .gitignore << 'EOF'
 # Build directories
+builds/
 build*/
 build-*/
 
