@@ -230,6 +230,12 @@ Works with the [ESP-IDF CI Tools](https://github.com/N3b3x/hf-espidf-ci-tools) f
 - **[Configuration](https://n3b3x.github.io/hf-espidf-project-tools/docs/configuration/)** - YAML configuration
 - **[Examples](https://n3b3x.github.io/hf-espidf-project-tools/docs/examples/)** - Real-world examples
 
+## 🧪 **Testing**
+
+- **[Test Scripts](tests/)** - Test suite for script functionality
+  - `test_tab_completion.sh` - Comprehensive tab completion tests
+  - `demo_tab_completion.sh` - Interactive tab completion demo
+
 ## 🤝 **Contributing**
 
 Contributions welcome! See our [Contributing Guide](https://n3b3x.github.io/hf-espidf-project-tools/docs/contributing/) for details.
