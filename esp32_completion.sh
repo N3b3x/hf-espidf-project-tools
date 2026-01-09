@@ -112,7 +112,7 @@ _get_build_types() {
 }
 
 _get_flash_operations() {
-    echo "flash monitor flash_monitor erase_flash read_flash"
+    echo "flash monitor flash_monitor erase_flash read_flash ports"
 }
 
 _get_common_flags() {
@@ -120,12 +120,33 @@ _get_common_flags() {
 }
 
 _get_flash_flags() {
-    echo "$(_get_common_flags) --log --port --baud"
+    echo "$(_get_common_flags) --log --port -p --baud"
 }
 
 _get_serial_ports() {
-    # Auto-discover available serial ports
-    ls /dev/ttyUSB* /dev/ttyACM* 2>/dev/null || echo "/dev/ttyUSB0"
+    # Auto-discover available serial ports (ESP32 devices)
+    local ports=()
+    
+    # Linux: Check ttyACM* (ESP32-C6, S3) and ttyUSB* (older ESP32 with CP210x/CH340)
+    for port in /dev/ttyACM* /dev/ttyUSB*; do
+        if [ -e "$port" ]; then
+            ports+=("$port")
+        fi
+    done
+    
+    # macOS: Check cu.* devices
+    for port in /dev/cu.usbmodem* /dev/cu.usbserial* /dev/cu.SLAB_USBtoUART* /dev/cu.CP210* /dev/cu.CH340*; do
+        if [ -e "$port" ]; then
+            ports+=("$port")
+        fi
+    done
+    
+    if [ ${#ports[@]} -gt 0 ]; then
+        echo "${ports[@]}"
+    else
+        # Fallback for completion to work even if no devices connected
+        echo "/dev/ttyACM0 /dev/ttyUSB0"
+    fi
 }
 
 _get_baud_rates() {
@@ -242,7 +263,7 @@ _flash_app_completion() {
             COMPREPLY=($(compgen -d -- "$cur"))
             return 0
             ;;
-        --port)
+        --port|-p)
             COMPREPLY=($(compgen -W "$(_get_serial_ports)" -- "$cur"))
             return 0
             ;;
@@ -269,10 +290,10 @@ _flash_app_completion() {
     local i
     for ((i=1; i<COMP_CWORD; i++)); do
         case "${COMP_WORDS[i]}" in
-            --*) 
+            --*|-p) 
                 # Skip flags and their arguments
                 case "${COMP_WORDS[i]}" in
-                    --project-path|--port|--baud|--log)
+                    --project-path|--port|-p|--baud|--log)
                         ((i++)) # Skip the flag argument
                         ;;
                 esac
@@ -302,6 +323,10 @@ _flash_app_completion() {
                     # Operation specified, complete with app types
                     opts=$(_get_build_app_types "$script_dir")
                     COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+                    ;;
+                ports)
+                    # ports command takes no additional arguments
+                    COMPREPLY=()
                     ;;
                 *)
                     # App type specified, complete with build types

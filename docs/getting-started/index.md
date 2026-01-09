@@ -147,6 +147,8 @@ my-esp-idf-project/
 - **Flash to ESP32:** `./scripts/flash_app.sh flash <app_type> <build_type>`
 - **Monitor output:** `./scripts/flash_app.sh monitor`
 - **List apps:** `./scripts/build_app.sh list`
+- **List ESP32 devices:** `./scripts/flash_app.sh ports`
+- **Flash to specific device:** `./scripts/flash_app.sh --port /dev/ttyACM1 flash <app_type> <build_type>`
 
 ## 🎯 Next Steps
 

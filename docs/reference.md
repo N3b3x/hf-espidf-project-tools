@@ -30,6 +30,13 @@ Reference materials, examples, and troubleshooting guides for the HardFOC ESP-ID
 
 # Monitor output
 ./scripts/flash_app.sh monitor
+
+# List available ESP32 devices
+./scripts/flash_app.sh ports
+
+# Flash to specific device (when multiple connected)
+./scripts/flash_app.sh --port /dev/ttyACM1 flash <app_type> <build_type>
+./scripts/flash_app.sh -p /dev/ttyUSB0 monitor
 ```
 
 ### Configuration

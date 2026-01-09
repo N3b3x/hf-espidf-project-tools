@@ -15,7 +15,7 @@ The core systems provide the fundamental functionality for ESP-IDF development w
 
 - **[Build System](/docs/build-system/)** - Multi-application build management
 - **[Configuration System](/docs/configuration/)** - YAML-based configuration management
-- **[Flash System](/docs/flash-system/)** - ESP32 flashing and monitoring
+- **[Flash System](/docs/flash-system/)** - ESP32 flashing, monitoring, and multi-device support
 - **[Logging System](/docs/logging-system/)** - Log management and analysis
 
 ## Quick Start

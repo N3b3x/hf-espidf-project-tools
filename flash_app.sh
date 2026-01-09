@@ -10,20 +10,33 @@
 
 set -e  # Exit on any error
 
-# Parse --app-config flag first (before other argument parsing)
+# Parse --project-path and --port flags first (before other argument parsing)
 FILTERED_ARGS=()
+EXPLICIT_PORT=""
 i=1
 while [[ $i -le $# ]]; do
     arg="${!i}"
+    next_i=$((i+1))
     case "$arg" in
         --project-path)
             # Check if next argument exists and is not another flag
-            if [[ $((i+1)) -le $# ]] && [[ "${!((i+1))}" != -* ]]; then
-                PROJECT_PATH="${!((i+1))}"
+            if [[ $next_i -le $# ]] && [[ "${!next_i}" != -* ]]; then
+                PROJECT_PATH="${!next_i}"
                 ((i++))  # Skip the next argument since we consumed it
             else
                 echo "ERROR: --project-path requires a path argument" >&2
                 echo "Usage: --project-path /path/to/project" >&2
+                exit 1
+            fi
+            ;;
+        --port|-p)
+            # Check if next argument exists and is not another flag
+            if [[ $next_i -le $# ]] && [[ "${!next_i}" != -* ]]; then
+                EXPLICIT_PORT="${!next_i}"
+                ((i++))  # Skip the next argument since we consumed it
+            else
+                echo "ERROR: --port requires a port path argument" >&2
+                echo "Usage: --port /dev/ttyACM0" >&2
                 exit 1
             fi
             ;;
@@ -59,6 +72,7 @@ show_help() {
     echo "  monitor [app] [build_type] [idf_version]   - Monitor existing firmware"
     echo "  size [app] [build_type] [idf_version]      - Show firmware size information"
     echo "  list                                        - List available apps and build types"
+    echo "  ports                                       - List available ESP32 serial ports"
     echo ""
     echo "ARGUMENT PATTERNS:"
     echo "  Operation-First Syntax (Recommended):"
@@ -77,12 +91,16 @@ show_help() {
     echo "    ./flash_app.sh gpio_test Release                  # App + build type (defaults: flash_monitor)"
     echo ""
     echo "OPTIONS:"
-    echo "  --project-path <path>                             - Path to project directory (allows scripts to be placed anywhere)"
+    echo "  --port, -p <port>                                  - Specify ESP32 serial port (e.g., /dev/ttyACM0)"
+    echo "  --project-path <path>                              - Path to project directory (allows scripts to be placed anywhere)"
     echo "  --log [log_name]                                   - Enable logging with optional custom name"
     echo "  -h, --help                                         - Show this help message"
     echo ""
     echo "ENVIRONMENT VARIABLES:"
-    echo "  PROJECT_PATH                                       - Path to project directory (optional)"
+    echo "  ESPPORT                                             - ESP32 serial port (e.g., /dev/ttyACM0)"
+    echo "    - Overrides auto-detected port"
+    echo "    - Example: ESPPORT=/dev/ttyACM1 ./flash_app.sh flash"
+    echo "  PROJECT_PATH                                        - Path to project directory (optional)"
     echo "    - If set, uses this project directory instead of default location"
     echo "    - Allows scripts to be placed anywhere while finding correct project"
     echo "    - Example: PROJECT_PATH=/path/to/project ./flash_app.sh"
@@ -120,8 +138,15 @@ show_help() {
     echo "  ./flash_app.sh gpio_test                          # Defaults: Release flash_monitor"
     echo "  ./flash_app.sh gpio_test Release                  # Defaults: flash_monitor"
     echo ""
+    echo "  # Multi-device usage (when multiple ESP32s connected)"
+    echo "  ./flash_app.sh ports                              # List all available ESP32 serial ports"
+    echo "  ./flash_app.sh --port /dev/ttyACM1 flash          # Flash to specific device"
+    echo "  ./flash_app.sh -p /dev/ttyUSB0 monitor            # Monitor specific device"
+    echo "  ESPPORT=/dev/ttyACM1 ./flash_app.sh flash         # Use environment variable"
+    echo ""
     echo "  # Information commands"
     echo "  ./flash_app.sh list                               # List all available apps"
+    echo "  ./flash_app.sh ports                              # List available ESP32 devices"
     echo "  ./flash_app.sh --help                             # Show this help"
     echo ""
     echo "DEFAULTS:"
@@ -174,10 +199,10 @@ case $# in
     ;;
 1)
     # One argument - could be operation or app type
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
+    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list|ports)$ ]]; then
         # It's an operation
         OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
+        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ] && [ "$OPERATION" != "ports" ]; then
             # Flash and size operations need app, build type, and IDF version
             APP_TYPE=$CONFIG_DEFAULT_APP
             BUILD_TYPE=$CONFIG_DEFAULT_BUILD_TYPE
@@ -193,10 +218,10 @@ case $# in
     ;;
 2)
     # Two arguments
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
+    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list|ports)$ ]]; then
         # First is operation, second is app type
         OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
+        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ] && [ "$OPERATION" != "ports" ]; then
             APP_TYPE="$2"
             BUILD_TYPE=$CONFIG_DEFAULT_BUILD_TYPE
             IDF_VERSION=$CONFIG_DEFAULT_IDF_VERSION
@@ -211,17 +236,17 @@ case $# in
     ;;
 3)
     # Three arguments
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
+    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list|ports)$ ]]; then
         # First is operation, second is app type, third is build type
         OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
+        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ] && [ "$OPERATION" != "ports" ]; then
             APP_TYPE="$2"
             BUILD_TYPE="$3"
             IDF_VERSION=$CONFIG_DEFAULT_IDF_VERSION
         fi
     else
         # Check if third argument is an operation
-        if [[ "$3" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
+        if [[ "$3" =~ ^(flash|flash_monitor|monitor|size|list|ports)$ ]]; then
             # App-first format: app build_type operation
             OPERATION="$3"
             APP_TYPE="$1"
@@ -238,10 +263,10 @@ case $# in
     ;;
 4)
     # Four arguments
-    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list)$ ]]; then
+    if [[ "$1" =~ ^(flash|flash_monitor|monitor|size|list|ports)$ ]]; then
         # Operation-first format: operation app build_type idf_version
         OPERATION="$1"
-        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ]; then
+        if [ "$OPERATION" != "monitor" ] && [ "$OPERATION" != "list" ] && [ "$OPERATION" != "ports" ]; then
             APP_TYPE="$2"
             BUILD_TYPE="$3"
             IDF_VERSION="$4"
@@ -307,6 +332,99 @@ if [ "$OPERATION" = "list" ]; then
     echo "    ./flash_app.sh flash --log                                              # Flash with defaults and logging"
     echo "    ./flash_app.sh monitor --log                                            # Monitor with logging"
     echo "    ./flash_app.sh monitor --log debug_session                              # Monitor with custom log name"
+    exit 0
+fi
+
+# Handle ports command - list available ESP32 devices
+if [ "$OPERATION" = "ports" ]; then
+    echo "=== Available ESP32 Serial Ports ==="
+    echo ""
+    
+    # Detect OS
+    case "$(uname -s)" in
+        Darwin*)    OS_TYPE="macos" ;;
+        Linux*)     OS_TYPE="linux" ;;
+        *)          OS_TYPE="unknown" ;;
+    esac
+    
+    # Find all ESP32 devices
+    declare -a PORTS=()
+    declare -a PORT_INFO=()
+    
+    case "$OS_TYPE" in
+        "linux")
+            for port in /dev/ttyACM* /dev/ttyUSB*; do
+                if [ -e "$port" ]; then
+                    PORTS+=("$port")
+                    # Get device info using udevadm if available
+                    if command -v udevadm &> /dev/null; then
+                        vendor=$(udevadm info --name="$port" 2>/dev/null | grep "ID_VENDOR=" | cut -d= -f2)
+                        model=$(udevadm info --name="$port" 2>/dev/null | grep "ID_MODEL=" | cut -d= -f2)
+                        serial=$(udevadm info --name="$port" 2>/dev/null | grep "ID_SERIAL_SHORT=" | cut -d= -f2)
+                        if [ -n "$model" ]; then
+                            PORT_INFO+=("$vendor $model${serial:+ (S/N: $serial)}")
+                        else
+                            PORT_INFO+=("Unknown device")
+                        fi
+                    else
+                        PORT_INFO+=("(install udevadm for device info)")
+                    fi
+                fi
+            done
+            ;;
+        "macos")
+            for pattern in "usbmodem" "usbserial" "SLAB_USBtoUART" "CP210" "CH340"; do
+                for port in /dev/cu.$pattern* /dev/tty.$pattern*; do
+                    if [ -e "$port" ]; then
+                        PORTS+=("$port")
+                        PORT_INFO+=("USB Serial Device")
+                    fi
+                done
+            done
+            ;;
+    esac
+    
+    if [ ${#PORTS[@]} -eq 0 ]; then
+        echo "No ESP32 devices found!"
+        echo ""
+        echo "Troubleshooting:"
+        echo "  1. Check if device is connected via USB"
+        echo "  2. Try: ls /dev/ttyACM* /dev/ttyUSB*"
+        echo "  3. Check: dmesg | tail (after connecting)"
+        echo "  4. Run: ./detect_ports.sh --verbose"
+        exit 1
+    fi
+    
+    echo "Found ${#PORTS[@]} device(s):"
+    echo ""
+    
+    for i in "${!PORTS[@]}"; do
+        port="${PORTS[$i]}"
+        info="${PORT_INFO[$i]}"
+        access=""
+        
+        # Check permissions
+        if [ -r "$port" ] && [ -w "$port" ]; then
+            access="✓ accessible"
+        else
+            access="✗ permission denied (run: sudo chmod 666 $port)"
+        fi
+        
+        printf "  [%d] %s\n" "$((i+1))" "$port"
+        printf "      Device: %s\n" "$info"
+        printf "      Status: %s\n" "$access"
+        echo ""
+    done
+    
+    echo "Usage examples:"
+    echo "  ./flash_app.sh --port ${PORTS[0]} flash              # Flash to first device"
+    if [ ${#PORTS[@]} -gt 1 ]; then
+        echo "  ./flash_app.sh --port ${PORTS[1]} flash              # Flash to second device"
+    fi
+    echo "  ./flash_app.sh -p ${PORTS[0]} monitor                # Monitor first device"
+    echo "  ESPPORT=${PORTS[0]} ./flash_app.sh flash             # Use environment variable"
+    echo ""
+    echo "Tip: Use tab completion with --port for quick selection!"
     exit 0
 fi
 
@@ -414,8 +532,9 @@ if [ "$OPERATION" != "monitor" ]; then
     echo "Expected binary: $BIN_FILE"
     echo "Project name: $PROJECT_NAME"
 else
-    # Monitor operation - use default build directory for port detection
-    BUILD_DIR="build_monitor_only"
+    # Monitor operation - no build directory needed for monitor-only
+    # idf.py monitor only needs a serial port, not a build directory
+    BUILD_DIR=""
     PROJECT_NAME="monitor_only"
     BIN_FILE=""
     echo "Monitor operation - no build directory needed"
@@ -780,65 +899,123 @@ cleanup_old_logs() {
 
 # Find and configure the best available port (skip for size operations)
 if [ "$OPERATION" != "size" ]; then
-    echo "Searching for ESP32 devices..."
-    BEST_PORT=$(find_best_port)
-
-    if [ -z "$BEST_PORT" ]; then
-        echo ""
-        echo "ERROR: No suitable serial ports found!"
-        echo ""
-        echo "Troubleshooting steps:"
-        echo "1. Ensure your ESP32 device is connected via USB"
-        echo "2. Check if the device appears in your system:"
-        
-        case "$(detect_os)" in
-            "macos")
-                echo "   - System Information > USB"
-                echo "   - Terminal: ls /dev/cu.* /dev/tty.*"
-                echo "   - Look for usbmodem, usbserial, or similar devices"
-                ;;
-            "linux")
-                echo "   - lsusb (if available)"
-                echo "   - ls /dev/ttyACM* /dev/ttyUSB*"
-                echo "   - dmesg | tail (after connecting device)"
-                ;;
-        esac
-        
-        echo "3. Try disconnecting and reconnecting the device"
-        echo "4. Check if you need to install USB-to-UART drivers"
-        echo "5. Ensure the device is not being used by another application"
-        echo ""
-        
-        # Offer manual port specification
-        echo "You can also try manually specifying a port:"
-        echo "  export ESPPORT=/dev/your_port_here"
-        echo ""
-        echo "Or run the port detection script for help:"
-        echo "  ./examples/esp32/scripts/detect_ports.sh --verbose --test-connection"
-        echo ""
-        
-        # Check if ESPPORT is already set
-        if [ -n "$ESPPORT" ]; then
-            echo "ESPPORT is currently set to: $ESPPORT"
-            if [ -e "$ESPPORT" ]; then
-                echo "This port exists. Would you like to use it? (y/n)"
-                read -r response
-                if [[ "$response" =~ ^[Yy]$ ]]; then
-                    BEST_PORT="$ESPPORT"
-                    echo "Using manually specified port: $BEST_PORT"
-                else
-                    exit 1
-                fi
-            else
-                echo "WARNING: ESPPORT is set to $ESPPORT but this port does not exist"
-                exit 1
-            fi
-        else
+    
+    # Priority 1: Explicit port from --port flag
+    if [ -n "$EXPLICIT_PORT" ]; then
+        echo "Using explicitly specified port: $EXPLICIT_PORT"
+        if [ ! -e "$EXPLICIT_PORT" ]; then
+            echo "ERROR: Specified port does not exist: $EXPLICIT_PORT"
+            echo ""
+            echo "Available ports:"
+            ./flash_app.sh ports 2>/dev/null || ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null || echo "  No ports found"
             exit 1
+        fi
+        BEST_PORT="$EXPLICIT_PORT"
+    
+    # Priority 2: ESPPORT environment variable
+    elif [ -n "$ESPPORT" ]; then
+        echo "Using ESPPORT environment variable: $ESPPORT"
+        if [ ! -e "$ESPPORT" ]; then
+            echo "ERROR: ESPPORT port does not exist: $ESPPORT"
+            echo ""
+            echo "Available ports:"
+            ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null || echo "  No ports found"
+            exit 1
+        fi
+        BEST_PORT="$ESPPORT"
+    
+    # Priority 3: Auto-detect with interactive selection for multiple devices
+    else
+        echo "Searching for ESP32 devices..."
+        
+        # Get all available devices
+        all_devices=($(find_esp32_devices))
+        
+        if [ ${#all_devices[@]} -eq 0 ]; then
+            echo ""
+            echo "ERROR: No suitable serial ports found!"
+            echo ""
+            echo "Troubleshooting steps:"
+            echo "1. Ensure your ESP32 device is connected via USB"
+            echo "2. Check if the device appears in your system:"
+            
+            case "$(detect_os)" in
+                "macos")
+                    echo "   - System Information > USB"
+                    echo "   - Terminal: ls /dev/cu.* /dev/tty.*"
+                    echo "   - Look for usbmodem, usbserial, or similar devices"
+                    ;;
+                "linux")
+                    echo "   - lsusb (if available)"
+                    echo "   - ls /dev/ttyACM* /dev/ttyUSB*"
+                    echo "   - dmesg | tail (after connecting device)"
+                    ;;
+            esac
+            
+            echo "3. Try disconnecting and reconnecting the device"
+            echo "4. Check if you need to install USB-to-UART drivers"
+            echo "5. Ensure the device is not being used by another application"
+            echo ""
+            
+            echo "You can also manually specify a port:"
+            echo "  ./flash_app.sh --port /dev/ttyACM0 flash"
+            echo "  export ESPPORT=/dev/your_port_here"
+            echo ""
+            echo "Run ./flash_app.sh ports to see all available devices"
+            exit 1
+        
+        elif [ ${#all_devices[@]} -eq 1 ]; then
+            # Only one device found - use it automatically
+            BEST_PORT="${all_devices[0]}"
+            echo "Found single ESP32 device: $BEST_PORT"
+        
+        else
+            # Multiple devices found - show selection
+            echo ""
+            echo "Multiple ESP32 devices found!"
+            echo ""
+            
+            for i in "${!all_devices[@]}"; do
+                dev_port="${all_devices[$i]}"
+                dev_info=""
+                
+                # Get device info on Linux
+                if command -v udevadm &> /dev/null; then
+                    dev_model=$(udevadm info --name="$dev_port" 2>/dev/null | grep "ID_MODEL=" | cut -d= -f2)
+                    if [ -n "$dev_model" ]; then
+                        dev_info=" ($dev_model)"
+                    fi
+                fi
+                
+                printf "  [%d] %s%s\n" "$((i+1))" "$dev_port" "$dev_info"
+            done
+            
+            echo ""
+            echo "Options:"
+            echo "  - Enter a number (1-${#all_devices[@]}) to select a device"
+            echo "  - Press Enter to use the first device"
+            echo "  - Use --port flag to skip this prompt: ./flash_app.sh --port /dev/ttyACM1 flash"
+            echo ""
+            
+            # Read user selection with timeout
+            read -t 30 -p "Select device [1]: " selection
+            
+            if [ -z "$selection" ]; then
+                selection=1
+            fi
+            
+            # Validate selection
+            if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#all_devices[@]} ]; then
+                BEST_PORT="${all_devices[$((selection-1))]}"
+                echo "Selected: $BEST_PORT"
+            else
+                echo "Invalid selection. Using first device: ${all_devices[0]}"
+                BEST_PORT="${all_devices[0]}"
+            fi
         fi
     fi
 
-    echo "Detected port: $BEST_PORT"
+    echo "Using port: $BEST_PORT"
 
     # Validate the port
     if ! validate_port "$BEST_PORT"; then
@@ -887,15 +1064,38 @@ case $OPERATION in
     monitor)
         echo "Starting monitor on $BEST_PORT..."
         echo "Press Ctrl+] to exit monitor"
+        
+        # Find an existing build directory for symbol decoding (optional but helpful)
+        MONITOR_BUILD_DIR=""
+        if [ -d "$PROJECT_DIR/builds" ]; then
+            # Find the most recently modified build directory
+            MONITOR_BUILD_DIR=$(find "$PROJECT_DIR/builds" -maxdepth 1 -type d -name "build-*" -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
+        fi
+        
+        if [ -n "$MONITOR_BUILD_DIR" ] && [ -d "$MONITOR_BUILD_DIR" ]; then
+            echo "Using build directory for symbol decoding: $(basename "$MONITOR_BUILD_DIR")"
+            MONITOR_CMD="idf.py -B \"$MONITOR_BUILD_DIR\" -p \"$BEST_PORT\" monitor"
+        else
+            echo "No existing build found - using basic serial monitor (no symbol decoding)"
+            # Use idf_monitor.py directly for basic monitoring without project configuration
+            if [ -n "$IDF_PATH" ] && [ -f "$IDF_PATH/tools/idf_monitor.py" ]; then
+                MONITOR_CMD="python \"$IDF_PATH/tools/idf_monitor.py\" -p \"$BEST_PORT\""
+            else
+                # Fallback to simple serial monitor if idf_monitor.py not found
+                echo "Note: For full symbol decoding, build an app first with: ./build_app.sh <app> <type>"
+                MONITOR_CMD="python -m serial.tools.miniterm \"$BEST_PORT\" 115200"
+            fi
+        fi
+        
         if [ "$ENABLE_LOGGING" = true ]; then
             echo "Monitor output will be logged to: $LOG_FILEPATH"
-            echo "Note: Using tee to capture output (--log-file not available in this ESP-IDF version)"
-            if ! idf.py -B "$BUILD_DIR" -p "$BEST_PORT" monitor 2>&1 | tee -a "$LOG_FILEPATH"; then
+            echo "Note: Using tee to capture output"
+            if ! eval $MONITOR_CMD 2>&1 | tee -a "$LOG_FILEPATH"; then
                 echo "ERROR: Monitor operation failed"
                 exit 1
             fi
         else
-            if ! idf.py -B "$BUILD_DIR" -p "$BEST_PORT" monitor; then
+            if ! eval $MONITOR_CMD; then
                 echo "ERROR: Monitor operation failed"
                 exit 1
             fi

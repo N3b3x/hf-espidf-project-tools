@@ -76,24 +76,72 @@ This guide helps you resolve common issues with the HardFOC ESP-IDF CI Tools.
 **Problem**: Port detection script finds no devices
 
 **Solutions**:
-1. **Check USB connection** and drivers
-2. **Verify device permissions** on Linux
-3. **Try different USB port** or cable
-4. **Check device manager** for driver issues
+1. **List available devices** with detailed info:
+   ```bash
+   ./scripts/flash_app.sh ports
+   ```
+2. **Check USB connection** and drivers
+3. **Verify device permissions** on Linux
+4. **Try different USB port** or cable
+5. **Check device manager** for driver issues
 
 #### Permission Denied
 **Problem**: "Permission denied" when accessing serial ports
 
 **Solutions**:
-1. **Add user to dialout group** (Linux):
+1. **Check device status** using the ports command:
+   ```bash
+   ./scripts/flash_app.sh ports
+   # Look for "✗ permission denied" status
+   ```
+2. **Add user to dialout group** (Linux):
    ```bash
    sudo usermod -a -G dialout $USER
    ```
-2. **Check device permissions**:
+3. **Quick fix** for immediate access:
    ```bash
-   ls -la /dev/ttyUSB*
+   sudo chmod 666 /dev/ttyACM0
    ```
-3. **Restart terminal** after group changes
+4. **Restart terminal** after group changes
+
+#### Multiple ESP32 Devices Connected
+**Problem**: Wrong device selected or interactive prompt appears in scripts
+
+**Solutions**:
+1. **List all devices** to identify the correct one:
+   ```bash
+   ./scripts/flash_app.sh ports
+   ```
+2. **Specify device explicitly** using `--port` flag:
+   ```bash
+   ./scripts/flash_app.sh --port /dev/ttyACM1 flash app_name Release
+   ./scripts/flash_app.sh -p /dev/ttyUSB0 monitor
+   ```
+3. **Set persistent preference** with environment variable:
+   ```bash
+   export ESPPORT=/dev/ttyACM1
+   ./scripts/flash_app.sh flash app_name Release
+   ```
+4. **For CI/scripts** - always use `--port` to avoid interactive prompts:
+   ```bash
+   # Non-interactive usage for automation
+   ./scripts/flash_app.sh --port /dev/ttyACM0 flash app_name Release
+   ```
+
+#### Flashing to Wrong Device
+**Problem**: Firmware flashed to incorrect ESP32 when multiple are connected
+
+**Solutions**:
+1. **Always use `ports` command first** to identify devices:
+   ```bash
+   ./scripts/flash_app.sh ports
+   # Note the serial numbers to identify each device
+   ```
+2. **Use explicit port selection**:
+   ```bash
+   ./scripts/flash_app.sh --port /dev/ttyACM1 flash app_name Release
+   ```
+3. **Label your devices** physically based on port/serial number
 
 ## 🛠️ Debugging
 
@@ -125,11 +173,17 @@ Test configurations locally:
 cd /examples/esp32
 ./scripts/build_app.sh validate your_app Release
 
-# Test port detection
-./scripts/detect_ports.sh
+# List available ESP32 devices with details
+./scripts/flash_app.sh ports
+
+# Test port detection with verbose output
+./scripts/detect_ports.sh --verbose
 
 # Test configuration loading
 ./scripts/config_loader.sh
+
+# Test flashing to specific device
+./scripts/flash_app.sh --port /dev/ttyACM0 monitor
 ```
 
 ## 📋 Diagnostic Checklist

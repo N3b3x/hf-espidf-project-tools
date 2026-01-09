@@ -122,24 +122,101 @@ sudo usermod -a -G tty $USER
 ```
 ### **Port Selection Logic**
 
-#### **Automatic Port Selection**
-When multiple ports are available, the system uses intelligent selection:
+#### **Port Priority System**
+The system uses a clear priority order for port selection:
 
 ```bash
 ## Priority order for port selection
-1. ESP32-specific USB identifiers (CP210x, CH340, FTDI)
-2. Previously used ports (from configuration)
-3. First available USB serial port
-4. Fallback to manual selection
+1. --port / -p flag      (highest priority - explicit selection)
+2. ESPPORT env variable  (persistent preference)
+3. Auto-detect:
+   - If 1 device found   → use it automatically (no prompt)
+   - If multiple found   → interactive selection prompt
 ```
-#### **Manual Port Override**
+
+#### **Listing Available Ports**
+Use the `ports` command to see all connected ESP32 devices with detailed information:
+
 ```bash
-## Override automatic port detection
-export ESPPORT="/dev/ttyUSB0"
+## List all available ESP32 devices
+./flash_app.sh ports
+
+## Example output:
+=== Available ESP32 Serial Ports ===
+
+Found 2 device(s):
+
+  [1] /dev/ttyACM0
+      Device: Espressif USB_JTAG_serial_debug_unit (S/N: FC:01:2C:FF:E4:DC)
+      Status: ✓ accessible
+
+  [2] /dev/ttyUSB0
+      Device: CP2102N USB_to_UART_Bridge_Controller
+      Status: ✓ accessible
+
+Usage examples:
+  ./flash_app.sh --port /dev/ttyACM0 flash
+  ./flash_app.sh -p /dev/ttyUSB0 monitor
+  ESPPORT=/dev/ttyACM0 ./flash_app.sh flash
+```
+
+#### **Explicit Port Selection**
+Use `--port` or `-p` flag to specify which device to use:
+
+```bash
+## Use --port flag (long form)
+./flash_app.sh --port /dev/ttyACM1 flash gpio_test Release
+./flash_app.sh --port /dev/ttyUSB0 flash_monitor gpio_test Debug
+
+## Use -p flag (short form)
+./flash_app.sh -p /dev/ttyACM0 monitor
+./flash_app.sh -p /dev/ttyUSB1 flash gpio_test Release --log
+```
+
+#### **Environment Variable Override**
+```bash
+## Set persistent port preference
+export ESPPORT="/dev/ttyACM1"
 ./flash_app.sh flash gpio_test Release
 
-## Specify port in command
-./flash_app.sh flash gpio_test Release --port /dev/ttyUSB1
+## Override for single command
+ESPPORT=/dev/ttyUSB0 ./flash_app.sh flash gpio_test Release
+```
+
+#### **Interactive Multi-Device Selection**
+When multiple ESP32 devices are detected and no port is explicitly specified:
+
+```bash
+## Automatic interactive selection
+./flash_app.sh flash gpio_test Release
+
+## Output when multiple devices found:
+Searching for ESP32 devices...
+
+Multiple ESP32 devices found!
+
+  [1] /dev/ttyACM0 (USB_JTAG_serial_debug_unit)
+  [2] /dev/ttyUSB0 (CP2102N)
+
+Options:
+  - Enter a number (1-2) to select a device
+  - Press Enter to use the first device
+  - Use --port flag to skip this prompt
+
+Select device [1]: _
+```
+
+#### **Single Device Auto-Selection**
+When only one ESP32 device is connected, it's automatically selected without prompting:
+
+```bash
+## Single device - no interaction needed
+./flash_app.sh flash gpio_test Release
+
+## Output:
+Searching for ESP32 devices...
+Found single ESP32 device: /dev/ttyACM0
+Using port: /dev/ttyACM0
 ```
 ## ⚡ **Flash Operations and Workflows**
 
@@ -151,6 +228,7 @@ export ESPPORT="/dev/ttyUSB0"
 - **`monitor`**: Monitor existing firmware (no flashing)
 - **`size`**: Show firmware size information and memory usage analysis
 - **`list`**: List available applications and configurations
+- **`ports`**: List available ESP32 serial ports with device information
 
 #### **2. Operation Syntax**
 The system supports both operation-first and legacy syntax:
@@ -391,10 +469,21 @@ export PROJECT_PATH=/path/to/project
 
 #### **1. Multi-Device Deployment**
 ```bash
-## Flash to multiple devices
-for port in /dev/ttyUSB0 /dev/ttyUSB1 /dev/ttyUSB2; do
-    export ESPPORT="$port"
-    ./flash_app.sh flash gpio_test Release --log "deploy*${port}"
+## List available devices first
+./flash_app.sh ports
+
+## Flash to specific device using --port flag
+./flash_app.sh --port /dev/ttyACM0 flash gpio_test Release --log
+./flash_app.sh --port /dev/ttyACM1 flash gpio_test Release --log
+
+## Flash to multiple devices using loop
+for port in /dev/ttyACM0 /dev/ttyACM1 /dev/ttyUSB0; do
+    ./flash_app.sh --port "$port" flash gpio_test Release --log "deploy_${port##*/}"
+done
+
+## Using environment variable
+for port in /dev/ttyACM0 /dev/ttyACM1; do
+    ESPPORT="$port" ./flash_app.sh flash gpio_test Release --log
 done
 ```
 #### **2. Conditional Flash Operations**
@@ -563,11 +652,18 @@ export IDF_VERBOSE=1
 ##   options      - Flash options (--log, --port, etc.)
 ```
 #### **Flash Options**
+- **`--port <port>`, `-p <port>`**: Specify ESP32 serial port explicitly (e.g., `/dev/ttyACM0`)
 - **`--log [name]`**: Enable logging with optional custom name
-- **`--port <port>`**: Override automatic port detection
-- **`--baud <rate>`**: Set custom baud rate for monitoring
-- **`--help`**: Show usage information
+- **`--project-path <path>`**: Path to project directory (allows scripts to be placed anywhere)
+- **`--help`, `-h`**: Show usage information
+
+#### **Commands**
+- **`flash`**: Flash firmware only
+- **`flash_monitor`**: Flash firmware and start monitoring (default)
+- **`monitor`**: Monitor existing firmware only
+- **`size`**: Show firmware size information
 - **`list`**: List available applications and configurations
+- **`ports`**: List available ESP32 serial ports with device info
 
 #### **Environment Variables**
 ```bash

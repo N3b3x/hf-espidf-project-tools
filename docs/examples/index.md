@@ -234,6 +234,69 @@ apps:
     ci_enabled: true
 ```
 
+## 🔌 Multi-Device Examples
+
+### Listing Available Devices
+
+```bash
+# List all connected ESP32 devices with details
+./scripts/flash_app.sh ports
+
+# Example output:
+=== Available ESP32 Serial Ports ===
+
+Found 2 device(s):
+
+  [1] /dev/ttyACM0
+      Device: Espressif USB_JTAG_serial_debug_unit (S/N: FC:01:2C:FF:E4:DC)
+      Status: ✓ accessible
+
+  [2] /dev/ttyUSB0
+      Device: CP2102N USB_to_UART_Bridge_Controller
+      Status: ✓ accessible
+```
+
+### Flashing to Specific Device
+
+```bash
+# Flash to specific device using --port flag
+./scripts/flash_app.sh --port /dev/ttyACM1 flash gpio_test Release
+
+# Use short form -p
+./scripts/flash_app.sh -p /dev/ttyUSB0 flash_monitor sensor_app Debug
+
+# Monitor specific device
+./scripts/flash_app.sh -p /dev/ttyACM0 monitor --log debug_session
+```
+
+### Multi-Device Deployment Script
+
+```bash
+#!/bin/bash
+# deploy_all.sh - Flash firmware to all connected devices
+
+# List and verify devices first
+./scripts/flash_app.sh ports
+
+# Flash to each device
+for port in /dev/ttyACM0 /dev/ttyACM1; do
+    echo "Flashing to $port..."
+    ./scripts/flash_app.sh --port "$port" flash gpio_test Release --log "deploy_${port##*/}"
+done
+```
+
+### CI/CD with Explicit Port
+
+```yaml
+# For CI environments - always specify port to avoid interactive prompts
+- name: Flash Firmware
+  run: |
+    cd examples/esp32
+    # Use first available device
+    PORT=$(ls /dev/ttyACM* 2>/dev/null | head -1)
+    ./scripts/flash_app.sh --port $PORT flash gpio_test Release
+```
+
 ## 🔍 Testing Examples
 
 ### Unit Testing

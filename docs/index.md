@@ -76,8 +76,9 @@ cd your-esp-idf-project
 - **🔧 Multi-Application Build System** - Build multiple applications from a single ESP-IDF project
 - **📋 Intelligent Configuration** - YAML-based configuration management with `app_config.yml`
 - **📱 ESP32 Flash System** - Automated port detection and firmware flashing
+- **🔌 Multi-Device Support** - Intelligent handling of multiple ESP32 devices with interactive selection
 - **📊 Comprehensive Logging** - Detailed build and development logs
-- **🔍 Port Detection** - Cross-platform ESP32 device identification
+- **🔍 Port Detection** - Cross-platform ESP32 device identification with device info display
 - **📚 Multi-Version ESP-IDF** - Support for multiple ESP-IDF versions
 - **🛠️ Development Scripts** - Build, flash, and utility management tools
 
