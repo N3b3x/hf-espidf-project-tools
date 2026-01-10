@@ -37,6 +37,19 @@ while [[ $i -le $# ]]; do
 				exit 1
 			fi
 			;;
+		--secret)
+			# Pairing secret for ESP-NOW (32 hex characters)
+			next_index=$((i+1))
+			if [[ $next_index -le $# ]] && [[ "${!next_index}" != -* ]]; then
+				PAIRING_SECRET_ARG="${!next_index}"
+				((i++))  # Skip the next argument since we consumed it
+			else
+				echo "ERROR: --secret requires a 32-character hex string" >&2
+				echo "Usage: --secret <32_hex_chars>" >&2
+				echo "Generate with: openssl rand -hex 16" >&2
+				exit 1
+			fi
+			;;
 		-h|--help)
 			HELP_REQUESTED=1
 			;;
@@ -80,6 +93,7 @@ print_usage() {
     echo "  --use-cache                            - Enable ccache for faster builds (default)"
     echo "  --no-cache                             - Disable ccache"
     echo "  --project-path <path>                  - Path to project directory (allows scripts to be placed anywhere)"
+    echo "  --secret <hex>                         - ESP-NOW pairing secret (32 hex chars, generate: openssl rand -hex 16)"
     echo "  -h, --help                             - Show this help message"
     echo ""
     echo "ARGUMENT PATTERNS:"
@@ -395,13 +409,96 @@ echo "Source file: $SOURCE_FILE"
 export APP_SOURCE_FILE="$SOURCE_FILE"
 echo "APP_SOURCE_FILE=$SOURCE_FILE"
 
+# =============================================================================
+# ESP-NOW PAIRING SECRET CONFIGURATION
+# =============================================================================
+# Load pairing secret from various sources (in priority order):
+#   1. --secret command line argument
+#   2. ESPNOW_PAIRING_SECRET environment variable
+#   3. secrets.local.yml file
+#   4. Auto-generate for Debug builds / Error for Release builds
+# =============================================================================
+
+load_pairing_secret() {
+    # Priority 1: Command line --secret argument
+    if [[ -n "$PAIRING_SECRET_ARG" ]]; then
+        echo "$PAIRING_SECRET_ARG"
+        return 0
+    fi
+    
+    # Priority 2: Environment variable
+    if [[ -n "$ESPNOW_PAIRING_SECRET" ]]; then
+        echo "$ESPNOW_PAIRING_SECRET"
+        return 0
+    fi
+    
+    # Priority 3: secrets.local.yml file
+    local secrets_file="$PROJECT_DIR/secrets.local.yml"
+    if [[ -f "$secrets_file" ]]; then
+        # Parse YAML to get the secret (simple grep-based approach)
+        local secret
+        secret=$(grep -E '^\s*espnow_pairing_secret:' "$secrets_file" 2>/dev/null | \
+                 sed 's/.*espnow_pairing_secret:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | \
+                 tr -d '[:space:]')
+        if [[ -n "$secret" && "$secret" != "YOUR_SECRET_HERE" ]]; then
+            echo "$secret"
+            return 0
+        fi
+    fi
+    
+    # No secret found
+    return 1
+}
+
+# Try to load the pairing secret
+PAIRING_SECRET=""
+if PAIRING_SECRET=$(load_pairing_secret); then
+    # Validate secret format (32 hex characters)
+    if [[ ! "$PAIRING_SECRET" =~ ^[0-9a-fA-F]{32}$ ]]; then
+        echo "ERROR: Invalid pairing secret format" >&2
+        echo "Secret must be exactly 32 hexadecimal characters" >&2
+        echo "Generate with: openssl rand -hex 16" >&2
+        exit 1
+    fi
+    echo "ESP-NOW pairing secret: configured (${PAIRING_SECRET:0:4}...${PAIRING_SECRET:28:4})"
+    SECRET_CMAKE_FLAG="-D ESPNOW_PAIRING_SECRET_HEX=\"$PAIRING_SECRET\""
+else
+    if [[ "$BUILD_TYPE" == "Release" ]]; then
+        echo ""
+        echo "========================================================"
+        echo "WARNING: No ESP-NOW pairing secret configured!"
+        echo "========================================================"
+        echo "For Release builds, a pairing secret is recommended."
+        echo ""
+        echo "Configure using one of these methods:"
+        echo "  1. Copy secrets.template.yml to secrets.local.yml"
+        echo "  2. Set ESPNOW_PAIRING_SECRET environment variable"
+        echo "  3. Use --secret <32_hex_chars> command line argument"
+        echo ""
+        echo "Generate a secret with: openssl rand -hex 16"
+        echo "========================================================"
+        echo ""
+        # Don't fail here - let the compiler decide based on NDEBUG
+    else
+        echo "ESP-NOW pairing secret: not configured (Debug build will use placeholder)"
+    fi
+    SECRET_CMAKE_FLAG=""
+fi
+
 # Configure and build with proper error handling
 echo "Configuring project for $IDF_TARGET..."
 
 # Change to project directory before running idf.py commands
 cd "$PROJECT_DIR"
 
-if ! idf.py -B "$BUILD_DIR" -D CMAKE_BUILD_TYPE="$BUILD_TYPE" -D BUILD_TYPE="$BUILD_TYPE" -D APP_TYPE="$APP_TYPE" -D APP_SOURCE_FILE="$SOURCE_FILE" -D IDF_CCACHE_ENABLE="$USE_CCACHE" reconfigure; then
+# Build the idf.py command with optional secret
+IDF_CMD="idf.py -B \"$BUILD_DIR\" -D CMAKE_BUILD_TYPE=\"$BUILD_TYPE\" -D BUILD_TYPE=\"$BUILD_TYPE\" -D APP_TYPE=\"$APP_TYPE\" -D APP_SOURCE_FILE=\"$SOURCE_FILE\" -D IDF_CCACHE_ENABLE=\"$USE_CCACHE\""
+if [[ -n "$SECRET_CMAKE_FLAG" ]]; then
+    IDF_CMD="$IDF_CMD $SECRET_CMAKE_FLAG"
+fi
+IDF_CMD="$IDF_CMD reconfigure"
+
+if ! eval "$IDF_CMD"; then
     echo "ERROR: Configuration failed"
     exit 1
 fi
