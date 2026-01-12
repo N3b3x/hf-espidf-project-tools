@@ -451,12 +451,35 @@ fi
 # Ensure ESP-IDF environment is sourced
 if [ -z "$IDF_PATH" ] || ! command -v idf.py &> /dev/null; then
     echo "ESP-IDF environment not found, attempting to source..."
-    if [ -f "$HOME/esp/esp-idf/export.sh" ]; then
-        source "$HOME/esp/esp-idf/export.sh"
-        echo "ESP-IDF environment sourced successfully"
-    else
-        echo "ERROR: ESP-IDF export.sh not found at $HOME/esp/esp-idf/export.sh"
-        echo "Please ensure ESP-IDF is installed and IDF_PATH is set"
+
+    # Prefer the ESP-IDF directory matching the requested version (when provided).
+    # Examples:
+    #   release/v5.5 -> $HOME/esp/esp-idf-release-v5.5
+    #   release/v5.5 -> $HOME/esp/esp-idf-release_v5.5 (alternate naming)
+    CANDIDATE_IDF_DIRS=()
+    if [ -n "$IDF_VERSION" ]; then
+        CANDIDATE_IDF_DIRS+=("$HOME/esp/esp-idf-${IDF_VERSION//\//-}")
+        CANDIDATE_IDF_DIRS+=("$HOME/esp/esp-idf-${IDF_VERSION//\//_}")
+    fi
+    CANDIDATE_IDF_DIRS+=("$HOME/esp/esp-idf")
+
+    SOURCED=false
+    for idf_dir in "${CANDIDATE_IDF_DIRS[@]}"; do
+        if [ -f "$idf_dir/export.sh" ]; then
+            echo "Sourcing ESP-IDF from: $idf_dir"
+            source "$idf_dir/export.sh"
+            echo "ESP-IDF environment sourced successfully"
+            SOURCED=true
+            break
+        fi
+    done
+
+    if [ "$SOURCED" != true ] || ! command -v idf.py &> /dev/null; then
+        echo "ERROR: Could not source ESP-IDF environment. Tried:" >&2
+        for idf_dir in "${CANDIDATE_IDF_DIRS[@]}"; do
+            echo "  - $idf_dir/export.sh" >&2
+        done
+        echo "Please ensure ESP-IDF is installed and IDF_PATH is set" >&2
         exit 1
     fi
 fi
