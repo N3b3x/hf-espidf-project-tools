@@ -173,9 +173,13 @@ while [[ $i -le $# ]]; do
         --log)
             ENABLE_LOGGING=true
             # Check if next argument exists and is not another flag (custom log name)
-            if [[ $((i+1)) -le $# ]] && [[ "${!((i+1))}" != -* ]]; then
-                CUSTOM_LOG_NAME="${!((i+1))}"
-                ((i++))  # Skip the next argument since we consumed it
+            next_i=$((i+1))
+            if [[ $next_i -le $# ]]; then
+                next_arg="${!next_i}"
+                if [[ "$next_arg" != -* ]]; then
+                    CUSTOM_LOG_NAME="$next_arg"
+                    ((i++))  # Skip the next argument since we consumed it
+                fi
             fi
             ;;
         *)
