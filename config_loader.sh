@@ -250,15 +250,110 @@ load_config_yq() {
     return 0
 }
 
+# Fallback: Section-based metadata extraction (handles deep structure and multiline YAML)
+# Extracts metadata section from 'metadata:' to next top-level key (^[a-z])
+_get_metadata_section() {
+    sed -n '/^metadata:/,/^[a-z_][a-z0-9_]*:/p' "$CONFIG_FILE" | sed '$d'
+}
+
+# Parse YAML array: handles both inline ["a","b"] and multiline (- a\n- b) formats
+_parse_yaml_array() {
+    local content="$1"
+    # Try inline format first: [..., ...]
+    if echo "$content" | grep -q '\['; then
+        echo "$content" | sed 's/.*\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | sed 's/  */ /g' | sed 's/^ *//' | sed 's/ *$//' | tr ' ' '\n' | grep -v '^$'
+    else
+        # Multiline format: lines starting with "  - "
+        echo "$content" | grep '^ *-' | sed 's/^ *- *//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/^ *//' | sed 's/ *$//' | grep -v '^$'
+    fi
+}
+
+# Get metadata idf_versions as space-separated list
+_get_metadata_idf_versions() {
+    local metadata_section=$(_get_metadata_section)
+    local idf_line=$(echo "$metadata_section" | grep "idf_versions:")
+    if echo "$idf_line" | grep -q '\['; then
+        echo "$idf_line" | sed 's/.*\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g'
+    else
+        echo "$metadata_section" | sed -n '/^  idf_versions:/,/^  [a-z_]/p' | grep '^  - ' | sed 's/^  - *//' | sed 's/"//g' | sed 's/'\''//g'
+    fi
+}
+
+# Get metadata build_types for a specific index (for version-to-build_types mapping)
+_get_metadata_build_types_at_index() {
+    local index=$1
+    local metadata_section=$(_get_metadata_section)
+    local build_line=$(echo "$metadata_section" | grep "build_types:")
+    if echo "$build_line" | grep -q '\[.*\['; then
+        # Inline nested: [["Debug","Release"],["Debug"]] - split by "], [" into groups
+        local content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
+        local target=$(echo "$content" | sed 's/\], \[/\n/g' | sed -n "$((index + 1))p")
+        echo "$target" | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | tr ' ' '\n' | grep -v '^$'
+    elif echo "$build_line" | grep -q '\['; then
+        # Inline flat - same for all indices
+        local content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g')
+        echo "$content" | tr ' ' '\n' | grep -v '^$'
+    else
+        # Multiline nested: each top-level "  - " (2 spaces) starts a new group
+        local bt_section=$(echo "$metadata_section" | sed -n '/^  build_types:/,/^  [a-z_]/p' | head -n -1 | tail -n +2)
+        local i=0
+        local group=""
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^[[:space:]]{2}-[[:space:]] ]]; then
+                if [[ -n "$group" && $i -eq $index ]]; then
+                    echo "$group" | grep '^ *-' | sed 's/^.*-  *//' | sed 's/"//g' | grep -v '^$'
+                    return 0
+                fi
+                [[ -n "$group" ]] && ((i++))
+                group="$line"
+            else
+                group="$group"$'\n'"$line"
+            fi
+        done <<< "$bt_section"
+        if [[ $i -eq $index ]]; then
+            echo "$group" | grep '^ *-' | sed 's/^.*-  *//' | sed 's/"//g' | grep -v '^$'
+        fi
+    fi
+}
+
+# Parse nested YAML array (array of arrays) for metadata build_types
+_parse_nested_build_types() {
+    local section="$1"
+    local build_line=$(echo "$section" | grep "build_types:")
+    # Inline: build_types: [["Debug","Release"],["Debug"]]
+    if echo "$build_line" | grep -q '\[.*\['; then
+        local content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
+        echo "$content" | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | sed 's/  */ /g' | tr ' ' '\n' | sort -u | grep -v '^$'
+    elif echo "$build_line" | grep -q '\['; then
+        # Inline flat: build_types: ["Debug", "Release"]
+        local content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
+        echo "$content" | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | sed 's/  */ /g' | tr ' ' '\n' | grep -v '^$'
+    else
+        # Multiline: extract all list items (handles both flat and nested)
+        # For "  - Debug" or "  - - Debug" or "    - Release", extract the value after last " - "
+        local bt_section=$(echo "$section" | sed -n '/^  build_types:/,/^  [a-z_]/p' | head -n -1)
+        echo "$bt_section" | grep '^ *-' | sed 's/^.*-  *//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/^ *//' | sed 's/ *$//' | grep -v '^$' | sort -u
+    fi
+}
+
 # Fallback: Basic parsing without yq
 load_config_basic() {
-    # Extract basic configuration using grep and sed (cleaner quote handling)
-    export CONFIG_DEFAULT_APP=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "default_app:" | sed 's/.*default_app: *"*\([^"]*\)"*.*/\1/')
-    export CONFIG_DEFAULT_BUILD_TYPE=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "default_build_type:" | sed 's/.*default_build_type: *"*\([^"]*\)"*.*/\1/')
-    export CONFIG_TARGET=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "target:" | sed 's/.*target: *"*\([^"]*\)"*.*/\1/')
+    local metadata_section=$(_get_metadata_section)
     
-    # Extract default ESP-IDF version
-    export CONFIG_DEFAULT_IDF_VERSION=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "idf_versions:" | sed 's/.*idf_versions: *\[*"*\([^"]*\)"*.*/\1/' | head -1 || echo "release/v5.5")
+    # Extract basic configuration using section-based parsing
+    export CONFIG_DEFAULT_APP=$(echo "$metadata_section" | grep "default_app:" | head -1 | sed 's/.*default_app: *"*\([^"]*\)"*.*/\1/' | sed "s/.*default_app: *'\''*\([^'\'']*\)'\''*.*/\1/")
+    export CONFIG_DEFAULT_BUILD_TYPE=$(echo "$metadata_section" | grep "default_build_type:" | head -1 | sed 's/.*default_build_type: *"*\([^"]*\)"*.*/\1/' | sed "s/.*default_build_type: *'\''*\([^'\'']*\)'\''*.*/\1/")
+    export CONFIG_TARGET=$(echo "$metadata_section" | grep "target:" | head -1 | sed 's/.*target: *"*\([^"]*\)"*.*/\1/' | sed "s/.*target: *'\''*\([^'\'']*\)'\''*.*/\1/")
+    
+    # Extract default ESP-IDF version (first from idf_versions)
+    local idf_line=$(echo "$metadata_section" | grep -A 1 "idf_versions:")
+    local idf_first=""
+    if echo "$idf_line" | grep -q '\['; then
+        idf_first=$(echo "$idf_line" | sed 's/.*\["*\([^",]*\)"*.*/\1/' | tr -d '[]"' | head -1)
+    else
+        idf_first=$(echo "$metadata_section" | sed -n '/^  idf_versions:/,/^  [a-z_]/p' | grep '^  - ' | head -1 | sed 's/^  - *//' | sed 's/"//g' | sed 's/'\''//g' | tr -d ' ')
+    fi
+    export CONFIG_DEFAULT_IDF_VERSION="${idf_first:-release/v5.5}"
     
     return 0
 }
@@ -290,11 +385,17 @@ get_build_types() {
                 return 0
             fi
         else
-            # Fallback: extract from apps section
-            local build_line=$(sed -n "/^  $app_type:/,/^  [a-zA-Z0-9_]*:/p" "$CONFIG_FILE" | grep "build_types:")
+            # Fallback: extract from apps section (supports inline and multiline)
+            local app_section=$(sed -n "/^  $app_type:/,/^  [a-zA-Z0-9_]*:/p" "$CONFIG_FILE" | head -n -1)
+            local build_line=$(echo "$app_section" | grep "build_types:")
             if [[ -n "$build_line" ]]; then
-                # Extract all build types from array, handling quotes and commas
-                local app_build_types=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g' | tr '\n' ' ' | sed 's/^ *//' | sed 's/ *$//')
+                local app_build_types=""
+                if echo "$build_line" | grep -q '\['; then
+                    app_build_types=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | tr '\n' ' ' | sed 's/^ *//' | sed 's/ *$//')
+                else
+                    # Multiline: extract build_types subsection; grep filters to list items only
+                    app_build_types=$(echo "$app_section" | sed -n '/^    build_types:/,/^  [a-zA-Z0-9_]*:/p' | grep '^      - ' | sed 's/^      - *//' | sed 's/"//g' | tr '\n' ' ')
+                fi
                 if [[ -n "$app_build_types" ]]; then
                     echo "$app_build_types"
                     return 0
@@ -307,15 +408,11 @@ get_build_types() {
     if check_yq; then
         run_yq '.metadata.build_types | .[] | .[]' -r 2>/dev/null | sort -u | tr '\n' ' '
     else
-        # Fallback: extract from metadata section
-        local build_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "build_types:")
-        if [[ -n "$build_line" ]]; then
-            # Extract all build types from nested array, handling quotes and commas
-            # Format: [["Debug", "Release"], ["Debug"]] -> Debug Release
-            # First, extract the content between the outer brackets
-            local content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
-            # Then extract individual build types, handling nested arrays
-            echo "$content" | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g' | sed 's/,/ /g' | sed 's/  */ /g' | sed 's/^ *//' | sed 's/ *$//' | tr ' ' '\n' | sort -u | tr '\n' ' '
+        # Fallback: extract from metadata section (section-based, supports multiline)
+        local metadata_section=$(_get_metadata_section)
+        local build_types_result=$(_parse_nested_build_types "$metadata_section")
+        if [[ -n "$build_types_result" ]]; then
+            echo "$build_types_result" | tr '\n' ' '
         else
             echo "ERROR: Could not extract build types from config" >&2
             return 1
@@ -338,48 +435,29 @@ get_build_types_for_idf_version() {
             return 1
         fi
     else
-        # Fallback: extract using grep and sed
-        local idf_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
-        local build_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "build_types:")
+        # Fallback: use section-based extraction
+        local idf_content=$(_get_metadata_idf_versions)
+        local index=0
+        local found=false
+        while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if [[ "$version" == "$idf_version" ]]; then
+                found=true
+                break
+            fi
+            ((index++))
+        done < <(echo "$idf_content" | tr ' ' '\n')
         
-        if [[ -n "$idf_line" && -n "$build_line" ]]; then
-            # Extract IDF versions array
-            local idf_content=$(echo "$idf_line" | sed 's/.*idf_versions: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g')
-            
-            # Find the index of the requested IDF version
-            local index=0
-            local found=false
-            while IFS= read -r version; do
-                if [[ "$version" == "$idf_version" ]]; then
-                    found=true
-                    break
-                fi
-                ((index++))
-            done < <(echo "$idf_content" | tr ' ' '\n')
-            
-            if [[ "$found" == "true" ]]; then
-                # Extract build types for that specific index
-                local build_content=$(echo "$build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
-                
-                # Split by '], [' to get individual arrays
-                local arrays=()
-                IFS='], [' read -ra arrays <<< "$build_content"
-                
-                # Get the array at the specified index
-                if [[ $index -lt ${#arrays[@]} ]]; then
-                    local target_array="${arrays[$index]}"
-                    # Clean up the array content
-                    echo "$target_array" | sed 's/"//g' | sed 's/,/ /g' | sed 's/^ *//' | sed 's/ *$//'
-                else
-                    echo "ERROR: Build types index $index not found" >&2
-                    return 1
-                fi
+        if [[ "$found" == "true" ]]; then
+            local build_types_result=$(_get_metadata_build_types_at_index "$index")
+            if [[ -n "$build_types_result" ]]; then
+                echo "$build_types_result" | tr '\n' ' '
             else
-                echo "ERROR: IDF version $idf_version not found" >&2
+                echo "ERROR: Build types index $index not found" >&2
                 return 1
             fi
         else
-            echo "ERROR: Could not extract IDF versions or build types from config" >&2
+            echo "ERROR: IDF version $idf_version not found" >&2
             return 1
         fi
     fi
@@ -396,20 +474,17 @@ get_idf_version_index() {
     if check_yq; then
         run_yq ".metadata.idf_versions | index(\"$idf_version\")" -r 2>/dev/null
     else
-        # Fallback: extract using grep and find index
-        local idf_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
-        if [[ -n "$idf_line" ]]; then
-            local idf_content=$(echo "$idf_line" | sed 's/.*idf_versions: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g')
-            
-            local index=0
-            while IFS= read -r version; do
-                if [[ "$version" == "$idf_version" ]]; then
-                    echo "$index"
-                    return 0
-                fi
-                ((index++))
-            done < <(echo "$idf_content" | tr ' ' '\n')
-        fi
+        # Fallback: use section-based extraction
+        local idf_content=$(_get_metadata_idf_versions)
+        local index=0
+        while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if [[ "$version" == "$idf_version" ]]; then
+                echo "$index"
+                return 0
+            fi
+            ((index++))
+        done < <(echo "$idf_content" | tr ' ' '\n')
         echo "ERROR: IDF version $idf_version not found" >&2
         return 1
     fi
@@ -506,31 +581,23 @@ get_app_build_types_for_idf_version() {
         fi
         
         # Fall back to global metadata for this IDF version
-        local global_idf_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
-        local global_build_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "build_types:")
+        local global_idf_content=$(_get_metadata_idf_versions)
+        local index=0
+        local found=false
+        while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if [[ "$version" == "$idf_version" ]]; then
+                found=true
+                break
+            fi
+            ((index++))
+        done < <(echo "$global_idf_content" | tr ' ' '\n')
         
-        if [[ -n "$global_idf_line" && -n "$global_build_line" ]]; then
-            local global_idf_content=$(echo "$global_idf_line" | sed 's/.*idf_versions: *\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g')
-            local index=0
-            local found=false
-            while IFS= read -r version; do
-                if [[ "$version" == "$idf_version" ]]; then
-                    found=true
-                    break
-                fi
-                ((index++))
-            done < <(echo "$global_idf_content" | tr ' ' '\n')
-            
-            if [[ "$found" == "true" ]]; then
-                local build_content=$(echo "$global_build_line" | sed 's/.*build_types: *\[//' | sed 's/\].*//')
-                local arrays=()
-                IFS='], [' read -ra arrays <<< "$build_content"
-                
-                if [[ $index -lt ${#arrays[@]} ]]; then
-                    local target_array="${arrays[$index]}"
-                    echo "$target_array" | sed 's/"//g' | sed 's/,/ /g' | sed 's/^ *//' | sed 's/ *$//'
-                    return 0
-                fi
+        if [[ "$found" == "true" ]]; then
+            local build_types_result=$(_get_metadata_build_types_at_index "$index")
+            if [[ -n "$build_types_result" ]]; then
+                echo "$build_types_result" | tr '\n' ' '
+                return 0
             fi
         fi
         
@@ -544,11 +611,15 @@ get_idf_versions() {
     if check_yq; then
         run_yq '.metadata.idf_versions | .[]' -r 2>/dev/null | tr '\n' ' '
     else
-        # Fallback: extract from metadata section
-        local idf_line=$(grep -A 10 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
+        # Fallback: extract from metadata section (section-based, supports multiline)
+        local metadata_section=$(_get_metadata_section)
+        local idf_line=$(echo "$metadata_section" | grep "idf_versions:")
         if [[ -n "$idf_line" ]]; then
-            # Extract all versions from array, handling quotes and commas
-            echo "$idf_line" | sed 's/.*\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g' | tr '\n' ' '
+            if echo "$idf_line" | grep -q '\['; then
+                echo "$idf_line" | sed 's/.*\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/'\''//g' | sed 's/,/ /g' | tr '\n' ' '
+            else
+                echo "$metadata_section" | sed -n '/^  idf_versions:/,/^  [a-z_]/p' | grep '^  - ' | sed 's/^  - *//' | sed 's/"//g' | sed 's/'\''//g' | tr '\n' ' '
+            fi
         else
             echo "ERROR: Could not extract IDF versions from config" >&2
             return 1
@@ -736,8 +807,9 @@ get_target() {
     if check_yq; then
         run_yq '.metadata.target' -r
     else
-        # Fallback: extract target using grep
-        grep -A 5 "metadata:" "$CONFIG_FILE" | grep "target:" | sed 's/.*target: *"*\([^"]*\)"*.*/\1/'
+        # Fallback: section-based extraction
+        local metadata_section=$(_get_metadata_section)
+        echo "$metadata_section" | grep "target:" | head -1 | sed 's/.*target: *["\x27]*\([^"\x27]*\)["\x27]*.*/\1/'
     fi
 }
 
@@ -770,12 +842,11 @@ get_idf_version() {
         # Get the first IDF version from the array
         run_yq '.metadata.idf_versions[0]' -r
     else
-        # Fallback: extract IDF version using grep
-        # Extract the first version from the array, handling both ["v1", "v2"] and ["v1"] formats
-        local idf_line=$(grep -A 5 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
-        if [[ -n "$idf_line" ]]; then
-            # Extract first version from array, handling quotes and commas
-            echo "$idf_line" | sed 's/.*\["*\([^",]*\)"*.*/\1/' | tr -d '[]"' | head -1
+        # Fallback: section-based extraction
+        local idf_versions=$(_get_metadata_idf_versions)
+        local idf_first=$(echo "$idf_versions" | awk '{print $1}')
+        if [[ -n "$idf_first" ]]; then
+            echo "$idf_first"
         else
             echo "ERROR: Could not extract IDF version from config" >&2
             return 1
@@ -811,10 +882,7 @@ get_idf_version_for_build_type() {
             app_idf_versions=$(run_yq '.metadata.idf_versions | .[]' -r | tr '\n' ' ')
         else
             # Fallback: extract global IDF versions
-            local idf_line=$(grep -A 5 "metadata:" "$CONFIG_FILE" | grep "idf_versions:")
-            if [[ -n "$idf_line" ]]; then
-                app_idf_versions=$(echo "$idf_line" | sed 's/.*\[//' | sed 's/\].*//' | sed 's/"//g' | sed 's/,/ /g')
-            fi
+            app_idf_versions=$(_get_metadata_idf_versions)
         fi
     fi
     
