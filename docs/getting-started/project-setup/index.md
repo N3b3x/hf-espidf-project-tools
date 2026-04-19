@@ -38,7 +38,7 @@ The `setup_basic.sh` script performs a complete project initialization:
 ### 2. **ESP-IDF Installation**
 - Installs specified ESP-IDF version (default: `release/v5.5`)
 - Sets up ESP-IDF environment and tools
-- Configures for ESP32-C6 target
+- Configures for ESP32 target
 
 ### 3. **Build System Setup**
 - Creates project root `CMakeLists.txt`

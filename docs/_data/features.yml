@@ -37,5 +37,5 @@
   badges:
     - text: "HardFOC"
       type: "danger"
-    - text: "ESP32-C6"
+    - text: "ESP32"
       type: "info"

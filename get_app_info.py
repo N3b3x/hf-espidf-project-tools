@@ -149,7 +149,17 @@ def get_app_source_file(app_type, project_path=None):
         print(f"Error: Unknown app type: {app_type}", file=sys.stderr)
         sys.exit(1)
     
-    return config['apps'][app_type]['source_file']
+    app_config = config['apps'][app_type]
+    
+    # Support both 'source_file' (single) and 'source_files' (list)
+    if 'source_files' in app_config:
+        # Return first file for CMake APP_SOURCE_FILE (CMake will glob the rest)
+        return app_config['source_files'][0]
+    elif 'source_file' in app_config:
+        return app_config['source_file']
+    else:
+        print(f"Error: No source_file or source_files defined for {app_type}", file=sys.stderr)
+        sys.exit(1)
 
 def list_apps(project_path=None):
     """List all available apps."""
