@@ -413,22 +413,16 @@ load_config_yq() {
     return 0
 }
 ```
-#### **2. Fallback Loading Method (grep/sed)**
+#### **2. Fallback Loading Method (section-based parsing)**
 ```bash
-## Fallback parsing without yq
+## Fallback parsing without yq - uses section-based extraction
+## Supports both inline and multiline YAML (build_types 13+ lines after metadata:)
 load_config_basic() {
-    # Extract basic configuration using grep and sed
-    export CONFIG_DEFAULT_APP=$(grep -A 10 "metadata:" "$CONFIG_FILE" | \
-        grep "default_app:" | sed 's/.*default_app: *"*\([^"]*\)"*.*/\1/')
-    
-    export CONFIG_DEFAULT_BUILD_TYPE=$(grep -A 10 "metadata:" "$CONFIG_FILE" | \
-        grep "default_build_type:" | sed 's/.*default_build_type: *"*\([^"]*\)"*.*/\1/')
-    
-    export CONFIG_TARGET=$(grep -A 10 "metadata:" "$CONFIG_FILE" | \
-        grep "target:" | sed 's/.*target: *"*\([^"]*\)"*.*/\1/')
-    
-    export CONFIG_DEFAULT_IDF_VERSION=$(grep -A 10 "metadata:" "$CONFIG_FILE" | \
-        grep "idf_versions:" | sed 's/.*idf_versions: *\[*"*\([^"]*\)"*.*/\1/' | head -1)
+    local metadata_section=$(get_metadata_section)  # sed range: metadata: to next top-level key
+    export CONFIG_DEFAULT_APP=$(echo "$metadata_section" | grep "default_app:" | sed 's/.*: *"*\([^"]*\)"*.*/\1/' | head -1)
+    export CONFIG_DEFAULT_BUILD_TYPE=$(echo "$metadata_section" | grep "default_build_type:" | sed 's/.*: *"*\([^"]*\)"*.*/\1/' | head -1)
+    export CONFIG_TARGET=$(echo "$metadata_section" | grep "target:" | sed 's/.*: *"*\([^"]*\)"*.*/\1/' | head -1)
+    export CONFIG_DEFAULT_IDF_VERSION=$(parse_idf_versions_from_section "$metadata_section" | head -1)
 }
 ```
 ### **Configuration Validation Functions**
