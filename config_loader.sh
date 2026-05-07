@@ -144,7 +144,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Determine project directory and config file location
 # Priority: 1) PROJECT_PATH env var, 2) Default project location
-if [[ -n "$PROJECT_PATH" ]]; then
+# Use ${PROJECT_PATH:-} so callers may `set -u` (e.g. idf_flash_monitor.sh) before sourcing.
+if [[ -n "${PROJECT_PATH:-}" ]]; then
     # Use provided project path (can be absolute or relative)
     if [[ "$PROJECT_PATH" = /* ]]; then
         # Absolute path
